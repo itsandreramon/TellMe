@@ -29,9 +29,9 @@ import com.tellme.app.viewmodels.auth.AuthViewModel
 import com.tellme.databinding.FragmentRegisterEmailBinding
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class EmailFragment : Fragment() {
 

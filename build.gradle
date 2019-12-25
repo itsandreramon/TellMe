@@ -57,8 +57,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://dl.bintray.com/arrow-kt/arrow-kt/" }
         maven { url 'https://maven.google.com' }
     }
 }

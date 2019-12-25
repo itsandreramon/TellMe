@@ -8,10 +8,10 @@
 package com.tellme.app.data
 
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.rx2.asCoroutineDispatcher
-import javax.inject.Inject
 
 data class CoroutinesDispatcherProvider(
     val main: CoroutineDispatcher,

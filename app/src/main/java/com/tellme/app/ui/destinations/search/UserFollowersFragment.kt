@@ -23,12 +23,12 @@ import com.tellme.app.ui.adapter.FollowsListAdapter
 import com.tellme.app.util.ArgsHelper
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentUserListFollowsFollowersBinding
+import javax.inject.Inject
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class UserFollowersFragment : Fragment(), FollowsListAdapter.FollowListUserClickListener {
 

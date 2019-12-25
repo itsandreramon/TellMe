@@ -26,9 +26,9 @@ import com.tellme.app.viewmodels.main.InboxViewModel
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentProfileBinding
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
 

@@ -11,8 +11,8 @@ import com.tellme.app.data.api.TellService
 import com.tellme.app.data.database.TellRoomDao
 import com.tellme.app.model.FeedItem
 import com.tellme.app.model.Tell
-import kotlinx.coroutines.flow.Flow
 import java.io.IOException
+import kotlinx.coroutines.flow.Flow
 
 class TellRepository private constructor(
     private val service: TellService,

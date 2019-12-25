@@ -24,8 +24,8 @@ import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.ActivitySendTellBinding
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class SendTellActivity : AppCompatActivity() {
 

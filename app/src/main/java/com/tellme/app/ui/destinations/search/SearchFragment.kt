@@ -31,6 +31,7 @@ import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.SearchViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentSearchBinding
+import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
@@ -39,7 +40,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 class SearchFragment : Fragment(), UserAdapter.UserClickListener,
     LatestUserSearchAdapter.LatestUserSearchClickListener {

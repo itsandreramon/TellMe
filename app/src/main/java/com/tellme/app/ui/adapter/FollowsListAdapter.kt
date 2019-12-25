@@ -15,11 +15,11 @@ import com.tellme.app.model.User
 import com.tellme.app.model.UserDiffCallback
 import com.tellme.app.util.UserNotFoundException
 import com.tellme.databinding.LayoutUserItemFollowListBinding
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class FollowsListAdapter(
     private val listener: FollowListUserClickListener

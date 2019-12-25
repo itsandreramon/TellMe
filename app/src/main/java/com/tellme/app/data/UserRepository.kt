@@ -16,11 +16,11 @@ import com.tellme.app.data.database.UserRoomDao
 import com.tellme.app.model.User
 import com.tellme.app.util.UserNotFoundException
 import com.tellme.app.util.UserNotRegisteredException
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class UserRepository private constructor(
     private val firebaseSource: FirebaseSource,

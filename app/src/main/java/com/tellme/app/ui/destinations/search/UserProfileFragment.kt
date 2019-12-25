@@ -26,9 +26,9 @@ import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentProfileUserBinding
-import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class UserProfileFragment : Fragment() {
 

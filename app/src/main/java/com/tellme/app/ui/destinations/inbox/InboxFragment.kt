@@ -39,9 +39,9 @@ import com.tellme.app.viewmodels.main.InboxViewModel
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentInboxBinding
-import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class InboxFragment : Fragment(), TellAdapter.TellClickListener {
 
