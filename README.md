@@ -2,7 +2,7 @@
 
 ## TellMe Android App
 - Entirely written in [Kotlin](https://kotlinlang.org/)
-- Relies heavily on Kotlin [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+- Relies heavily on [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
 - Uses [Architecture Components](https://developer.android.com/topic/libraries/architecture/)
 - Uses [Dagger](https://github.com/google/dagger) for dependency injection
 - Uses [RxJava](https://github.com/ReactiveX/RxJava)
