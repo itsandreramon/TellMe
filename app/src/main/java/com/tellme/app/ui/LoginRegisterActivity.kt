@@ -23,10 +23,6 @@ import javax.inject.Inject
 
 class LoginRegisterActivity : AppCompatActivity() {
 
-    companion object {
-        private val TAG = LoginRegisterActivity::class.simpleName
-    }
-
     private lateinit var toolbar: Toolbar
     @Inject lateinit var authViewModel: AuthViewModel
 
