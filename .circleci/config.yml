@@ -22,7 +22,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Check code style
-          command: ./gradlew spotlessCheck --scan
+          command: ./gradlew spotlessCheck
       - run:
           name: Run Tests
           command: ./gradlew lint test
