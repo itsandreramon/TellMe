@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/feedFragment">
+
+    <fragment
+        tools:layout="@layout/fragment_feed"
+        android:id="@+id/feedFragment"
+        android:name="com.tellme.app.ui.destinations.feed.FeedFragment"
+        android:label="@string/fragment_feed_title" />
+    <fragment
+        tools:layout="@layout/fragment_inbox"
+        android:id="@+id/inboxFragment"
+        android:name="com.tellme.app.ui.destinations.inbox.InboxFragment"
+        android:label="@string/fragment_inbox_title">
+        <action
+            android:id="@+id/action_inboxFragment_to_replyTellActivity"
+            app:destination="@id/replyTellActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.tellme.app.ui.destinations.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_loginRegisterActivity"
+            app:destination="@id/loginRegisterActivity"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileEditActivity"
+            app:destination="@id/profileEditActivity" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_search"
+        android:id="@+id/searchFragment"
+        android:name="com.tellme.app.ui.destinations.search.SearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <activity
+        android:id="@+id/loginRegisterActivity"
+        android:name="com.tellme.app.ui.LoginRegisterActivity"
+        android:label="activity_login_register"
+        tools:layout="@layout/activity_login_register" />
+    <activity
+        android:id="@+id/profileEditActivity"
+        tools:layout="@layout/activity_profile_edit"
+        android:name="com.tellme.app.ui.destinations.profile.ProfileEditActivity"
+        android:label="ProfileEditActivity" />
+    <activity
+        android:id="@+id/replyTellActivity"
+        android:name="com.tellme.app.ui.destinations.inbox.ReplyTellActivity"
+        android:label="ReplyTellActivity"
+        tools:layout="@layout/activity_reply_tell">
+        <argument
+            android:name="tell"
+            app:argType="com.tellme.app.model.Tell" />
+    </activity>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.tellme.app.ui.destinations.search.UserProfileFragment"
+        tools:layout="@layout/fragment_profile_user">
+        <argument
+            android:name="user"
+            app:argType="com.tellme.app.model.User" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_sendTellActivity"
+            app:destination="@id/sendTellActivity" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_followsFragment"
+            app:destination="@id/followsFollowersFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/sendTellActivity"
+        tools:layout="@layout/activity_send_tell"
+        android:name="com.tellme.app.ui.destinations.search.SendTellActivity"
+        android:label="SendTellActivity" >
+        <argument
+            android:name="userUid"
+            app:argType="string" />
+    </activity>
+    <fragment
+        tools:layout="@layout/fragment_user_follows_following"
+        android:id="@+id/followsFollowersFragment"
+        android:name="com.tellme.app.ui.destinations.search.FollowsFollowersFragment"
+        android:label="FollowsFollowersFragment">
+        <argument
+            android:name="user"
+            app:argType="com.tellme.app.model.User" />
+        <action
+            android:id="@+id/action_followsFollowersFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+</navigation>

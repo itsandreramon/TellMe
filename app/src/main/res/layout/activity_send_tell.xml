@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light"
+        tools:context=".ui.search.SendTellActivity">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/light"
+            android:elevation="0dp"
+            app:titleTextColor="@color/dark_grey">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_reply"
+                style="@style/FlatButton.Round"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:backgroundTint="@color/button_color_selector"
+                android:text="@string/send"
+                android:textColor="@color/white" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:scrollbars="vertical"
+            android:padding="@dimen/margin_medium">
+
+            <EditText
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:id="@+id/edit_text_question"
+                style="@style/FlatEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light"
+                android:gravity="top"
+                android:hint="@string/your_question"
+                android:padding="0dp"
+                android:textAppearance="@style/p" />
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+</layout>

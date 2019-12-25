@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.tellme.app.model.User" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light">
+
+            <!-- Toolbar -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light" />
+
+            <RelativeLayout
+                android:paddingBottom="@dimen/margin_large"
+                android:id="@+id/layout_top"
+                android:layout_below="@id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image_view_user_avatar"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/text_view_change_profile_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/image_view_user_avatar"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="Change profile image"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:textColor="@color/colorAccent" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_below="@id/layout_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="?android:listDivider"
+                android:showDividers="middle"
+                android:orientation="vertical">
+
+                <!-- Name -->
+                <LinearLayout
+                    android:padding="@dimen/margin_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="0.6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/display_name"
+                        style="@style/headline7"
+                        android:layout_gravity="center_vertical" />
+
+                    <EditText
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:id="@+id/edit_text_name"
+                        android:textAppearance="@style/p"
+                        android:background="@color/light"
+                        android:layout_weight="0.4"
+                        android:text="@{user.name}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <!-- Username -->
+                <LinearLayout
+                    android:padding="@dimen/margin_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="0.6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/register_username"
+                        style="@style/headline7"
+                        android:layout_gravity="center_vertical" />
+
+                    <EditText
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:id="@+id/edit_text_username"
+                        android:textAppearance="@style/p"
+                        android:background="@color/light"
+                        android:layout_weight="0.4"
+                        android:layout_width="match_parent"
+                        android:text="@{user.username}"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <!-- About -->
+                <LinearLayout
+                    android:padding="@dimen/margin_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="0.6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about"
+                        style="@style/headline7"
+                        android:layout_gravity="center_vertical" />
+
+                    <EditText
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:id="@+id/edit_text_about"
+                        android:textAppearance="@style/p"
+                        android:background="@color/light"
+                        android:layout_weight="0.4"
+                        android:text="@{user.about}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

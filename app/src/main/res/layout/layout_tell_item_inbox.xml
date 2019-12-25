@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="tell"
+            type="com.tellme.app.model.Tell" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Background -->
+        <RelativeLayout
+            android:id="@+id/view_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_row_background">
+
+            <ImageView
+                android:tint="@color/white"
+                android:id="@+id/delete_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:src="@drawable/ic_delete" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_toStartOf="@id/delete_icon"
+                android:text="@string/delete"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+        <!-- Foreground -->
+        <RelativeLayout
+            android:id="@+id/view_foreground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light"
+            android:animateLayoutChanges="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium">
+
+                <TextView
+                    android:id="@+id/text_view_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:minLines="1"
+                    android:text="@{tell.question}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                <TextView
+                    android:id="@+id/text_view_message_translation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_view_message"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:minLines="1"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_below="@id/text_view_message_translation"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:animateLayoutChanges="true">
+
+                    <TextView
+                        android:id="@+id/text_view_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:text="3 days ago"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="@color/light_grey" />
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_translate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/text_view_date"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/text_view_translate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/progress_bar_translate"
+                        android:text="@string/item_translate"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="@color/colorAccent"
+                        android:visibility="invisible" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_favorite"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_toStartOf="@id/image_button_reply"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_star_outline"
+                        android:tint="@color/colorAccent" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_reply"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_reply"
+                        android:tint="@color/colorAccent" />
+
+                </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
+</layout>

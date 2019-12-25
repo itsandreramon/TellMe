@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/dark_grey</color>
+    <color name="colorPrimaryDark">@color/dark_grey</color>
+    <color name="colorAccent">@color/new_blue</color>
+    <color name="colorAccentLight">@color/new_blue_light</color>
+
+    <color name="white">#FFF</color>
+    <color name="light">#F6F6F6</color>
+    <color name="light_grey">#ABABAB</color>
+    <color name="grey">#686868</color>
+    <color name="dark_grey">#292A2C</color>
+    <color name="black">#000</color>
+    <color name="window_background">#EEF0F2</color>
+
+    <color name="deepOrange500">#FF5722</color>
+    <color name="lightBlue50">#0288D1</color>
+
+    <color name="red">#ef1d78</color>
+    <color name="indigo">#6300ef</color>
+    <color name="red_light">#F1C2D6</color>
+
+    <color name="bg_row_background">#fa315b</color>
+
+    <color name="primary_reply_blue_700">#344955</color>
+    <color name="primary_reply_blue_800">#232F34</color>
+    <color name="primary_reply_blue_600">#4A6572</color>
+    <color name="secondary_reply_orange_500">#F9AA33</color>
+
+
+    <color name="new_dark">#292A2C</color>
+    <color name="new_light">#b0b3cd</color>
+    <color name="new_text">#60638a</color>
+    <color name="new_statusbar">#f6f6f6</color>
+    <color name="new_blue">#353fdf</color>
+    <color name="new_blue_light">#B4B7EC</color>
+</resources>

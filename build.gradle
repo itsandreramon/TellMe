@@ -1,0 +1,64 @@
+import com.tellme.app.Libs
+import com.tellme.app.Versions
+
+buildscript {
+    ext.buildConfig = [
+            'compileSdk': 29,
+            'minSdk'    : 23,
+            'targetSdk' : 29,
+    ]
+
+    repositories {
+        google()
+        jcenter()
+        
+    }
+
+    dependencies {
+        classpath Libs.androidGradlePlugin
+
+        classpath Libs.Kotlin.gradlePlugin
+        classpath Libs.Kotlin.extensions
+
+        classpath Libs.AndroidX.Navigation.safeArgs
+
+        classpath Libs.Google.gmsGoogleServices
+    }
+}
+
+plugins {
+    id 'com.diffplug.gradle.spotless' version '3.26.1'
+}
+
+subprojects {
+    apply plugin: 'com.diffplug.gradle.spotless'
+    spotless {
+        kotlin {
+            target "**/*.kt"
+            ktlint(Versions.ktlint)
+            licenseHeaderFile project.rootProject.file('spotless/copyright.kt')
+        }
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions {
+            allWarningsAsErrors = true
+
+            // Enable experimental coroutines APIs, including Flow
+            freeCompilerArgs += "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
+            freeCompilerArgs += "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+
+            jvmTarget = "1.8"
+        }
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://dl.bintray.com/arrow-kt/arrow-kt/" }
+        maven { url 'https://maven.google.com' }
+    }
+}

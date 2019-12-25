@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_profile_title">Profile</string>
+    <string name="profile_logout">Logout</string>
+    <string name="profile_dialog_upload">Uploading profile image…</string>
+    <string name="profile_dialog_updating">Saving changes…</string>
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_edit_translate_to">Language</string>
+    <string name="follow">Follow</string>
+    <string name="error_updating">An error occurred while updating your profile. Please make sure that you have an active internet connection.</string>
+
+    <string name="follower_count">%1$d Followers</string>
+    <string name="following_count">%1$d Following</string>
+    <string name="tells_count">%1$d Tells</string>
+</resources>

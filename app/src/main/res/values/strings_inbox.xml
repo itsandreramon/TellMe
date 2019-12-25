@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_inbox_title">Inbox</string>
+    <string name="item_translate">Translate</string>
+    <string name="refresh">Refresh</string>
+    <string name="translated_from">%1$s (Translated from %2$s to %3$s by Google)</string>
+    <string name="reply">Reply</string>
+    <string name="your_reply">Your reply</string>
+    <string name="reply_sending">Sending reply…</string>
+    <string name="reply_sent">Your reply has been sent</string>
+    <string name="reply_sent_error">Your reply could not be sent</string>
+    <string name="reply_removed">Your reply has been removed</string>
+    <string name="reply_removed_error">Your reply could not be removed</string>
+    <string name="undo">Undo</string>
+</resources>

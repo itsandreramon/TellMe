@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_start_title">Start</string>
+
+    <string name="sign_up">Sign up</string>
+</resources>

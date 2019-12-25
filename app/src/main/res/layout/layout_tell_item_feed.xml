@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feedItem"
+            type="com.tellme.app.model.FeedItem" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Background -->
+        <RelativeLayout
+            android:id="@+id/view_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_row_background">
+
+            <ImageView
+                android:tint="@color/white"
+                android:id="@+id/delete_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:src="@drawable/ic_delete" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_toStartOf="@id/delete_icon"
+                android:text="@string/delete"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+        <!-- Foreground -->
+        <LinearLayout
+            android:id="@+id/view_foreground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium">
+
+            <TextView
+                android:id="@+id/text_view_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3 days ago"
+                android:textAppearance="@style/p" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@{feedItem.question}"
+                android:textColor="@color/dark_grey"
+                android:textAppearance="@style/p" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginTop="@dimen/margin_micro"
+                    android:id="@+id/image_view_user_avatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@color/light"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_marginEnd="@dimen/margin_medium" />
+
+                <TextView
+                    android:id="@+id/text_view_user_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{feedItem.receiverUsername}"
+                    android:textAppearance="@style/p"
+                    android:layout_toEndOf="@id/image_view_user_avatar" />
+
+                <TextView
+                    android:textAppearance="@style/p"
+                    android:textColor="@color/dark_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/image_view_user_avatar"
+                    android:layout_below="@id/text_view_user_username"
+                    android:text="@{feedItem.reply}" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+</layout>

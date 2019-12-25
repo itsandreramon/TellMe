@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="register">Register</string>
+    <string name="register_confirm_password">Confirm password</string>
+    <string name="display_name">Name</string>
+    <string name="register_loading_dialog">Registering…</string>
+    <string name="register_success">Successfully registered. Please check your inbox to verify your email address.</string>
+    <string name="register_email_verification">Please check your inbox to verify your email address.</string>
+    <string name="register_email_verification_error">An error occurred while sending the verification email.</string>
+    <string name="register_error">An error occurred while registering. %1$s</string>
+    <string name="register_error_password_confirm">Please confirm your password.</string>
+    <string name="register_error_password_mismatch">Error: Passwords do not match</string>
+    <string name="register_error_name">Error: Please enter a valid name.</string>
+    <string name="register_error_username">Error: Please enter a valid username.</string>
+    <string name="register_error_username_in_use">This username is already in use.</string>
+    <string name="register_error_connection">There was an error with your connection. Please make sure that you are connected to the internet.</string>
+    <string name="register_error_email_in_use">This email is already in use.</string>
+    <string name="register_error_email_invalid">Error: Invalid email address</string>
+    <string name="register_username">Username</string>
+    <string name="register_confirm">Confirm</string>
+    <string name="register_password">Choose a password</string>
+    <string name="register_email">What\'s your email address?</string>
+    <string name="register_error_username_invalid_length">Error: At least 3 characters</string>
+    <string name="register_error_username_invalid">Error: Invalid username</string>
+    <string name="register_password_strong">*Choose a strong password</string>
+</resources>

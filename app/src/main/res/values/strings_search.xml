@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_search_title">Search</string>
+    <string name="error_connection">An error occurred. Please verify that you have an internet connection.</string>
+    <string name="user_profile_follow_not_found_error">An error occurred. User to follow could not be found.</string>
+    <string name="following">Following</string>
+    <string name="send_user_tell">Send %1$s a tell</string>
+</resources>

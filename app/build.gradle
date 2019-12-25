@@ -1,0 +1,131 @@
+import com.tellme.app.Libs
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+
+    defaultConfig {
+        applicationId "com.tellme.app"
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        resConfigs "en"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+androidExtensions {
+    features = ["parcelize"]
+}
+
+kapt {
+    useBuildCache = true
+}
+
+dependencies {
+    implementation Libs.AndroidX.appCompat
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.constraintLayout
+    implementation Libs.AndroidX.recyclerView
+    implementation Libs.AndroidX.swipeRefreshLayout
+    implementation Libs.AndroidX.viewPager
+
+    implementation Libs.AndroidX.Fragment.fragment
+    implementation Libs.AndroidX.Fragment.fragmentKtx
+
+    kapt Libs.AndroidX.Lifecycle.compiler
+    implementation Libs.AndroidX.Lifecycle.runtime
+    implementation Libs.AndroidX.Lifecycle.liveData
+    implementation Libs.AndroidX.Lifecycle.viewModel
+
+    kapt Libs.AndroidX.Room.compiler
+    implementation Libs.AndroidX.Room.runtime
+    implementation Libs.AndroidX.Room.ktx
+
+    implementation Libs.AndroidX.Navigation.ui
+    implementation Libs.AndroidX.Navigation.runtime
+    implementation Libs.AndroidX.Navigation.fragment
+
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.Kotlin.reflect
+
+    implementation Libs.Kotlin.Coroutines.core
+    implementation Libs.Kotlin.Coroutines.android
+    implementation Libs.Kotlin.Coroutines.reactive
+    implementation Libs.Kotlin.Coroutines.rx2
+
+    implementation Libs.Google.material
+
+    kapt Libs.Google.Dagger.compiler
+    implementation Libs.Google.Dagger.dagger
+
+    implementation Libs.Google.Firebase.analytics
+    implementation Libs.Google.Firebase.firestore
+    implementation Libs.Google.Firebase.auth
+    implementation Libs.Google.Firebase.storage
+
+    implementation Libs.Google.Firebase.ML.language
+    implementation Libs.Google.Firebase.ML.translate
+    implementation Libs.Google.Firebase.ML.id
+
+    implementation Libs.Coil.coil
+
+    kapt Libs.Square.Moshi.codegen
+    implementation Libs.Square.Moshi.moshi
+
+    implementation Libs.Square.Retrofit.retrofit
+    implementation Libs.Square.Retrofit.moshiConverter
+    implementation Libs.Square.Retrofit.scalars
+
+    implementation Libs.Square.OkHttp.okHttp
+    implementation Libs.Square.OkHttp.logging
+
+    implementation Libs.ReactiveX.rxJava
+    implementation Libs.ReactiveX.rxAndroid
+    implementation Libs.ReactiveX.rxBinding
+    implementation Libs.ReactiveX.rxKotlin
+
+    implementation Libs.Airbnb.mvrx
+
+    implementation Libs.JakeWharton.threeTen
+    implementation Libs.JakeWharton.timber
+
+    implementation Libs.InboxRecyclerView.inboxRecyclerView
+
+    testImplementation Libs.Test.junit
+    androidTestImplementation Libs.AndroidX.Test.junitExt
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
+}
+
+// Must be applied after dependencies
+if (file("google-services.json").exists()) {
+    apply plugin: 'com.google.gms.google-services'
+}

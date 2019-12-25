@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">TellMe</string>
+    <string name="welcome">Welcome</string>
+    <string name="description">With TellMe, asking questions anonymously has never been easier. Connect with people around the globe to see what they replied.</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="error_email">Please enter an email address.</string>
+    <string name="error_password">Please enter a password.</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="done">Done</string>
+
+    <string name="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</string>
+
+    <string name="login_email_verification_error">In order to login, your email needs to be verified. Please check your inbox.</string>
+    <string name="resend">Resend</string>
+    <string name="register_error_password_invalid_length">Error: At least 8 characters</string>
+    <string name="tell_removed">The tell has been successfully deleted.</string>
+    <string name="tell_removed_error">An error occurred while deleting the tell.</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="search_clear_latest">Do you really want to clear your latest search results?</string>
+    <string name="clear">Clear</string>
+    <string name="search_clear_latest_title">Clear latest search results?</string>
+    <string name="send">send</string>
+    <string name="your_tell">Your tell</string>
+    <string name="your_question">Your question</string>
+    <string name="send_tell_error">Error sending tell. Please make sure that you have an active internet connection.</string>
+    <string name="users_follows">%1$s\'s follows</string>
+    <string name="follows">Follows</string>
+    <string name="followers">Followers</string>
+    <string name="tells">Tells</string>
+    <string name="register_biography">Biography</string>
+    <string name="about">About</string>
+</resources>

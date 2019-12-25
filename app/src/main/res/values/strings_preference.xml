@@ -1,0 +1,4 @@
+<resources>
+    <string name="sharedPrefs">SHARED_PREFS</string>
+    <string name="sharedPrefsEmail">SHARED_PREFS_EMAIL</string>
+</resources>
