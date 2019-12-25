@@ -113,12 +113,8 @@ dependencies {
     implementation Libs.ReactiveX.rxBinding
     implementation Libs.ReactiveX.rxKotlin
 
-    implementation Libs.Airbnb.mvrx
-
     implementation Libs.JakeWharton.threeTen
     implementation Libs.JakeWharton.timber
-
-    implementation Libs.InboxRecyclerView.inboxRecyclerView
 
     testImplementation Libs.Test.junit
     androidTestImplementation Libs.AndroidX.Test.junitExt
