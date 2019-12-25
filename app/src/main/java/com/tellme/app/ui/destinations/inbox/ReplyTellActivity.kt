@@ -10,13 +10,13 @@ package com.tellme.app.ui.destinations.inbox
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.Tell
-import com.tellme.app.ui.ScopedActivity
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.EXTRA_TELL_KEY
 import com.tellme.app.util.EXTRA_TELL_KEY_UPDATED
@@ -26,7 +26,7 @@ import com.tellme.databinding.ActivityReplyTellBinding
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class ReplyTellActivity : ScopedActivity() {
+class ReplyTellActivity : AppCompatActivity() {
 
     private val disposables = CompositeDisposable()
     private lateinit var binding: ActivityReplyTellBinding

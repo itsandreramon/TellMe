@@ -7,9 +7,8 @@
 
 package com.tellme.app.ui
 
-import android.graphics.Color.parseColor
 import android.os.Bundle
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -22,7 +21,7 @@ import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.ActivityMainBinding
 import javax.inject.Inject
 
-class MainActivity : ScopedActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -54,9 +53,11 @@ class MainActivity : ScopedActivity() {
     }
 
     private fun handleNetworkConnected() {
+        // TODO
     }
 
     private fun handleNetworkNotConnected() {
+        // TODO
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -74,12 +75,6 @@ class MainActivity : ScopedActivity() {
         }
 
         binding.bottomNavigationView.setupWithNavController(navController)
-    }
-
-    fun updateStatusBarColor(color: String) {
-        val window = window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = parseColor(color)
     }
 
     override fun onSupportNavigateUp(): Boolean {
