@@ -1,3 +1,5 @@
+[![Build Status](https://img.shields.io/circleci/build/github/itsandreramon/TellMe-Android?token=f24ebd30e0d413eebc536d6c4a3d0804a9cc75fe)](https://circleci.com/gh/itsandreramon/TellMe-Android)
+
 ## TellMe Android App
 - Entirely written in Kotlin
 - Relies heavily on Coroutines
