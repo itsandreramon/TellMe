@@ -116,24 +116,9 @@ object Libs {
         const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:2.4.0"
     }
 
-    object Airbnb {
-        const val mvrx = "com.airbnb.android:mvrx:1.3.0"
-    }
-
-    object Arrow {
-        private const val version = "0.10.1"
-        const val core = "io.arrow-kt:arrow-core:$version"
-        const val syntax = "io.arrow-kt:arrow-syntax:$version"
-        const val meta = "io.arrow-kt:arrow-meta:$version"
-    }
-
     object Coil {
         private const val version = "0.8.0"
         const val coil = "io.coil-kt:coil:$version"
-    }
-
-    object InboxRecyclerView {
-        const val inboxRecyclerView = "me.saket:inboxrecyclerview:2.0.0-beta3"
     }
 
     object JakeWharton {

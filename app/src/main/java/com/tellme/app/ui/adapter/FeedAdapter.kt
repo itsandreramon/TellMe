@@ -15,10 +15,10 @@ import com.tellme.app.model.FeedDiffCallback
 import com.tellme.app.model.FeedItem
 import com.tellme.app.ui.destinations.feed.FeedFragment
 import com.tellme.databinding.LayoutTellItemFeedBinding
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlin.coroutines.CoroutineContext
 
 class FeedAdapter(
     private val parent: FeedFragment,

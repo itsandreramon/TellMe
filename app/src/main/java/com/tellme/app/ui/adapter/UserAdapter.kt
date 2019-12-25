@@ -16,11 +16,11 @@ import com.tellme.app.model.UserDiffCallback
 import com.tellme.app.ui.destinations.search.SearchFragment
 import com.tellme.app.util.UserNotFoundException
 import com.tellme.databinding.LayoutUserItemSearchResultsBinding
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class UserAdapter(
     private val parent: SearchFragment,
