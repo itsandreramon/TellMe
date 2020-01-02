@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 - André Thiele
+ * Copyright 2020 - André Thiele
  *
  * Fachbereich Informatik und Medien
  * Technische Hochschule Brandenburg
