@@ -3,7 +3,7 @@
     <style name="p" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/grey</item>
-        <item name="android:lineSpacingMultiplier">0.9</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
     <style name="p2" parent="TextAppearance.MaterialComponents.Body2">
@@ -21,6 +21,7 @@
         <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:lineSpacingMultiplier">0.9</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="headline6" parent="TextAppearance.MaterialComponents.Headline6">
@@ -34,6 +35,7 @@
         <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
     </style>
 
     <style name="FlatEditText" parent="Widget.AppCompat.EditText">

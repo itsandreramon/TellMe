@@ -20,13 +20,12 @@ import com.tellme.R
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.databinding.FragmentRegisterNameBinding
+import com.uber.autodispose.android.lifecycle.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
 class NameFragment : Fragment() {
 
-    private val disposables = CompositeDisposable()
     private lateinit var binding: FragmentRegisterNameBinding
 
     override fun onCreateView(
@@ -51,14 +50,16 @@ class NameFragment : Fragment() {
             .map { ValidationUtils.isValidName(it) }
 
         validNameObservable
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 binding.buttonConfirm.isEnabled = valid
                 ViewUtils.hideInputLayoutWarning(binding.inputLayoutName)
-            }.also { disposables.add(it) }
+            }
 
         validNameObservable
             .debounce(500, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 ViewUtils.toggleInputLayoutWarning(
                     textInputLayout = binding.inputLayoutName,
@@ -66,7 +67,7 @@ class NameFragment : Fragment() {
                     message = getString(R.string.register_error_name),
                     enabled = !valid
                 )
-            }.also { disposables.add(it) }
+            }
 
         binding.buttonConfirm.setOnClickListener {
             val name = binding.editTextName.text.toString().trim()
@@ -81,10 +82,5 @@ class NameFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.login_options, menu)
-    }
-
-    override fun onDestroy() {
-        disposables.dispose()
-        super.onDestroy()
     }
 }

@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.extensions.hideSoftInput
@@ -27,7 +26,7 @@ import com.tellme.app.model.User
 import com.tellme.app.ui.adapter.LatestUserSearchAdapter
 import com.tellme.app.ui.adapter.UserAdapter
 import com.tellme.app.util.DateUtils
-import com.tellme.app.util.ViewUtils
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.main.SearchViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentSearchBinding
@@ -79,7 +78,9 @@ class SearchFragment : Fragment(), UserAdapter.UserClickListener,
         setupSearchField()
 
         binding.textViewClearLatest.setOnClickListener {
-            showClearSearchResultsDialog()
+            DialogUtils.createClearSearchResultsDialog(requireContext()) {
+                searchViewModel.clearLatestUserSearches()
+            }
         }
 
         searchViewModel.searchLatest.observe(viewLifecycleOwner, Observer {
@@ -117,17 +118,6 @@ class SearchFragment : Fragment(), UserAdapter.UserClickListener,
             .mapLatest { searchViewModel.getAllUsersByQuery(it, 30) }
 
         lifecycleScope.launch { searchResultFlow.collect() }
-    }
-
-    private fun showClearSearchResultsDialog() {
-        ViewUtils.createInfoAlertDialog(
-            context = requireContext(),
-            message = getString(R.string.search_clear_latest),
-            negative = getString(R.string.cancel),
-            positive = getString(R.string.clear),
-            title = getString(R.string.search_clear_latest_title),
-            onPositiveCallback = { searchViewModel.clearLatestUserSearches() }
-        ).show()
     }
 
     override suspend fun onLatestUserClicked(user: User) {

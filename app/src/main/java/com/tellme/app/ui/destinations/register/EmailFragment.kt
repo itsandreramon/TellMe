@@ -23,19 +23,19 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.auth.AuthViewModel
 import com.tellme.databinding.FragmentRegisterEmailBinding
+import com.uber.autodispose.android.lifecycle.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 class EmailFragment : Fragment() {
 
-    private val disposables = CompositeDisposable()
     private val args: EmailFragmentArgs by navArgs()
     private var loadingDialog: AlertDialog? = null
     private lateinit var binding: FragmentRegisterEmailBinding
@@ -70,14 +70,16 @@ class EmailFragment : Fragment() {
             .map { ValidationUtils.isValidEmail(it) }
 
         validEmailObservable
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 binding.buttonConfirm.isEnabled = valid
                 ViewUtils.hideInputLayoutWarning(binding.inputLayoutEmail)
-            }.also { disposables.add(it) }
+            }
 
         validEmailObservable
             .debounce(500, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 ViewUtils.toggleInputLayoutWarning(
                     textInputLayout = binding.inputLayoutEmail,
@@ -85,13 +87,11 @@ class EmailFragment : Fragment() {
                     message = getString(R.string.register_error_email_invalid),
                     enabled = !valid
                 )
-            }.also { disposables.add(it) }
+            }
 
         binding.buttonConfirm.setOnClickListener {
-            val loadingDialog = ViewUtils.showLoadingDialog(
-                context = requireContext(),
-                layout = R.layout.dialog_loading
-            )
+            val loadingDialog = DialogUtils.createLoadingDialog(requireContext())
+                .also { it.show() }
 
             lifecycleScope.launch {
                 val email = binding.editTextEmail.text.toString()
@@ -100,7 +100,7 @@ class EmailFragment : Fragment() {
                 loadingDialog.dismiss()
 
                 if (emailAlreadyInUse) {
-                    showEmailAlreadyInUseDialog()
+                    DialogUtils.createEmailAlreadyInUseDialog(requireContext()).show()
                 } else {
                     val action = EmailFragmentDirections.actionEmailFragmentToPasswordFragment(
                         email = email,
@@ -114,19 +114,7 @@ class EmailFragment : Fragment() {
         }
     }
 
-    private fun showEmailAlreadyInUseDialog() {
-        ViewUtils.createInfoAlertDialog(
-            context = requireContext(),
-            message = getString(R.string.register_error_email_in_use)
-        ).show()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.login_options, menu)
-    }
-
-    override fun onDestroy() {
-        disposables.dispose()
-        super.onDestroy()
     }
 }

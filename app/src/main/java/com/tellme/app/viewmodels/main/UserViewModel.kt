@@ -159,21 +159,21 @@ class UserViewModel(
     }
 
     suspend fun followUserByUid(user: User, uidToFollow: String) {
-        val updatedFollowsList = ArrayList(user.follows)
+        val updatedFollowsList = ArrayList(user.following)
             .filter { it != uidToFollow }
             .toMutableList()
 
         updatedFollowsList.add(uidToFollow)
 
-        val updatedUser = user.copy(follows = updatedFollowsList)
+        val updatedUser = user.copy(following = updatedFollowsList)
         updateUser(updatedUser)
     }
 
     suspend fun unfollowUserByUid(user: User, uidToFollow: String) {
-        val updatedFollowsList = user.follows
+        val updatedFollowsList = user.following
             .filter { it != uidToFollow }
 
-        val updatedUser = user.copy(follows = updatedFollowsList)
+        val updatedUser = user.copy(following = updatedFollowsList)
         updateUser(updatedUser)
     }
 

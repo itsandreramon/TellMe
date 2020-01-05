@@ -20,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.setUserProfileImageFromPath
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.PICK_IMAGE_REQUEST_CODE
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -32,7 +33,7 @@ class ProfileEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileEditBinding
 
-    private var dialog: AlertDialog? = null
+    private var loadingDialog: AlertDialog? = null
     private var updatedProfileImage: String? = null
 
     @Inject lateinit var userViewModel: UserViewModel
@@ -104,9 +105,10 @@ class ProfileEditActivity : AppCompatActivity() {
         when {
             name.isEmpty() -> ViewUtils.showToast(this@ProfileEditActivity, "Display name cannot be empty")
             username.isEmpty() -> ViewUtils.showToast(this@ProfileEditActivity, "Username cannot be empty")
-            usernameIsInUse(username) -> showUsernameAlreadyInUseDialog()
+            usernameIsInUse(username) -> DialogUtils.createUsernameAlreadyInUseDialog(this).show()
             else -> {
-                showLoadingDialog()
+                loadingDialog = DialogUtils.createLoadingDialog(this)
+                    .also { it.show() }
 
                 var exceptionThrown = false
                 try {
@@ -116,10 +118,10 @@ class ProfileEditActivity : AppCompatActivity() {
                     exceptionThrown = true
                 }
 
-                dismissLoadingDialog()
+                loadingDialog?.dismiss()
 
                 if (exceptionThrown) {
-                    showUpdateErrorDialog()
+                    DialogUtils.createUpdateErrorDialog(this).show()
                 } else {
                     setResult(Activity.RESULT_OK)
                     callback()
@@ -182,34 +184,6 @@ class ProfileEditActivity : AppCompatActivity() {
         val currentUserUid = userViewModel.getCurrentUserFirebase()!!.uid
         userViewModel.uploadAvatarFirebase(photoUrl, currentUserUid)
         return userViewModel.getAvatarFirebase(currentUserUid).toString()
-    }
-
-    private fun showUsernameAlreadyInUseDialog() {
-        ViewUtils.createInfoAlertDialog(
-            this,
-            message = getString(R.string.register_error_username_in_use),
-            title = getString(R.string.update),
-            negative = getString(R.string.ok)
-        ).show()
-    }
-
-    private fun showUpdateErrorDialog() {
-        ViewUtils.createInfoAlertDialog(
-            this,
-            message = getString(R.string.error_updating),
-            title = getString(R.string.update),
-            negative = getString(R.string.ok)
-        ).show()
-    }
-
-    private fun showLoadingDialog() {
-        dialog = ViewUtils
-            .createNonCancellableDialog(this, R.layout.dialog_updating)
-            .also { it.show() }
-    }
-
-    private fun dismissLoadingDialog() {
-        dialog?.dismiss()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

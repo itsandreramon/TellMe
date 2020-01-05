@@ -20,7 +20,7 @@ import com.tellme.app.util.USER_COLUMN_ABOUT
 import com.tellme.app.util.USER_COLUMN_AVATAR
 import com.tellme.app.util.USER_COLUMN_EMAIL
 import com.tellme.app.util.USER_COLUMN_FOLLOWERS
-import com.tellme.app.util.USER_COLUMN_FOLLOWS
+import com.tellme.app.util.USER_COLUMN_FOLLOWING
 import com.tellme.app.util.USER_COLUMN_LATEST_SEARCH_AT
 import com.tellme.app.util.USER_COLUMN_NAME
 import com.tellme.app.util.USER_COLUMN_UID
@@ -29,7 +29,7 @@ import com.tellme.app.util.USER_KEY_ABOUT
 import com.tellme.app.util.USER_KEY_AVATAR
 import com.tellme.app.util.USER_KEY_EMAIL
 import com.tellme.app.util.USER_KEY_FOLLOWERS
-import com.tellme.app.util.USER_KEY_FOLLOWS
+import com.tellme.app.util.USER_KEY_FOLLOWING
 import com.tellme.app.util.USER_KEY_NAME
 import com.tellme.app.util.USER_KEY_UID
 import com.tellme.app.util.USER_KEY_USERNAME
@@ -62,9 +62,9 @@ data class User(
     @Json(name = USER_KEY_USERNAME)
     val username: String,
 
-    @ColumnInfo(name = USER_COLUMN_FOLLOWS)
-    @Json(name = USER_KEY_FOLLOWS)
-    val follows: List<String> = emptyList(),
+    @ColumnInfo(name = USER_COLUMN_FOLLOWING)
+    @Json(name = USER_KEY_FOLLOWING)
+    val following: List<String> = emptyList(),
 
     @ColumnInfo(name = USER_COLUMN_FOLLOWERS)
     @Json(name = USER_KEY_FOLLOWERS)
@@ -89,7 +89,7 @@ data class User(
     }
 
     override fun toString(): String {
-        return "User(uid='$uid', name='$name', avatar=$avatar, email=$email, username='$username', follows=$follows, followers=$followers, latestSearchAt=$latestSearchAt)"
+        return "User(uid='$uid', name='$name', avatar=$avatar, email='$email', username='$username', following=$following, followers=$followers, about='$about', latestSearchAt=$latestSearchAt)"
     }
 }
 

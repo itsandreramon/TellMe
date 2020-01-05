@@ -7,8 +7,11 @@
 
 package com.tellme.app.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.model.User
@@ -21,9 +24,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class FollowsListAdapter(
-    private val listener: FollowListUserClickListener
-) : ListAdapter<User, FollowsListViewHolder>(UserDiffCallback), CoroutineScope {
+class FollowingListAdapter(
+    private val listener: FollowListUserClickListener,
+    private val loggedInUser: LiveData<User>,
+    private val context: Context
+) : ListAdapter<User, FollowingListViewHolder>(UserDiffCallback), CoroutineScope {
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -33,28 +38,28 @@ class FollowsListAdapter(
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowsListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = LayoutUserItemFollowListBinding.inflate(layoutInflater, parent, false)
-        return FollowsListViewHolder(binding)
+        return FollowingListViewHolder(binding, loggedInUser)
     }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
-    override fun onBindViewHolder(holder: FollowsListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FollowingListViewHolder, position: Int) {
         launch {
             try {
                 val user = getItem(position)
-                holder.bind(user, listener)
+                holder.bind(user, listener, context)
             } catch (e: UserNotFoundException) {
                 e.printStackTrace()
             }
         }
     }
 
-    interface FollowListUserClickListener {
+    interface FollowListUserClickListener : LifecycleOwner {
         fun onFollowListUserClicked(user: User)
         fun onFollowListUserButtonFollowClicked(user: User)
     }

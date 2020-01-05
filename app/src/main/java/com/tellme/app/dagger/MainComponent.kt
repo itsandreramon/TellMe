@@ -15,11 +15,11 @@ import com.tellme.app.ui.destinations.inbox.InboxFragment
 import com.tellme.app.ui.destinations.inbox.ReplyTellActivity
 import com.tellme.app.ui.destinations.profile.ProfileEditActivity
 import com.tellme.app.ui.destinations.profile.ProfileFragment
-import com.tellme.app.ui.destinations.search.FollowsFollowersFragment
+import com.tellme.app.ui.destinations.search.FollowingFollowersFragment
 import com.tellme.app.ui.destinations.search.SearchFragment
 import com.tellme.app.ui.destinations.search.SendTellActivity
 import com.tellme.app.ui.destinations.search.UserFollowersFragment
-import com.tellme.app.ui.destinations.search.UserFollowsFragment
+import com.tellme.app.ui.destinations.search.UserFollowingFragment
 import com.tellme.app.ui.destinations.search.UserProfileFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
@@ -51,9 +51,9 @@ interface MainComponent {
 
     fun inject(target: FeedFragment)
 
-    fun inject(target: FollowsFollowersFragment)
+    fun inject(target: FollowingFollowersFragment)
 
     fun inject(target: UserFollowersFragment)
 
-    fun inject(target: UserFollowsFragment)
+    fun inject(target: UserFollowingFragment)
 }

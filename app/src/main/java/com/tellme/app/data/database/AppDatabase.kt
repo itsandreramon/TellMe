@@ -16,7 +16,7 @@ import com.tellme.app.model.Tell
 import com.tellme.app.model.User
 import com.tellme.app.util.DATABASE_NAME
 
-@Database(entities = [FeedItem::class, Tell::class, User::class], version = 2, exportSchema = false)
+@Database(entities = [FeedItem::class, Tell::class, User::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun tellDao(): TellRoomDao

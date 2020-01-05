@@ -116,6 +116,10 @@ dependencies {
     implementation Libs.JakeWharton.threeTen
     implementation Libs.JakeWharton.timber
 
+    implementation Libs.Uber.AutoDispose.autoDispose
+    implementation Libs.Uber.AutoDispose.android
+    implementation Libs.Uber.AutoDispose.lifecycle
+
     testImplementation Libs.Test.junit
     androidTestImplementation Libs.AndroidX.Test.junitExt
     androidTestImplementation Libs.AndroidX.Test.espressoCore

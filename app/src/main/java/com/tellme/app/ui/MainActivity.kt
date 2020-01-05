@@ -10,13 +10,11 @@ package com.tellme.app.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.hideSoftInput
-import com.tellme.app.network.ConnectivityChecker
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.ActivityMainBinding
 import javax.inject.Inject
@@ -26,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     @Inject lateinit var userViewModel: UserViewModel
-    @Inject lateinit var connectivityChecker: ConnectivityChecker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         inject(this)
@@ -42,14 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupConnectivityChecker() {
-        lifecycle.addObserver(connectivityChecker)
-        connectivityChecker.isConnected.observe(this@MainActivity, Observer<Boolean> { isConnected ->
-            if (isConnected) {
-                handleNetworkConnected()
-            } else {
-                handleNetworkNotConnected()
-            }
-        })
+        // TODO
     }
 
     private fun handleNetworkConnected() {
