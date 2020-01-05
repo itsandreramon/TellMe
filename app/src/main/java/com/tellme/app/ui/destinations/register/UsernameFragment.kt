@@ -22,19 +22,19 @@ import androidx.navigation.fragment.navArgs
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.auth.AuthViewModel
 import com.tellme.databinding.FragmentRegisterUsernameBinding
+import com.uber.autodispose.android.lifecycle.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 class UsernameFragment : Fragment() {
 
-    private val disposables = CompositeDisposable()
     private val args: UsernameFragmentArgs by navArgs()
     private var loadingDialog: AlertDialog? = null
     private lateinit var binding: FragmentRegisterUsernameBinding
@@ -68,14 +68,16 @@ class UsernameFragment : Fragment() {
             .map { ValidationUtils.isValidUsername(it) }
 
         validUsernameObservable
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 binding.buttonConfirm.isEnabled = valid
                 ViewUtils.hideInputLayoutWarning(binding.inputLayoutUsername)
-            }.also { disposables.add(it) }
+            }
 
         validUsernameObservable
             .debounce(500, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 ViewUtils.toggleInputLayoutWarning(
                     textInputLayout = binding.inputLayoutUsername,
@@ -83,19 +85,20 @@ class UsernameFragment : Fragment() {
                     message = getString(R.string.register_error_username_invalid),
                     enabled = !valid
                 )
-            }.also { disposables.add(it) }
+            }
 
         binding.buttonConfirm.setOnClickListener {
-            showLoadingDialog()
+            loadingDialog = DialogUtils.createLoadingDialog(requireContext())
+                .also { it.show() }
 
             lifecycleScope.launch {
                 val username = binding.editTextUsername.text.toString()
                 val usernameAlreadyInUse = authViewModel.isUsernameAlreadyInUse(username)
 
-                hideLoadingDialog()
+                loadingDialog?.dismiss()
 
                 if (usernameAlreadyInUse) {
-                    showEmailAlreadyInUseDialog()
+                    DialogUtils.createEmailAlreadyInUseDialog(requireContext()).show()
                 } else {
                     val action = UsernameFragmentDirections.actionUsernameFragmentToEmailFragment(
                         username = username,
@@ -108,57 +111,7 @@ class UsernameFragment : Fragment() {
         }
     }
 
-    private fun showEmailAlreadyInUseDialog() {
-        ViewUtils.createInfoAlertDialog(
-            context = requireContext(),
-            message = getString(R.string.register_error_username_in_use)
-        ).show()
-    }
-
-    private fun hideLoadingDialog() {
-        loadingDialog?.dismiss()
-    }
-
-    private fun showLoadingDialog() {
-        loadingDialog = ViewUtils.createNonCancellableDialog(
-            context = requireContext(),
-            resId = R.layout.dialog_loading
-        ).also { it.show() }
-    }
-
-    private fun showConnectionErrorDialog() {
-        ViewUtils.createInfoAlertDialog(
-            requireActivity(),
-            message = getString(R.string.register_error_connection),
-            title = getString(R.string.register),
-            negative = getString(R.string.ok)
-        ).show()
-    }
-
-    private fun showUsernameExistsDialog() {
-        ViewUtils.createInfoAlertDialog(
-            requireActivity(),
-            message = getString(R.string.register_error_username_in_use),
-            title = getString(R.string.register),
-            negative = getString(R.string.ok)
-        ).show()
-    }
-
-    private fun showInvalidUsernameDialog() {
-        ViewUtils.createInfoAlertDialog(
-            requireActivity(),
-            message = getString(R.string.register_error_username),
-            title = getString(R.string.register),
-            negative = getString(R.string.ok)
-        ).show()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.login_options, menu)
-    }
-
-    override fun onDestroy() {
-        disposables.dispose()
-        super.onDestroy()
     }
 }

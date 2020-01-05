@@ -19,11 +19,11 @@ import com.tellme.app.ui.destinations.profile.ProfileFragment
 import com.tellme.app.ui.destinations.register.EmailFragment
 import com.tellme.app.ui.destinations.register.PasswordFragment
 import com.tellme.app.ui.destinations.register.UsernameFragment
-import com.tellme.app.ui.destinations.search.FollowsFollowersFragment
+import com.tellme.app.ui.destinations.search.FollowingFollowersFragment
 import com.tellme.app.ui.destinations.search.SearchFragment
 import com.tellme.app.ui.destinations.search.SendTellActivity
 import com.tellme.app.ui.destinations.search.UserFollowersFragment
-import com.tellme.app.ui.destinations.search.UserFollowsFragment
+import com.tellme.app.ui.destinations.search.UserFollowingFragment
 import com.tellme.app.ui.destinations.search.UserProfileFragment
 
 /**
@@ -169,7 +169,7 @@ fun inject(fragment: PasswordFragment) {
 /**
  * Injector for FollowsFollowersFragment
  * */
-fun inject(followersFragment: FollowsFollowersFragment) {
+fun inject(followersFragment: FollowingFollowersFragment) {
     App.appComponent(followersFragment.requireContext())
         .getMainComponentFactory()
         .create(followersFragment.requireActivity())
@@ -179,7 +179,7 @@ fun inject(followersFragment: FollowsFollowersFragment) {
 /**
  * Injector for FollowsFragment
  * */
-fun inject(followersFragment: UserFollowsFragment) {
+fun inject(followersFragment: UserFollowingFragment) {
     App.appComponent(followersFragment.requireContext())
         .getMainComponentFactory()
         .create(followersFragment.requireActivity())

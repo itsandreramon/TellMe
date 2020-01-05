@@ -22,6 +22,7 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -59,7 +60,8 @@ class UserProfileFragment : Fragment() {
         renderUserData()
 
         userViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { loggedInUser ->
-            val isFollowing = loggedInUser.follows.contains(args.user.uid)
+            // TODO extract method
+            val isFollowing = loggedInUser.following.contains(args.user.uid)
 
             if (isFollowing) {
                 ViewUtils.setFollowButtonToFollowing(binding.buttonFollow, requireContext())
@@ -91,7 +93,7 @@ class UserProfileFragment : Fragment() {
         try {
             userViewModel.unfollowUserByUid(user, userToUnfollowUid)
         } catch (e: IOException) {
-            ViewUtils.showFollowErrorDialog(requireContext())
+            DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
     }
 
@@ -99,7 +101,7 @@ class UserProfileFragment : Fragment() {
         try {
             userViewModel.followUserByUid(user, userToFollowUid)
         } catch (e: IOException) {
-            ViewUtils.showFollowErrorDialog(requireContext())
+            DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
     }
 
@@ -107,7 +109,7 @@ class UserProfileFragment : Fragment() {
         binding.user = args.user
         binding.imageViewUserAvatar.setUserProfileImageFromPath(args.user.avatar)
         binding.textViewUserFollowerCount.text = getString(R.string.follower_count, 0)
-        binding.textViewUserFollowingCount.text = getString(R.string.following_count, args.user.follows.size)
+        binding.textViewUserFollowingCount.text = getString(R.string.following_count, args.user.following.size)
         binding.textViewUserTellCount.text = getString(R.string.tells_count, 0)
         binding.editTextSendUserTell.hint = getString(R.string.send_user_tell, args.user.name)
     }

@@ -88,7 +88,7 @@
     <fragment
         tools:layout="@layout/fragment_user_follows_following"
         android:id="@+id/followsFollowersFragment"
-        android:name="com.tellme.app.ui.destinations.search.FollowsFollowersFragment"
+        android:name="com.tellme.app.ui.destinations.search.FollowingFollowersFragment"
         android:label="FollowsFollowersFragment">
         <argument
             android:name="user"

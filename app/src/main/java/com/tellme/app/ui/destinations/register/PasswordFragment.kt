@@ -23,12 +23,13 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.model.User
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.auth.AuthViewModel
 import com.tellme.databinding.FragmentRegisterPasswordBinding
+import com.uber.autodispose.android.lifecycle.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -38,7 +39,6 @@ import timber.log.Timber
 
 class PasswordFragment : Fragment() {
 
-    private val disposables = CompositeDisposable()
     private val args: PasswordFragmentArgs by navArgs()
     private var loadingDialog: AlertDialog? = null
     private lateinit var binding: FragmentRegisterPasswordBinding
@@ -82,19 +82,22 @@ class PasswordFragment : Fragment() {
         }
 
         validInputPasswordObservable
+            .autoDispose(viewLifecycleOwner)
             .subscribe {
                 ViewUtils.hideInputLayoutWarning(binding.inputLayoutInputPassword)
-            }.also { disposables.add(it) }
+            }
 
         validConfirmPasswordObservable
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 binding.buttonRegister.isEnabled = valid
                 ViewUtils.hideInputLayoutWarning(binding.inputLayoutConfirmPassword)
-            }.also { disposables.add(it) }
+            }
 
         validInputPasswordObservable
             .debounce(500, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 ViewUtils.toggleInputLayoutWarning(
                     textInputLayout = binding.inputLayoutInputPassword,
@@ -102,11 +105,12 @@ class PasswordFragment : Fragment() {
                     message = getString(R.string.register_error_password_invalid_length),
                     enabled = !valid
                 )
-            }.also { disposables.add(it) }
+            }
 
         validConfirmPasswordObservable
             .debounce(500, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDispose(viewLifecycleOwner)
             .subscribe { valid ->
                 ViewUtils.toggleInputLayoutWarning(
                     textInputLayout = binding.inputLayoutConfirmPassword,
@@ -114,7 +118,7 @@ class PasswordFragment : Fragment() {
                     message = getString(R.string.register_error_password_mismatch),
                     enabled = !valid
                 )
-            }.also { disposables.add(it) }
+            }
 
         binding.buttonRegister.setOnClickListener {
             val name = args.name
@@ -122,17 +126,18 @@ class PasswordFragment : Fragment() {
             val email = args.email
             val password = binding.editTextInputPassword.text.toString()
 
-            val loadingDialog = ViewUtils.showLoadingDialog(
-                context = requireContext(),
-                layout = R.layout.dialog_loading
-            )
+            val loadingDialog = DialogUtils.createLoadingDialog(requireContext())
+                .also { it.show() }
 
             lifecycleScope.launch {
                 try {
                     register(name, username, email, password)
-                    showRegisterSuccessDialog()
+
+                    DialogUtils.createRegisterSuccessDialog(requireContext()) {
+                        findNavController().navigate(R.id.action_passwordFragment_to_startFragment)
+                    }.show()
                 } catch (exception: Exception) {
-                    showRegisterErrorDialog(exception)
+                    DialogUtils.createRegisterErrorDialog(requireContext(), exception).show()
                 }
 
                 loadingDialog.dismiss()
@@ -154,6 +159,8 @@ class PasswordFragment : Fragment() {
                 username = username
             )
 
+            Timber.d(user.toString())
+
             authViewModel.addUserToDatabase(user)
             authViewModel.sendEmailVerification(firebaseUser, Locale.getDefault().language)
         } catch (registerException: Exception) {
@@ -171,53 +178,7 @@ class PasswordFragment : Fragment() {
         authViewModel.logout()
     }
 
-    private fun showRegisterSuccessDialog() {
-        ViewUtils.createActionInfoAlertDialog(
-            context = requireContext(),
-            message = getString(R.string.register_success),
-            title = getString(R.string.register),
-            positive = getString(R.string.ok),
-            onPositiveCallback = { findNavController().navigate(R.id.action_passwordFragment_to_startFragment) }
-        ).show()
-    }
-
-    private fun showRegisterErrorDialog(e: Exception) {
-        ViewUtils.createInfoAlertDialog(
-            context = requireContext(),
-            message = getString(R.string.register_error, e.message),
-            title = getString(R.string.register),
-            negative = getString(R.string.cancel)
-        ).show()
-    }
-
-    private fun showVerificationErrorDialog() {
-        ViewUtils.createInfoAlertDialog(
-            context = requireContext(),
-            message = getString(R.string.register_email_verification_error),
-            negative = getString(R.string.cancel),
-            positive = getString(R.string.ok),
-            title = getString(R.string.register),
-            onPositiveCallback = { findNavController().navigate(R.id.action_passwordFragment_to_startFragment) }
-        ).show()
-    }
-
-    private fun showVerificationSuccessDialog() {
-        ViewUtils.createInfoAlertDialog(
-            context = requireContext(),
-            message = getString(R.string.register_email_verification),
-            negative = getString(R.string.cancel),
-            positive = getString(R.string.ok),
-            title = getString(R.string.register),
-            onPositiveCallback = { findNavController().navigate(R.id.action_passwordFragment_to_startFragment) }
-        ).show()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.login_options, menu)
-    }
-
-    override fun onDestroy() {
-        disposables.dispose()
-        super.onDestroy()
     }
 }

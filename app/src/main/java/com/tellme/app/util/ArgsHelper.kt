@@ -7,8 +7,9 @@
 
 package com.tellme.app.util
 
-import com.tellme.app.ui.destinations.search.FollowsFollowersFragmentArgs
+import androidx.lifecycle.LiveData
+import com.tellme.app.ui.destinations.search.FollowingFollowersFragmentArgs
 
 interface ArgsHelper {
-    fun passArguments(): FollowsFollowersFragmentArgs?
+    fun passArguments(): LiveData<FollowingFollowersFragmentArgs>
 }

@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,18 +24,18 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
-import com.tellme.app.ui.adapter.FollowsListAdapter
+import com.tellme.app.ui.adapter.FollowingListAdapter
 import com.tellme.app.util.ArgsHelper
-import com.tellme.app.util.ViewUtils
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentUserFollowsFollowingBinding
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class FollowsFollowersFragment : Fragment(), ArgsHelper, FollowsListAdapter.FollowListUserClickListener {
+class FollowingFollowersFragment : Fragment(), ArgsHelper, FollowingListAdapter.FollowListUserClickListener {
 
-    private val args: FollowsFollowersFragmentArgs by navArgs()
+    private val args: FollowingFollowersFragmentArgs by navArgs()
 
     private lateinit var mContext: Context
     private lateinit var binding: FragmentUserFollowsFollowingBinding
@@ -84,19 +85,17 @@ class FollowsFollowersFragment : Fragment(), ArgsHelper, FollowsListAdapter.Foll
         }
     }
 
-    override fun passArguments(): FollowsFollowersFragmentArgs? {
-        return args
-    }
+    override fun passArguments() = MutableLiveData(args)
 
     override fun onFollowListUserClicked(user: User) {
-        val action = FollowsFollowersFragmentDirections.actionFollowsFollowersFragmentToUserProfileFragment(user)
+        val action = FollowingFollowersFragmentDirections.actionFollowsFollowersFragmentToUserProfileFragment(user)
         findNavController().navigate(action)
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {
         try {
             val loggedInUser = userViewModel.loggedInUser.value!!
-            val isFollowing = loggedInUser.follows.contains(user.uid)
+            val isFollowing = loggedInUser.following.contains(user.uid)
 
             if (isFollowing) {
                 lifecycleScope.launch {
@@ -108,13 +107,13 @@ class FollowsFollowersFragment : Fragment(), ArgsHelper, FollowsListAdapter.Foll
                 }
             }
         } catch (e: IOException) {
-            ViewUtils.showFollowErrorDialog(requireContext())
+            DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
     }
 
     private inner class ScreenSlidePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         val fragments = mapOf<Int, Pair<Fragment, String>>(
-            0 to (UserFollowsFragment() to getString(R.string.following)),
+            0 to (UserFollowingFragment() to getString(R.string.following)),
             1 to (UserFollowersFragment() to getString(R.string.followers))
         )
 

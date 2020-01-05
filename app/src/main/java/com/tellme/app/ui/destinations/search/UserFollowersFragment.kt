@@ -13,16 +13,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
-import com.tellme.app.ui.adapter.FollowsListAdapter
+import com.tellme.app.ui.adapter.FollowingListAdapter
 import com.tellme.app.util.ArgsHelper
 import com.tellme.app.viewmodels.main.UserViewModel
-import com.tellme.databinding.FragmentUserListFollowsFollowersBinding
+import com.tellme.databinding.FragmentUserListFollowingFollowersBinding
 import javax.inject.Inject
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flowOn
@@ -30,17 +32,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
-class UserFollowersFragment : Fragment(), FollowsListAdapter.FollowListUserClickListener {
+class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserClickListener {
 
-    private val args: FollowsFollowersFragmentArgs? by lazy {
+    private val args: LiveData<FollowingFollowersFragmentArgs>? by lazy {
         (parentFragment as? ArgsHelper)?.passArguments()
     }
 
-    private lateinit var viewAdapter: FollowsListAdapter
+    private lateinit var viewAdapter: FollowingListAdapter
     private lateinit var viewManager: LinearLayoutManager
 
     private lateinit var mContext: Context
-    private lateinit var binding: FragmentUserListFollowsFollowersBinding
+    private lateinit var binding: FragmentUserListFollowingFollowersBinding
 
     @Inject lateinit var userViewModel: UserViewModel
     @Inject lateinit var dispatcherProvider: CoroutinesDispatcherProvider
@@ -56,7 +58,7 @@ class UserFollowersFragment : Fragment(), FollowsListAdapter.FollowListUserClick
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUserListFollowsFollowersBinding.inflate(inflater, container, false)
+        binding = FragmentUserListFollowingFollowersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -64,11 +66,11 @@ class UserFollowersFragment : Fragment(), FollowsListAdapter.FollowListUserClick
         super.onViewCreated(view, savedInstanceState)
         setupAdapter(this)
 
-        args?.let { args ->
+        args?.observe(viewLifecycleOwner, Observer { args ->
             lifecycleScope.launch {
                 submitList(args.user.followers)
             }
-        }
+        })
     }
 
     private suspend fun submitList(listToLoad: List<String>) {
@@ -82,9 +84,9 @@ class UserFollowersFragment : Fragment(), FollowsListAdapter.FollowListUserClick
         viewAdapter.submitList(list)
     }
 
-    private fun setupAdapter(listener: FollowsListAdapter.FollowListUserClickListener) {
+    private fun setupAdapter(listener: FollowingListAdapter.FollowListUserClickListener) {
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = FollowsListAdapter(listener)
+        viewAdapter = FollowingListAdapter(listener, userViewModel.loggedInUser, requireContext())
 
         binding.recyclerViewFollows.apply {
             layoutManager = viewManager
@@ -95,10 +97,10 @@ class UserFollowersFragment : Fragment(), FollowsListAdapter.FollowListUserClick
     }
 
     override fun onFollowListUserClicked(user: User) {
-        (parentFragment as? FollowsListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user)
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user)
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {
-        (parentFragment as? FollowsListAdapter.FollowListUserClickListener)?.onFollowListUserButtonFollowClicked(user)
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserButtonFollowClicked(user)
     }
 }

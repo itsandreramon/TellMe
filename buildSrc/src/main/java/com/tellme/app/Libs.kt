@@ -116,6 +116,15 @@ object Libs {
         const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:2.4.0"
     }
 
+    object Uber {
+        object AutoDispose {
+            private const val version = "1.4.0"
+            const val autoDispose = "com.uber.autodispose:autodispose:$version"
+            const val android = "com.uber.autodispose:autodispose-android:$version"
+            const val lifecycle = "com.uber.autodispose:autodispose-android-archcomponents:$version"
+        }
+    }
+
     object Coil {
         private const val version = "0.8.0"
         const val coil = "io.coil-kt:coil:$version"

@@ -12,8 +12,6 @@ import android.net.ConnectivityManager
 import com.tellme.BuildConfig
 import com.tellme.app.data.api.TellService
 import com.tellme.app.data.api.UserService
-import com.tellme.app.network.ConnectivityChecker
-import com.tellme.app.network.NetworkConnectionInterceptor
 import com.tellme.app.util.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -53,28 +51,10 @@ abstract class NetworkModule {
 
         @JvmStatic
         @Provides
-        fun provideNetworkConnectionInterceptor(
-            connectivityChecker: ConnectivityChecker
-        ): NetworkConnectionInterceptor {
-            return object : NetworkConnectionInterceptor() {
-                override fun isInternetAvailable(): Boolean {
-                    return connectivityChecker.isConnected.value!!
-                }
-
-                override fun onInternetUnavailable() {
-                    // TODO
-                }
-            }
-        }
-
-        @JvmStatic
-        @Provides
         fun provideOkHttpClient(
-            loggingInterceptor: HttpLoggingInterceptor,
-            networkConnectionInterceptor: NetworkConnectionInterceptor
+            loggingInterceptor: HttpLoggingInterceptor
         ): OkHttpClient {
             return OkHttpClient.Builder()
-                .addInterceptor(networkConnectionInterceptor)
                 .addNetworkInterceptor(loggingInterceptor)
                 .build()
         }

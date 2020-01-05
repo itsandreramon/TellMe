@@ -16,12 +16,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseUser
-import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.hideSoftInput
 import com.tellme.app.extensions.showSoftInput
-import com.tellme.app.util.ViewUtils
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.auth.AuthViewModel
 import com.tellme.databinding.FragmentLoginBinding
 import javax.inject.Inject
@@ -59,11 +57,11 @@ class LoginFragment : Fragment() {
             val password = binding.editTextPassword.text.toString()
 
             when {
-                email.isEmpty() -> showEmptyEmailDialog()
-                password.isEmpty() -> showEmptyPasswordDialog()
+                email.isEmpty() -> DialogUtils.createEmptyEmailDialog(requireContext()).show()
+                password.isEmpty() -> DialogUtils.createEmptyPasswordDialog(requireContext()).show()
                 else -> {
                     requireActivity().hideSoftInput()
-                    showProgressDialog()
+                    DialogUtils.createLoadingDialog(requireContext()).show()
                     lifecycleScope.launch { login(email, password) }
                 }
             }
@@ -78,30 +76,21 @@ class LoginFragment : Fragment() {
             if (currentUser.isEmailVerified) {
                 startMainActivity()
             } else {
-                showEmailVerificationDialog(currentUser)
+                DialogUtils.createEmailVerificationDialog(requireContext()) {
+                    currentUser.sendEmailVerification()
+                }.also { it.show() }
             }
         } catch (e: Exception) {
             authViewModel.logout()
-            showErrorDialog(e.message!!)
+
+            e.message?.let { message ->
+                DialogUtils.createErrorDialog(requireContext(), message)
+            }
+
             e.printStackTrace()
         } finally {
             loadingDialog?.dismiss()
         }
-    }
-
-    private fun showProgressDialog() {
-        loadingDialog = ViewUtils
-            .createNonCancellableDialog(requireActivity(), R.layout.dialog_login)
-            .also { it.show() }
-    }
-
-    private fun showEmptyPasswordDialog() {
-        ViewUtils.createInfoAlertDialog(
-            requireActivity(),
-            message = getString(R.string.error_password),
-            title = getString(R.string.login),
-            negative = getString(R.string.cancel)
-        ).show()
     }
 
     private fun startMainActivity() {
@@ -109,33 +98,6 @@ class LoginFragment : Fragment() {
         loadingDialog?.dismiss()
         findNavController().navigate(action)
         activity?.finish()
-    }
-
-    private fun showEmailVerificationDialog(user: FirebaseUser) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(getString(R.string.login))
-            setMessage(getString(R.string.login_email_verification_error))
-            setNegativeButton(getString(R.string.ok)) { _, _ -> }
-            setPositiveButton(getString(R.string.resend)) { _, _ -> user.sendEmailVerification() }
-        }.create().show()
-    }
-
-    private fun showErrorDialog(message: String) {
-        ViewUtils.createInfoAlertDialog(
-            requireActivity(),
-            message = message,
-            title = getString(R.string.login),
-            negative = getString(R.string.cancel)
-        ).show()
-    }
-
-    private fun showEmptyEmailDialog() {
-        ViewUtils.createInfoAlertDialog(
-            requireActivity(),
-            message = getString(R.string.error_email),
-            title = getString(R.string.login),
-            negative = getString(R.string.cancel)
-        ).show()
     }
 
     override fun onAttach(context: Context) {

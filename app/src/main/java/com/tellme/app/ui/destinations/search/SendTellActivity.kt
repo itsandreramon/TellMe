@@ -18,18 +18,18 @@ import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.Tell
 import com.tellme.app.util.DateUtils
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ValidationUtils
-import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.ActivitySendTellBinding
-import io.reactivex.disposables.CompositeDisposable
+import com.uber.autodispose.android.lifecycle.autoDispose
+import com.uber.autodispose.autoDispose
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 class SendTellActivity : AppCompatActivity() {
 
-    private var disposables = CompositeDisposable()
     private val args: SendTellActivityArgs by navArgs()
     private lateinit var binding: ActivitySendTellBinding
 
@@ -52,9 +52,10 @@ class SendTellActivity : AppCompatActivity() {
             .map { ValidationUtils.isValidTellLength(it) }
 
         validQuestionInputObservable
+            .autoDispose(this)
             .subscribe { valid ->
                 binding.buttonReply.isEnabled = valid
-            }.also { disposables.add(it) }
+            }
 
         binding.buttonReply.setOnClickListener {
             val question = binding.editTextQuestion.text.toString().trim()
@@ -72,10 +73,7 @@ class SendTellActivity : AppCompatActivity() {
                 if (added) {
                     finish()
                 } else {
-                    ViewUtils.createInfoAlertDialog(
-                        context = this@SendTellActivity,
-                        message = getString(R.string.send_user_tell)
-                    )
+                    DialogUtils.createErrorSendingTellDialog(this@SendTellActivity)
                 }
             }
         }
@@ -94,20 +92,8 @@ class SendTellActivity : AppCompatActivity() {
         return try {
             tellViewModel.addTell(tell)
         } catch (e: Exception) {
-            showErrorSendingTellDialog()
+            DialogUtils.createErrorSendingTellDialog(this)
             false
         }
-    }
-
-    private fun showErrorSendingTellDialog() {
-        ViewUtils.createInfoAlertDialog(
-            context = this,
-            message = getString(R.string.send_tell_error)
-        )
-    }
-
-    override fun onDestroy() {
-        disposables.dispose()
-        super.onDestroy()
     }
 }
