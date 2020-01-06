@@ -22,7 +22,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.tellme.R
 import com.tellme.app.dagger.inject
-import com.tellme.app.dagger.qualifier.LoggedInUserUid
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
 import com.tellme.app.ui.adapter.FollowingListAdapter

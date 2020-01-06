@@ -1,11 +1,17 @@
+/*
+ * Copyright 2020 - André Thiele
+ *
+ * Fachbereich Informatik und Medien
+ * Technische Hochschule Brandenburg
+ */
+
 package com.tellme.app.network
 
 import android.net.ConnectivityManager
 import com.tellme.app.util.NoConnectivityException
+import javax.inject.Inject
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
-
 
 class ConnectivityInterceptor @Inject constructor(
     private val connectivityManager: ConnectivityManager

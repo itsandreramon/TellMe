@@ -30,7 +30,7 @@ abstract class NetworkModule {
 
         @JvmStatic
         @Provides
-        fun provideConnectivityInterceptor(connectivityManager: ConnectivityManager) : ConnectivityInterceptor {
+        fun provideConnectivityInterceptor(connectivityManager: ConnectivityManager): ConnectivityInterceptor {
             return ConnectivityInterceptor(connectivityManager)
         }
 

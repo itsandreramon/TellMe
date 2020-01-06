@@ -151,7 +151,7 @@ class UserViewModel(
         }
     }
 
-    suspend fun getFollowsByUid(uid: String) : List<User> {
+    suspend fun getFollowsByUid(uid: String): List<User> {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.getFollowsByUid(uid)
         }

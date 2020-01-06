@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
-import com.tellme.app.dagger.qualifier.LoggedInUserUid
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
 import com.tellme.app.ui.adapter.FollowingListAdapter
