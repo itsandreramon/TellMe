@@ -64,7 +64,7 @@ data class User(
 
     @ColumnInfo(name = USER_COLUMN_FOLLOWING)
     @Json(name = USER_KEY_FOLLOWING)
-    val following: List<String> = emptyList(),
+    val following: List<String> = arrayListOf(),
 
     @ColumnInfo(name = USER_COLUMN_FOLLOWERS)
     @Json(name = USER_KEY_FOLLOWERS)

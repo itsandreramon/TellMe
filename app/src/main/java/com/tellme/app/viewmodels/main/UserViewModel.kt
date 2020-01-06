@@ -22,6 +22,7 @@ import com.tellme.app.util.UserNotFoundException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class UserViewModel(
     private val userRepository: UserRepository,
@@ -30,9 +31,6 @@ class UserViewModel(
 
     private val _loggedInUser = MutableLiveData<User>()
     val loggedInUser: LiveData<User> = _loggedInUser
-
-    private val _loggedInUserFollows = MutableLiveData<List<User>>()
-    val loggedInUserFollows: LiveData<List<User>> = _loggedInUserFollows
 
     init {
         viewModelScope.launch {
@@ -50,13 +48,17 @@ class UserViewModel(
     }
 
     private suspend fun updateCachedUser(user: User) {
+        Timber.e(user.toString())
         withContext(dispatcherProvider.database) { userRepository.updateUserLocal(user) }
     }
 
     private fun postUserByUidFromDatabase(uid: String) {
         userRepository
             .getUserByUidLocal(uid)
-            .observeForever { user -> _loggedInUser.postValue(user) }
+            .observeForever { user ->
+                user?.let { Timber.e(user.toString()) }
+                _loggedInUser.postValue(user)
+            }
     }
 
     fun getCurrentUserFirebase(): FirebaseUser? {
@@ -137,6 +139,8 @@ class UserViewModel(
     }
 
     suspend fun updateUser(updatedUser: User) {
+        Timber.d(updatedUser.toString())
+
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.updateUserRemote(updatedUser)
         }
@@ -147,13 +151,13 @@ class UserViewModel(
         }
     }
 
-    suspend fun getFollowsByUid(uid: String) {
+    suspend fun getFollowsByUid(uid: String) : List<User> {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.getFollowsByUid(uid)
         }
 
         return when (val result = deferred.await()) {
-            is Result.Success -> _loggedInUserFollows.postValue(result.data)
+            is Result.Success -> result.data
             is Result.Error -> throw result.exception
         }
     }

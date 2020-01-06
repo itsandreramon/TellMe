@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
+import com.tellme.app.dagger.qualifier.LoggedInUserUid
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
 import com.tellme.app.ui.adapter.FollowingListAdapter
@@ -86,7 +87,7 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
 
     private fun setupAdapter(listener: FollowingListAdapter.FollowListUserClickListener) {
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = FollowingListAdapter(listener, userViewModel.loggedInUser, requireContext())
+        viewAdapter = FollowingListAdapter(listener, userViewModel.loggedInUser, requireContext(), viewLifecycleOwner)
 
         binding.recyclerViewFollows.apply {
             layoutManager = viewManager
@@ -96,8 +97,8 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
         }
     }
 
-    override fun onFollowListUserClicked(user: User) {
-        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user)
+    override fun onFollowListUserClicked(user: User, loggedInUserUid: String) {
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user, loggedInUserUid)
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {

@@ -9,6 +9,7 @@ package com.tellme.app.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.model.User
@@ -22,10 +23,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class UserAdapter(
+class ResultUserSearchAdapter(
     private val parent: SearchFragment,
-    private val listener: UserClickListener
-) : ListAdapter<User, UserViewHolder>(UserDiffCallback), CoroutineScope {
+    private val listenerResultSearch: ResultUserSearchClickListener
+) : ListAdapter<User, ResultUserSearchViewHolder>(UserDiffCallback), CoroutineScope {
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -35,28 +36,28 @@ class UserAdapter(
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultUserSearchViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = LayoutUserItemSearchResultsBinding.inflate(layoutInflater, parent, false)
-        return UserViewHolder(binding)
+        return ResultUserSearchViewHolder(binding)
     }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+    override fun onBindViewHolder(holderResult: ResultUserSearchViewHolder, position: Int) {
         launch {
             try {
                 val user = getItem(position)
-                holder.bind(user, listener)
+                holderResult.bind(user, listenerResultSearch)
             } catch (e: UserNotFoundException) {
                 e.printStackTrace()
             }
         }
     }
 
-    interface UserClickListener {
+    interface ResultUserSearchClickListener {
         suspend fun onResultUserClicked(user: User)
     }
 

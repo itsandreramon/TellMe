@@ -131,20 +131,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="About"
+                        android:layout_marginBottom="@dimen/margin_tiny"
                         android:textAppearance="@style/headline7" />
 
                     <TextView
+                        android:id="@+id/text_view_about_message"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/lorem"
-                        android:textAppearance="@style/p" />
+                        android:text="@{user.about}"
+                        android:textAppearance="@style/p"
+                        android:layout_marginBottom="@dimen/margin_medium"/>
 
                     <EditText
                         android:importantForAutofill="no"
                         android:id="@+id/edit_text_send_user_tell"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_large"
                         android:focusable="false"
                         android:hint="@string/send_user_tell"
                         android:imeOptions="actionSend"

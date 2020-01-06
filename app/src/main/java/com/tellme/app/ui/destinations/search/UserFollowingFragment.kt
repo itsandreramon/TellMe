@@ -86,7 +86,7 @@ class UserFollowingFragment : Fragment(), FollowingListAdapter.FollowListUserCli
 
     private fun setupAdapter(listener: FollowingListAdapter.FollowListUserClickListener) {
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = FollowingListAdapter(listener, userViewModel.loggedInUser, requireContext())
+        viewAdapter = FollowingListAdapter(listener, userViewModel.loggedInUser, requireContext(), viewLifecycleOwner)
 
         binding.recyclerViewFollows.apply {
             layoutManager = viewManager
@@ -96,8 +96,8 @@ class UserFollowingFragment : Fragment(), FollowingListAdapter.FollowListUserCli
         }
     }
 
-    override fun onFollowListUserClicked(user: User) {
-        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user)
+    override fun onFollowListUserClicked(user: User, loggedInUserUid: String) {
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user, loggedInUserUid)
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {

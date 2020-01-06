@@ -16,6 +16,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +25,7 @@ import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.extensions.hideSoftInput
 import com.tellme.app.model.User
 import com.tellme.app.ui.adapter.LatestUserSearchAdapter
-import com.tellme.app.ui.adapter.UserAdapter
+import com.tellme.app.ui.adapter.ResultUserSearchAdapter
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.main.SearchViewModel
@@ -40,10 +41,11 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class SearchFragment : Fragment(), UserAdapter.UserClickListener,
+class SearchFragment : Fragment(),
+    ResultUserSearchAdapter.ResultUserSearchClickListener,
     LatestUserSearchAdapter.LatestUserSearchClickListener {
 
-    private lateinit var resultViewAdapter: UserAdapter
+    private lateinit var resultViewSearchAdapterResult: ResultUserSearchAdapter
     private lateinit var resultViewManager: LinearLayoutManager
     private lateinit var latestViewAdapter: LatestUserSearchAdapter
     private lateinit var latestViewManager: LinearLayoutManager
@@ -80,7 +82,7 @@ class SearchFragment : Fragment(), UserAdapter.UserClickListener,
         binding.textViewClearLatest.setOnClickListener {
             DialogUtils.createClearSearchResultsDialog(requireContext()) {
                 searchViewModel.clearLatestUserSearches()
-            }
+            }.show()
         }
 
         searchViewModel.searchLatest.observe(viewLifecycleOwner, Observer {
@@ -142,19 +144,19 @@ class SearchFragment : Fragment(), UserAdapter.UserClickListener,
         searchViewModel.cacheLatestUserSearched(updatedUser)
     }
 
-    private fun setupSearchResultsAdapter(listener: UserAdapter.UserClickListener) {
+    private fun setupSearchResultsAdapter(listenerResultSearch: ResultUserSearchAdapter.ResultUserSearchClickListener) {
         resultViewManager = LinearLayoutManager(activity)
-        resultViewAdapter = UserAdapter(this, listener)
+        resultViewSearchAdapterResult = ResultUserSearchAdapter(this, listenerResultSearch)
 
         binding.recyclerViewSearchResults.apply {
             layoutManager = resultViewManager
-            adapter = resultViewAdapter
+            adapter = resultViewSearchAdapterResult
 
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
 
         searchViewModel.searchResults.observe(viewLifecycleOwner, Observer {
-            resultViewAdapter.submitList(it.filter { user -> user.uid != userViewModel.loggedInUser.value!!.uid })
+            resultViewSearchAdapterResult.submitList(it.filter { user -> user.uid != userViewModel.loggedInUser.value!!.uid })
         })
     }
 

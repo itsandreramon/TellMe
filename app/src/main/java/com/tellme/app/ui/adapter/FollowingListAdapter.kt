@@ -27,7 +27,8 @@ import kotlinx.coroutines.launch
 class FollowingListAdapter(
     private val listener: FollowListUserClickListener,
     private val loggedInUser: LiveData<User>,
-    private val context: Context
+    private val context: Context,
+    private val viewLifecycleOwner: LifecycleOwner
 ) : ListAdapter<User, FollowingListViewHolder>(UserDiffCallback), CoroutineScope {
 
     private val job = SupervisorJob()
@@ -41,7 +42,7 @@ class FollowingListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = LayoutUserItemFollowListBinding.inflate(layoutInflater, parent, false)
-        return FollowingListViewHolder(binding, loggedInUser)
+        return FollowingListViewHolder(viewLifecycleOwner, binding, loggedInUser)
     }
 
     override fun getItemId(position: Int): Long {
@@ -60,7 +61,7 @@ class FollowingListAdapter(
     }
 
     interface FollowListUserClickListener : LifecycleOwner {
-        fun onFollowListUserClicked(user: User)
+        fun onFollowListUserClicked(user: User, loggedInUserUid: String)
         fun onFollowListUserButtonFollowClicked(user: User)
     }
 

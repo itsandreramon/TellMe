@@ -15,11 +15,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserViewHolder(
+class ResultUserSearchViewHolder(
     val binding: LayoutUserItemSearchResultsBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(user: User, listener: UserAdapter.UserClickListener) {
+    fun bind(user: User, listenerResultSearch: ResultUserSearchAdapter.ResultUserSearchClickListener) {
         binding.apply {
             binding.user = user
 
@@ -27,7 +27,7 @@ class UserViewHolder(
             executePendingBindings()
 
             itemView.setOnClickListener {
-                CoroutineScope(Dispatchers.Main).launch { listener.onResultUserClicked(user) }
+                CoroutineScope(Dispatchers.Main).launch { listenerResultSearch.onResultUserClicked(user) }
             }
         }
     }
