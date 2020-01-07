@@ -18,22 +18,27 @@ object DateUtils {
      * https://github.com/JakeWharton/ThreeTenABP
      *
      * @return String */
-    fun now(): String {
+    fun now(formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): String {
         return ZonedDateTime
             .now(ZoneId.systemDefault())
             .truncatedTo(ChronoUnit.MILLIS)
-            .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+            .format(formatter)
     }
 
-    fun fromString(timestamp: String?): ZonedDateTime? {
-        return ZonedDateTime.parse(timestamp, DateTimeFormatter.ISO_ZONED_DATE_TIME)
-            .truncatedTo(ChronoUnit.MILLIS)
+    fun fromString(timestamp: String?, formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): ZonedDateTime {
+        return ZonedDateTime.parse(timestamp, formatter)
+            .truncatedTo(ChronoUnit.MILLIS) ?: ZonedDateTime.now()
     }
 
-    fun toString(date: ZonedDateTime): String {
+    fun toString(date: ZonedDateTime, formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): String {
         return date
             .truncatedTo(ChronoUnit.MILLIS)
-            .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+            .format(formatter)
             .toString()
+    }
+
+    fun convertDate(timestamp: String): String {
+        val date = fromString(timestamp)
+        return toString(date, DateTimeFormatter.ofPattern("EEE, d MMM yyyy"))
     }
 }

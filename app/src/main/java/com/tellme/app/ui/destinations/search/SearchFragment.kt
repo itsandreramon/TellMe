@@ -23,8 +23,6 @@ import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.extensions.hideSoftInput
 import com.tellme.app.model.User
-import com.tellme.app.ui.adapter.LatestUserSearchAdapter
-import com.tellme.app.ui.adapter.ResultUserSearchAdapter
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.main.SearchViewModel
@@ -145,7 +143,8 @@ class SearchFragment : Fragment(),
 
     private fun setupSearchResultsAdapter(listenerResultSearch: ResultUserSearchAdapter.ResultUserSearchClickListener) {
         resultViewManager = LinearLayoutManager(activity)
-        resultViewSearchAdapterResult = ResultUserSearchAdapter(this, listenerResultSearch)
+        resultViewSearchAdapterResult =
+            ResultUserSearchAdapter(this, listenerResultSearch)
 
         binding.recyclerViewSearchResults.apply {
             layoutManager = resultViewManager
@@ -161,7 +160,8 @@ class SearchFragment : Fragment(),
 
     private fun setupSearchLatestAdapter(listener: LatestUserSearchAdapter.LatestUserSearchClickListener) {
         latestViewManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        latestViewAdapter = LatestUserSearchAdapter(this, listener)
+        latestViewAdapter =
+            LatestUserSearchAdapter(this, listener)
 
         binding.recyclerViewSearchLatest.apply {
             layoutManager = latestViewManager

@@ -14,7 +14,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.tellme.app.extensions.convertTimestampToDate
+import com.tellme.app.util.DateUtils
 import com.tellme.app.util.TELL_COLUMN_AUTHOR_UID
 import com.tellme.app.util.TELL_COLUMN_ID
 import com.tellme.app.util.TELL_COLUMN_QUESTION
@@ -72,8 +72,8 @@ data class Tell(
     }
 
     override fun compareTo(other: Tell): Int {
-        val thisSendDate = this.sendDate.convertTimestampToDate()
-        val otherSendDate = other.sendDate.convertTimestampToDate()
+        val thisSendDate = DateUtils.fromString(this.sendDate)
+        val otherSendDate = DateUtils.fromString(other.sendDate)
         return -thisSendDate.compareTo(otherSendDate) // descending order
     }
 }

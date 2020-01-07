@@ -14,8 +14,8 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.tellme.app.extensions.convertTimestampToDate
 import com.tellme.app.util.Converters
+import com.tellme.app.util.DateUtils
 import com.tellme.app.util.USER_COLUMN_ABOUT
 import com.tellme.app.util.USER_COLUMN_AVATAR
 import com.tellme.app.util.USER_COLUMN_EMAIL
@@ -80,8 +80,8 @@ data class User(
 
     override fun compareTo(other: User): Int {
         if (this.latestSearchAt != null && other.latestSearchAt != null) {
-            val thisLatestSearch = this.latestSearchAt.convertTimestampToDate()
-            val otherLatestSearch = other.latestSearchAt.convertTimestampToDate()
+            val thisLatestSearch = DateUtils.fromString(this.latestSearchAt)
+            val otherLatestSearch = DateUtils.fromString(other.latestSearchAt)
             return -thisLatestSearch.compareTo(otherLatestSearch) // descending order
         }
 

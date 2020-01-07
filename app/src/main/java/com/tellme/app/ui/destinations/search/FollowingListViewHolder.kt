@@ -5,7 +5,7 @@
  * Technische Hochschule Brandenburg
  */
 
-package com.tellme.app.ui.adapter
+package com.tellme.app.ui.destinations.search
 
 import android.content.Context
 import android.view.View
@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
+import com.tellme.app.ui.destinations.search.FollowingListAdapter
 import com.tellme.app.util.ViewUtils
 import com.tellme.databinding.LayoutUserItemFollowListBinding
 

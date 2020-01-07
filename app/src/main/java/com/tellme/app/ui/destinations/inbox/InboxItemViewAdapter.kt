@@ -5,7 +5,7 @@
  * Technische Hochschule Brandenburg
  */
 
-package com.tellme.app.ui.adapter
+package com.tellme.app.ui.destinations.inbox
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,20 +14,20 @@ import com.tellme.app.model.Tell
 import com.tellme.app.model.TellDiffCallback
 import com.tellme.databinding.LayoutTellItemInboxBinding
 
-class TellAdapter(
+class InboxItemViewAdapter(
     private val listener: TellClickListener
-) : ListAdapter<Tell, TellViewHolder>(TellDiffCallback) {
+) : ListAdapter<Tell, InboxItemViewHolder>(TellDiffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TellViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InboxItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = LayoutTellItemInboxBinding.inflate(layoutInflater, parent, false)
-        return TellViewHolder(binding)
+        return InboxItemViewHolder(binding)
     }
 
-    fun getTellAt(position: Int): Tell = getItem(position)
+    fun getInboxItemAt(position: Int): Tell = getItem(position)
 
-    override fun onBindViewHolder(holder: TellViewHolder, position: Int) {
-        holder.bind(getItem(position), listener)
+    override fun onBindViewHolder(holderItem: InboxItemViewHolder, position: Int) {
+        holderItem.bind(getItem(position), listener)
     }
 
     interface TellClickListener {

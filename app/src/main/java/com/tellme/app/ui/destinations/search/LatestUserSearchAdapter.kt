@@ -5,31 +5,26 @@
  * Technische Hochschule Brandenburg
  */
 
-package com.tellme.app.ui.adapter
+package com.tellme.app.ui.destinations.search
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.model.User
 import com.tellme.app.model.UserDiffCallback
 import com.tellme.app.util.UserNotFoundException
-import com.tellme.databinding.LayoutUserItemFollowListBinding
+import com.tellme.databinding.LayoutUserItemSearchLatestBinding
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class FollowingListAdapter(
-    private val listener: FollowListUserClickListener,
-    private val loggedInUser: LiveData<User>,
-    private val context: Context,
-    private val viewLifecycleOwner: LifecycleOwner
-) : ListAdapter<User, FollowingListViewHolder>(UserDiffCallback), CoroutineScope {
+class LatestUserSearchAdapter(
+    private val parent: SearchFragment,
+    private val listener: LatestUserSearchClickListener
+) : ListAdapter<User, LatestUserSearchViewHolder>(UserDiffCallback), CoroutineScope {
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -39,30 +34,29 @@ class FollowingListAdapter(
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LatestUserSearchViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = LayoutUserItemFollowListBinding.inflate(layoutInflater, parent, false)
-        return FollowingListViewHolder(viewLifecycleOwner, binding, loggedInUser)
+        val binding = LayoutUserItemSearchLatestBinding.inflate(layoutInflater, parent, false)
+        return LatestUserSearchViewHolder(binding)
     }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
-    override fun onBindViewHolder(holder: FollowingListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: LatestUserSearchViewHolder, position: Int) {
         launch {
             try {
                 val user = getItem(position)
-                holder.bind(user, listener, context)
+                holder.bind(user, listener)
             } catch (e: UserNotFoundException) {
                 e.printStackTrace()
             }
         }
     }
 
-    interface FollowListUserClickListener : LifecycleOwner {
-        fun onFollowListUserClicked(user: User, loggedInUserUid: String)
-        fun onFollowListUserButtonFollowClicked(user: User)
+    interface LatestUserSearchClickListener {
+        suspend fun onLatestUserClicked(user: User)
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {

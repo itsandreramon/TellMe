@@ -5,7 +5,7 @@
  * Technische Hochschule Brandenburg
  */
 
-package com.tellme.app.ui.adapter
+package com.tellme.app.ui.destinations.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.model.User
 import com.tellme.app.model.UserDiffCallback
-import com.tellme.app.ui.destinations.search.SearchFragment
 import com.tellme.app.util.UserNotFoundException
 import com.tellme.databinding.LayoutUserItemSearchResultsBinding
 import kotlin.coroutines.CoroutineContext
