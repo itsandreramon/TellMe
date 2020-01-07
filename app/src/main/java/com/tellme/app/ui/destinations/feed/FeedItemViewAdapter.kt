@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.tellme.app.model.FeedDiffCallback
 import com.tellme.app.model.FeedItem
-import com.tellme.databinding.LayoutTellItemFeedBinding
+import com.tellme.databinding.ViewHolderItemFeedBinding
 
 class FeedItemViewAdapter(
     private val parent: FeedFragment,
@@ -25,7 +25,7 @@ class FeedItemViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = LayoutTellItemFeedBinding.inflate(layoutInflater, parent, false)
+        val binding = ViewHolderItemFeedBinding.inflate(layoutInflater, parent, false)
         return FeedItemViewHolder(binding)
     }
 

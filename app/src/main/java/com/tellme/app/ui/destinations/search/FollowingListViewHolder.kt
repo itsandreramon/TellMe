@@ -15,13 +15,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
-import com.tellme.app.ui.destinations.search.FollowingListAdapter
 import com.tellme.app.util.ViewUtils
-import com.tellme.databinding.LayoutUserItemFollowListBinding
+import com.tellme.databinding.ViewHolderItemUserFollowListBinding
 
 class FollowingListViewHolder(
     val viewLifecycleOwner: LifecycleOwner,
-    val binding: LayoutUserItemFollowListBinding,
+    val binding: ViewHolderItemUserFollowListBinding,
     val loggedInUser: LiveData<User>
 ) : RecyclerView.ViewHolder(binding.root) {
 

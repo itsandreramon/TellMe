@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.tellme.app.model.Tell
 import com.tellme.app.model.TellDiffCallback
-import com.tellme.databinding.LayoutTellItemInboxBinding
+import com.tellme.databinding.ViewHolderItemInboxBinding
 
 class InboxItemViewAdapter(
     private val listener: TellClickListener
@@ -20,7 +20,7 @@ class InboxItemViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InboxItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = LayoutTellItemInboxBinding.inflate(layoutInflater, parent, false)
+        val binding = ViewHolderItemInboxBinding.inflate(layoutInflater, parent, false)
         return InboxItemViewHolder(binding)
     }
 

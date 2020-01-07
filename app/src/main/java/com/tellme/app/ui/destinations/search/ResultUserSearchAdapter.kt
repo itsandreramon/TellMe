@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.model.User
 import com.tellme.app.model.UserDiffCallback
 import com.tellme.app.util.UserNotFoundException
-import com.tellme.databinding.LayoutUserItemSearchResultsBinding
+import com.tellme.databinding.ViewHolderItemUserSearchResultsBinding
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +36,7 @@ class ResultUserSearchAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultUserSearchViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = LayoutUserItemSearchResultsBinding.inflate(layoutInflater, parent, false)
+        val binding = ViewHolderItemUserSearchResultsBinding.inflate(layoutInflater, parent, false)
         return ResultUserSearchViewHolder(binding)
     }
 

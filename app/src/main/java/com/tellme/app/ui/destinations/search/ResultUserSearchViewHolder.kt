@@ -10,13 +10,13 @@ package com.tellme.app.ui.destinations.search
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
-import com.tellme.databinding.LayoutUserItemSearchResultsBinding
+import com.tellme.databinding.ViewHolderItemUserSearchResultsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ResultUserSearchViewHolder(
-    val binding: LayoutUserItemSearchResultsBinding
+    val binding: ViewHolderItemUserSearchResultsBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: User, listenerResultSearch: ResultUserSearchAdapter.ResultUserSearchClickListener) {

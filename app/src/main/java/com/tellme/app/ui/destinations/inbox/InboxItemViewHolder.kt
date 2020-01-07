@@ -16,11 +16,10 @@ import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOption
 import com.tellme.R
 import com.tellme.app.model.Tell
 import com.tellme.app.util.DateUtils
-import com.tellme.databinding.LayoutTellItemInboxBinding
-import org.threeten.bp.format.DateTimeFormatter
+import com.tellme.databinding.ViewHolderItemInboxBinding
 import java.util.Locale
 
-class InboxItemViewHolder(val binding: LayoutTellItemInboxBinding) : RecyclerView.ViewHolder(binding.root) {
+class InboxItemViewHolder(val binding: ViewHolderItemInboxBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(tell: Tell, listener: InboxItemViewAdapter.TellClickListener) {
 

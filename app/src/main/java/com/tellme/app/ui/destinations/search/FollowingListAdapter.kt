@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.model.User
 import com.tellme.app.model.UserDiffCallback
 import com.tellme.app.util.UserNotFoundException
-import com.tellme.databinding.LayoutUserItemFollowListBinding
+import com.tellme.databinding.ViewHolderItemUserFollowListBinding
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +41,7 @@ class FollowingListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = LayoutUserItemFollowListBinding.inflate(layoutInflater, parent, false)
+        val binding = ViewHolderItemUserFollowListBinding.inflate(layoutInflater, parent, false)
         return FollowingListViewHolder(
             viewLifecycleOwner,
             binding,

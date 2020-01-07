@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.FeedItem
 import com.tellme.app.util.DateUtils
-import com.tellme.databinding.LayoutTellItemFeedBinding
+import com.tellme.databinding.ViewHolderItemFeedBinding
 
-class FeedItemViewHolder(val binding: LayoutTellItemFeedBinding) : RecyclerView.ViewHolder(binding.root) {
+class FeedItemViewHolder(val binding: ViewHolderItemFeedBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(feedItem: FeedItem, listener: FeedItemViewAdapter.FeedClickListener) {
         binding.feedItem = feedItem
