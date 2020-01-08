@@ -4,7 +4,7 @@ import com.tellme.app.Versions
 buildscript {
     ext.buildConfig = [
             'compileSdk': 29,
-            'minSdk'    : 23,
+            'minSdk'    : 21,
             'targetSdk' : 29,
     ]
 

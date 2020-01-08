@@ -13,7 +13,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.tellme.app.extensions.convertTimestampToDate
+import com.tellme.app.util.DateUtils
 import com.tellme.app.util.FEED_ITEM_COLUMN_ID
 import com.tellme.app.util.FEED_ITEM_COLUMN_QUESTION
 import com.tellme.app.util.FEED_ITEM_COLUMN_RECEIVER_PHOTO_URL
@@ -59,8 +59,8 @@ data class FeedItem(
 ) : Comparable<FeedItem> {
 
     override fun compareTo(other: FeedItem): Int {
-        val thisSendDate = this.replyDate.convertTimestampToDate()
-        val otherSendDate = other.replyDate.convertTimestampToDate()
+        val thisSendDate = DateUtils.fromString(this.replyDate)
+        val otherSendDate = DateUtils.fromString(other.replyDate)
         return -thisSendDate.compareTo(otherSendDate) // descending order
     }
 }

@@ -112,6 +112,11 @@ class UserProfileFragment : Fragment() {
         binding.textViewUserFollowingCount.text = getString(R.string.following_count, args.user.following.size)
         binding.textViewUserTellCount.text = getString(R.string.tells_count, 0)
         binding.editTextSendUserTell.hint = getString(R.string.send_user_tell, args.user.name)
+
+        if (args.user.about.isEmpty()) {
+            binding.textViewAbout.visibility = View.GONE
+            binding.textViewAboutMessage.visibility = View.GONE
+        }
     }
 
     private fun setupToolbar() {

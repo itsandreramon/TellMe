@@ -24,7 +24,6 @@ import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.ActivitySendTellBinding
 import com.uber.autodispose.android.lifecycle.autoDispose
-import com.uber.autodispose.autoDispose
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -73,7 +72,7 @@ class SendTellActivity : AppCompatActivity() {
                 if (added) {
                     finish()
                 } else {
-                    DialogUtils.createErrorSendingTellDialog(this@SendTellActivity)
+                    DialogUtils.createErrorSendingTellDialog(this@SendTellActivity).show()
                 }
             }
         }

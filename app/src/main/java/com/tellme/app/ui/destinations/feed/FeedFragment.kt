@@ -23,15 +23,14 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.FeedItem
-import com.tellme.app.ui.adapter.FeedAdapter
 import com.tellme.app.viewmodels.main.FeedViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentFeedBinding
 import javax.inject.Inject
 
-class FeedFragment : Fragment(), FeedAdapter.FeedClickListener {
+class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
 
-    private lateinit var viewAdapter: FeedAdapter
+    private lateinit var viewItemViewAdapter: FeedItemViewAdapter
     private lateinit var viewManager: LinearLayoutManager
 
     private lateinit var mContext: Context
@@ -67,12 +66,12 @@ class FeedFragment : Fragment(), FeedAdapter.FeedClickListener {
         }
     }
 
-    private fun setupUserAdapter(listener: FeedAdapter.FeedClickListener) {
+    private fun setupUserAdapter(listener: FeedItemViewAdapter.FeedClickListener) {
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = FeedAdapter(this, listener)
+        viewItemViewAdapter = FeedItemViewAdapter(this, listener)
 
         // scrolls to top when new data arrives
-        viewAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        viewItemViewAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 viewManager.smoothScrollToPosition(binding.feedRecyclerView, null, 0)
@@ -81,13 +80,13 @@ class FeedFragment : Fragment(), FeedAdapter.FeedClickListener {
 
         binding.feedRecyclerView.apply {
             layoutManager = viewManager
-            adapter = viewAdapter
+            adapter = viewItemViewAdapter
 
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
 
         feedViewModel.feedItems.observe(viewLifecycleOwner, Observer { feedItems ->
-            viewAdapter.submitList(feedItems)
+            viewItemViewAdapter.submitList(feedItems)
             binding.progressBar.visibility = View.INVISIBLE
         })
     }

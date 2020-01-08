@@ -12,6 +12,7 @@ import android.net.ConnectivityManager
 import com.tellme.BuildConfig
 import com.tellme.app.data.api.TellService
 import com.tellme.app.data.api.UserService
+import com.tellme.app.network.ConnectivityInterceptor
 import com.tellme.app.util.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -26,6 +27,12 @@ abstract class NetworkModule {
 
     @Module
     companion object {
+
+        @JvmStatic
+        @Provides
+        fun provideConnectivityInterceptor(connectivityManager: ConnectivityManager): ConnectivityInterceptor {
+            return ConnectivityInterceptor(connectivityManager)
+        }
 
         @JvmStatic
         @Provides
@@ -52,9 +59,11 @@ abstract class NetworkModule {
         @JvmStatic
         @Provides
         fun provideOkHttpClient(
-            loggingInterceptor: HttpLoggingInterceptor
+            loggingInterceptor: HttpLoggingInterceptor,
+            connectivityInterceptor: ConnectivityInterceptor
         ): OkHttpClient {
             return OkHttpClient.Builder()
+                .addNetworkInterceptor(connectivityInterceptor)
                 .addNetworkInterceptor(loggingInterceptor)
                 .build()
         }
@@ -65,7 +74,7 @@ abstract class NetworkModule {
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create().asLenient())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(UserService::class.java)
         }
@@ -76,7 +85,7 @@ abstract class NetworkModule {
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create().asLenient())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(TellService::class.java)
         }

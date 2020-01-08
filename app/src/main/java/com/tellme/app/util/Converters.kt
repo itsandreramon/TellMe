@@ -12,13 +12,13 @@ import org.threeten.bp.ZonedDateTime
 
 class Converters {
     @TypeConverter
-    fun fromString(stringListString: String): List<String> {
-        return stringListString.split(",").map { it }
+    fun fromString(listAsString: String): List<String> {
+        return listAsString.split(",").map { it }
     }
 
     @TypeConverter
-    fun toString(stringList: List<String>): String {
-        return stringList.joinToString(separator = ",")
+    fun toString(list: List<String>): String {
+        return list.joinToString(separator = ",")
     }
 
     @TypeConverter
