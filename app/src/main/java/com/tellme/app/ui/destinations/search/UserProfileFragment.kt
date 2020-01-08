@@ -108,7 +108,7 @@ class UserProfileFragment : Fragment() {
     private fun renderUserData() {
         binding.user = args.user
         binding.imageViewUserAvatar.setUserProfileImageFromPath(args.user.avatar)
-        binding.textViewUserFollowerCount.text = getString(R.string.follower_count, 0)
+        binding.textViewUserFollowerCount.text = getString(R.string.follower_count, args.user.followers.size)
         binding.textViewUserFollowingCount.text = getString(R.string.following_count, args.user.following.size)
         binding.textViewUserTellCount.text = getString(R.string.tells_count, 0)
         binding.editTextSendUserTell.hint = getString(R.string.send_user_tell, args.user.name)
