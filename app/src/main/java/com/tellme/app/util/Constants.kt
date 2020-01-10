@@ -18,6 +18,8 @@ const val PICK_IMAGE_REQUEST_CODE = 3
 const val LOAD_USER_FOLLOWS = 100L
 const val LOAD_USER_FOLLOWERS = 101L
 
+const val API_TOKEN = "API_TOKEN"
+
 const val EXTRA_CACHE_KEY = "cacheKey"
 const val EXTRA_TELL_KEY = "tellKey"
 const val EXTRA_TELL_KEY_UPDATED = "tellKeyUpdated"

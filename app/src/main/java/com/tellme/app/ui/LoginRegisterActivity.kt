@@ -7,6 +7,7 @@
 
 package com.tellme.app.ui
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ class LoginRegisterActivity : AppCompatActivity() {
 
     private lateinit var toolbar: Toolbar
     @Inject lateinit var authViewModel: AuthViewModel
+    @Inject lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         inject(this)
