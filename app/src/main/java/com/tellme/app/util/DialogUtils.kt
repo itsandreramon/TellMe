@@ -104,7 +104,7 @@ object DialogUtils {
         )
     }
 
-    fun createLoadingDialog(context: Context): androidx.appcompat.app.AlertDialog {
+    fun createLoadingDialog(context: Context): AlertDialog {
         return createNonCancellableDialog(
             context = context,
             resId = R.layout.dialog_loading

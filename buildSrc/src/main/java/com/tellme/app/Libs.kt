@@ -1,7 +1,7 @@
 package com.tellme.app
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:3.5.1"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:3.5.3"
     const val ktlint = "com.pinterest:ktlint:${Versions.ktlint}"
 
     object Google {

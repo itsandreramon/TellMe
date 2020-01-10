@@ -78,8 +78,4 @@ class ReplyTellActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }
