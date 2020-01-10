@@ -30,6 +30,13 @@ plugins {
     id 'com.diffplug.gradle.spotless' version '3.26.1'
 }
 
+if (hasProperty('buildScan')) {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
+
 subprojects {
     apply plugin: 'com.diffplug.gradle.spotless'
     spotless {
