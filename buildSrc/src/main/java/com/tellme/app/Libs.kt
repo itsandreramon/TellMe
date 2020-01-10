@@ -1,7 +1,7 @@
 package com.tellme.app
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:3.5.1"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:3.5.3"
     const val ktlint = "com.pinterest:ktlint:${Versions.ktlint}"
 
     object Google {
@@ -51,6 +51,7 @@ object Libs {
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta05"
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         const val viewPager = "androidx.viewpager2:viewpager2:1.0.0"
+        const val security = "androidx.security:security-crypto:1.0.0-alpha02"
 
         object Navigation {
             private const val version = "2.2.0-rc02"

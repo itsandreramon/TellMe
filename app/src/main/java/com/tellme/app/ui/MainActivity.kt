@@ -34,20 +34,6 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             setupNavigation()
         }
-
-        setupConnectivityChecker()
-    }
-
-    private fun setupConnectivityChecker() {
-        // TODO
-    }
-
-    private fun handleNetworkConnected() {
-        // TODO
-    }
-
-    private fun handleNetworkNotConnected() {
-        // TODO
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

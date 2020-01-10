@@ -8,11 +8,14 @@
 package com.tellme.app.dagger
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import com.tellme.BuildConfig
 import com.tellme.app.data.api.TellService
 import com.tellme.app.data.api.UserService
+import com.tellme.app.network.AuthInterceptor
 import com.tellme.app.network.ConnectivityInterceptor
+import com.tellme.app.util.API_TOKEN
 import com.tellme.app.util.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -27,6 +30,13 @@ abstract class NetworkModule {
 
     @Module
     companion object {
+
+        @JvmStatic
+        @Provides
+        fun provideAuthInterceptor(sharedPreferences: SharedPreferences): AuthInterceptor {
+            val token = sharedPreferences.getString(API_TOKEN, "null") ?: "null"
+            return AuthInterceptor(token)
+        }
 
         @JvmStatic
         @Provides
@@ -60,11 +70,13 @@ abstract class NetworkModule {
         @Provides
         fun provideOkHttpClient(
             loggingInterceptor: HttpLoggingInterceptor,
-            connectivityInterceptor: ConnectivityInterceptor
+            connectivityInterceptor: ConnectivityInterceptor,
+            authInterceptor: AuthInterceptor
         ): OkHttpClient {
             return OkHttpClient.Builder()
                 .addNetworkInterceptor(connectivityInterceptor)
                 .addNetworkInterceptor(loggingInterceptor)
+                .addNetworkInterceptor(authInterceptor)
                 .build()
         }
 
