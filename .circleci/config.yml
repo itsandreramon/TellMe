@@ -25,6 +25,12 @@ download_dependencies: &download_dependencies
       sudo chmod +x ./gradlew
       ./gradlew androidDependencies
 
+setup_environment_variables: &setup_environment_variables
+  run:
+    name: Setup environment variables
+    command: |
+      echo "export ANDROID_NDK_HOME= >> $BASH_ENV
+
 jobs:
   build:
     working_directory: ~/tellMe-android-app
@@ -35,6 +41,7 @@ jobs:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2 -Dkotlin.incremental=false"
 
     steps:
+      - <<: *setup_environment_variables
       - checkout
       - <<: *gen_cache_key
       - <<: *restore_cache
