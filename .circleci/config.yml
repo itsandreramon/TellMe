@@ -1,4 +1,21 @@
 version: 2
+
+gen_cache_key: &gen_cache_key
+  run:
+    name: Generate cache key
+    command: ./checksum.sh /tmp/checksum.txt
+
+restore_cache: &restore_cache
+  restore_cache:
+    key: gradle-{{ checksum "/tmp/checksum.txt" }}
+
+save_cache: &save_cache
+  save_cache:
+    paths:
+      - ~/.gradle/caches
+      - ~/.gradle/wrapper
+    key: gradle-{{ checksum "/tmp/checksum.txt" }}
+
 jobs:
   build:
     working_directory: ~/tellMe-android-app
@@ -8,8 +25,8 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - <<: *gen_cache_key
+      - <<: *restore_cache
       - run:
          name: Chmod permissions
          command: sudo chmod +x ./gradlew
@@ -20,6 +37,7 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - <<: *save_cache
       - run:
           name: Check code style
           command: ./gradlew spotlessCheck
