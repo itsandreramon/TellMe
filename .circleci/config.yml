@@ -29,7 +29,7 @@ setup_environment_variables: &setup_environment_variables
   run:
     name: Setup environment variables
     command: |
-      echo "export ANDROID_NDK_HOME= >> $BASH_ENV
+      echo "export ANDROID_NDK_HOME=">> $BASH_ENV
 
 jobs:
   build:
