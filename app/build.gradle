@@ -58,6 +58,7 @@ dependencies {
     implementation Libs.AndroidX.swipeRefreshLayout
     implementation Libs.AndroidX.viewPager
     implementation Libs.AndroidX.security
+    implementation Libs.AndroidX.savedStateHandle
 
     implementation Libs.AndroidX.Fragment.fragment
     implementation Libs.AndroidX.Fragment.fragmentKtx
