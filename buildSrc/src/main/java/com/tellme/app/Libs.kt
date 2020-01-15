@@ -52,6 +52,7 @@ object Libs {
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         const val viewPager = "androidx.viewpager2:viewpager2:1.0.0"
         const val security = "androidx.security:security-crypto:1.0.0-alpha02"
+        const val savedStateHandle = "androidx.savedstate:savedstate:1.0.0-rc01"
 
         object Navigation {
             private const val version = "2.2.0-rc02"
