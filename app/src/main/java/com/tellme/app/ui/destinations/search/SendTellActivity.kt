@@ -72,7 +72,7 @@ class SendTellActivity : AppCompatActivity() {
                 if (added) {
                     finish()
                 } else {
-                    DialogUtils.createErrorSendingTellDialog(this@SendTellActivity)
+                    DialogUtils.createErrorSendingTellDialog(this@SendTellActivity).show()
                 }
             }
         }

@@ -6,7 +6,7 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <!-- White status bar -->
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/new_statusbar</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 

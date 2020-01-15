@@ -5,7 +5,7 @@
  * Technische Hochschule Brandenburg
  */
 
-package com.tellme.app.ui.adapter
+package com.tellme.app.ui.destinations.inbox
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -14,20 +14,19 @@ import com.google.firebase.ml.naturallanguage.languageid.FirebaseLanguageIdentif
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import com.tellme.R
-import com.tellme.app.extensions.convertDateToTimestamp
-import com.tellme.app.extensions.convertTimestampToDate
 import com.tellme.app.model.Tell
-import com.tellme.databinding.LayoutTellItemInboxBinding
+import com.tellme.app.util.DateUtils
+import com.tellme.databinding.ViewHolderItemInboxBinding
 import java.util.Locale
 
-class TellViewHolder(val binding: LayoutTellItemInboxBinding) : RecyclerView.ViewHolder(binding.root) {
+class InboxItemViewHolder(val binding: ViewHolderItemInboxBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(tell: Tell, listener: TellAdapter.TellClickListener) {
+    fun bind(tell: Tell, listener: InboxItemViewAdapter.TellClickListener) {
 
         binding.tell = tell
         binding.root.setOnClickListener { listener.onTellClicked(tell) }
         binding.textViewTranslate.setOnClickListener { tryTranslate(tell.question, Locale.getDefault().language) }
-        binding.textViewDate.text = convertDate(tell.sendDate)
+        binding.textViewDate.text = DateUtils.convertDate(tell.sendDate)
         binding.executePendingBindings()
 
         toggleTranslate(tell.question)
@@ -96,10 +95,5 @@ class TellViewHolder(val binding: LayoutTellItemInboxBinding) : RecyclerView.Vie
                     }
                 }
         }
-    }
-
-    private fun convertDate(timestamp: String): String {
-        val date = timestamp.convertTimestampToDate()
-        return date.convertDateToTimestamp("EEE, d MMM yyyy")
     }
 }

@@ -18,6 +18,7 @@ interface UserDao {
     fun getCurrentUserFirebase(): FirebaseUser?
     suspend fun sendEmailVerificationFirebase(user: FirebaseUser, language: String): Result<Boolean>
     suspend fun isEmailAlreadyInUseFirebase(email: String): Result<Boolean>
+    suspend fun retrieveIdToken(firebaseUser: FirebaseUser): Result<String>
     suspend fun uploadAvatarFirebase(path: Uri, userUid: String): Result<Boolean>
     suspend fun getAvatarFirebase(userUid: String): Result<Uri>
     suspend fun updateUserProfileFirebase(profile: UserProfileChangeRequest): Result<Boolean>

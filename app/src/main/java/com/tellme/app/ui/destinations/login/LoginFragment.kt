@@ -27,10 +27,6 @@ import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
-    companion object {
-        private val TAG = LoginFragment::class.simpleName
-    }
-
     private lateinit var binding: FragmentLoginBinding
     private var loadingDialog: AlertDialog? = null
 
@@ -61,7 +57,10 @@ class LoginFragment : Fragment() {
                 password.isEmpty() -> DialogUtils.createEmptyPasswordDialog(requireContext()).show()
                 else -> {
                     requireActivity().hideSoftInput()
-                    DialogUtils.createLoadingDialog(requireContext()).show()
+
+                    loadingDialog = DialogUtils.createLoadingDialog(requireContext())
+                        .also { it.show() }
+
                     lifecycleScope.launch { login(email, password) }
                 }
             }
@@ -78,13 +77,13 @@ class LoginFragment : Fragment() {
             } else {
                 DialogUtils.createEmailVerificationDialog(requireContext()) {
                     currentUser.sendEmailVerification()
-                }.also { it.show() }
+                }.show()
             }
         } catch (e: Exception) {
             authViewModel.logout()
 
             e.message?.let { message ->
-                DialogUtils.createErrorDialog(requireContext(), message)
+                DialogUtils.createErrorDialog(requireContext(), message).show()
             }
 
             e.printStackTrace()

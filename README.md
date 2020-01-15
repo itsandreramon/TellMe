@@ -10,5 +10,10 @@
 ### Code style
 This project uses [ktlint](https://github.com/pinterest/ktlint) via [Spotless](https://github.com/diffplug/spotless) to format code based on official style guides from [Kotlin](https://kotlinlang.org/docs/reference/coding-conventions.html) and [Android](https://developer.android.com/kotlin/style-guide).
 
-### API keys
-You need to provide a ```google-services.json``` inside the app module to get access to Firebase.
+### API
+You can obtain a valid api key by decrypting the file using:
+```
+$ openssl aes-256-cbc -d -in release/google-services.json.encrypted -k $KEY >> app/google-services.json
+```
+
+*Please make sure to place the corresponding ```google-services.json``` inside the ```app``` folder.*

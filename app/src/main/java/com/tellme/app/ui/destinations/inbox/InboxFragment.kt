@@ -27,8 +27,6 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.Tell
-import com.tellme.app.ui.adapter.TellAdapter
-import com.tellme.app.ui.adapter.TellViewHolder
 import com.tellme.app.util.EXTRA_TELL_KEY
 import com.tellme.app.util.EXTRA_TELL_KEY_UPDATED
 import com.tellme.app.util.REPLY_TELL_REQUEST_CODE
@@ -43,7 +41,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class InboxFragment : Fragment(), TellAdapter.TellClickListener {
+class InboxFragment : Fragment(), InboxItemViewAdapter.TellClickListener {
 
     private lateinit var binding: FragmentInboxBinding
     private lateinit var mContext: Context
@@ -162,12 +160,12 @@ class InboxFragment : Fragment(), TellAdapter.TellClickListener {
             .show()
     }
 
-    private fun setupItemTouchHelper(adapter: TellAdapter) {
+    private fun setupItemTouchHelper(itemViewAdapter: InboxItemViewAdapter) {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 viewHolder?.let {
-                    val foregroundView = (viewHolder as? (TellViewHolder))?.binding?.viewForeground
+                    val foregroundView = (viewHolder as? (InboxItemViewHolder))?.binding?.viewForeground
 
                     foregroundView?.let {
                         getDefaultUIUtil().onSelected(foregroundView)
@@ -185,7 +183,7 @@ class InboxFragment : Fragment(), TellAdapter.TellClickListener {
                 isCurrentlyActive: Boolean
             ) {
                 viewHolder?.let {
-                    val foregroundView = (viewHolder as? (TellViewHolder))?.binding?.viewForeground
+                    val foregroundView = (viewHolder as? (InboxItemViewHolder))?.binding?.viewForeground
 
                     foregroundView?.let {
                         getDefaultUIUtil().onDrawOver(
@@ -196,7 +194,7 @@ class InboxFragment : Fragment(), TellAdapter.TellClickListener {
             }
 
             override fun clearView(inboxRecyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-                val foregroundView = (viewHolder as? (TellViewHolder))?.binding?.viewForeground
+                val foregroundView = (viewHolder as? (InboxItemViewHolder))?.binding?.viewForeground
 
                 foregroundView?.let {
                     getDefaultUIUtil().clearView(foregroundView)
@@ -212,7 +210,7 @@ class InboxFragment : Fragment(), TellAdapter.TellClickListener {
                 actionState: Int,
                 isCurrentlyActive: Boolean
             ) {
-                val foregroundView = (viewHolder as? (TellViewHolder))?.binding?.viewForeground
+                val foregroundView = (viewHolder as? (InboxItemViewHolder))?.binding?.viewForeground
 
                 foregroundView?.let {
                     getDefaultUIUtil().onDraw(
@@ -229,7 +227,7 @@ class InboxFragment : Fragment(), TellAdapter.TellClickListener {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedPosition = viewHolder.adapterPosition
-                val deletedTell = adapter.getTellAt(deletedPosition)
+                val deletedTell = itemViewAdapter.getInboxItemAt(deletedPosition)
 
                 lifecycleScope.launch {
                     val result = tellViewModel.deleteTell(deletedTell.id)
@@ -269,9 +267,9 @@ class InboxFragment : Fragment(), TellAdapter.TellClickListener {
         }
     }
 
-    private fun setupTellAdapter(listener: TellAdapter.TellClickListener) {
+    private fun setupTellAdapter(listener: InboxItemViewAdapter.TellClickListener) {
         val viewManager = LinearLayoutManager(activity)
-        val viewAdapter = TellAdapter(listener)
+        val viewAdapter = InboxItemViewAdapter(listener)
 
         // scroll to top when new data arrives
         viewAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {

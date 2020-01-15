@@ -28,22 +28,6 @@ class UserRepository private constructor(
     private val roomDao: UserRoomDao
 ) : UserDao {
 
-    companion object {
-
-        @Volatile private var instance: UserRepository? = null
-
-        fun getInstance(
-            firebaseSource: FirebaseSource,
-            userService: UserService,
-            roomDao: UserRoomDao
-        ) = instance
-            ?: UserRepository(
-                firebaseSource,
-                userService,
-                roomDao
-            ).also { instance = it }
-    }
-
     override suspend fun updateUserLocal(user: User) {
         roomDao.updateUser(user)
     }
@@ -174,6 +158,15 @@ class UserRepository private constructor(
         }
     }
 
+    override suspend fun retrieveIdToken(firebaseUser: FirebaseUser): Result<String> {
+        return suspendCancellableCoroutine { cont ->
+            firebaseSource.retrieveIdToken(firebaseUser).apply {
+                addOnSuccessListener { cont.resume(Result.Success(it.token!!)) }
+                addOnFailureListener { e -> cont.resume(Result.Error(e)) }
+            }
+        }
+    }
+
     override suspend fun uploadAvatarFirebase(path: Uri, userUid: String): Result<Boolean> {
         return suspendCancellableCoroutine { cont ->
             firebaseSource.uploadAvatar(path, userUid).apply {
@@ -235,5 +228,21 @@ class UserRepository private constructor(
 
     override fun logout() {
         return firebaseSource.logout()
+    }
+
+    companion object {
+
+        @Volatile private var instance: UserRepository? = null
+
+        fun getInstance(
+            firebaseSource: FirebaseSource,
+            userService: UserService,
+            roomDao: UserRoomDao
+        ) = instance
+            ?: UserRepository(
+                firebaseSource,
+                userService,
+                roomDao
+            ).also { instance = it }
     }
 }

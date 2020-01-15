@@ -28,6 +28,7 @@ import com.tellme.databinding.ActivityProfileEditBinding
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class ProfileEditActivity : AppCompatActivity() {
 
@@ -100,10 +101,10 @@ class ProfileEditActivity : AppCompatActivity() {
         val name = binding.editTextName.text.toString().trim()
         val username = binding.editTextUsername.text.toString().trim()
         val about = binding.editTextAbout.text.toString().trim()
-        val profileImage = updatedProfileImage ?: userViewModel.loggedInUser.value!!.avatar
+        val profileImage = updatedProfileImage
 
         when {
-            name.isEmpty() -> ViewUtils.showToast(this@ProfileEditActivity, "Display name cannot be empty")
+            name.isEmpty() -> ViewUtils.showToast(this@ProfileEditActivity, "Name cannot be empty")
             username.isEmpty() -> ViewUtils.showToast(this@ProfileEditActivity, "Username cannot be empty")
             usernameIsInUse(username) -> DialogUtils.createUsernameAlreadyInUseDialog(this).show()
             else -> {
@@ -112,6 +113,7 @@ class ProfileEditActivity : AppCompatActivity() {
 
                 var exceptionThrown = false
                 try {
+                    Timber.e("Updating user...")
                     updateUser(username, profileImage, name, about)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -150,6 +152,8 @@ class ProfileEditActivity : AppCompatActivity() {
         displayName: String,
         about: String
     ) {
+        Timber.e("avatar has not been changed")
+
         val loggedInUser = userViewModel.loggedInUser.value!!
 
         val updatedUser = loggedInUser.copy(
@@ -157,6 +161,8 @@ class ProfileEditActivity : AppCompatActivity() {
             name = displayName,
             about = about
         )
+
+        Timber.d(updatedUser.toString())
 
         userViewModel.updateUser(updatedUser)
     }
@@ -167,8 +173,12 @@ class ProfileEditActivity : AppCompatActivity() {
         displayName: String,
         about: String
     ) {
+        Timber.e("avatar has been changed")
+
         val loggedInUser = userViewModel.loggedInUser.value!!
         val uploadedAvatar = updateAvatar(avatar)
+
+        Timber.d(loggedInUser.toString())
 
         val updatedUser = loggedInUser.copy(
             username = username,
@@ -176,6 +186,8 @@ class ProfileEditActivity : AppCompatActivity() {
             name = displayName,
             about = about
         )
+
+        Timber.e(updatedUser.toString())
 
         userViewModel.updateUser(updatedUser)
     }

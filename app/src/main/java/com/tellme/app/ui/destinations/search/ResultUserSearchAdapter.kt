@@ -5,7 +5,7 @@
  * Technische Hochschule Brandenburg
  */
 
-package com.tellme.app.ui.adapter
+package com.tellme.app.ui.destinations.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,19 +13,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tellme.app.model.User
 import com.tellme.app.model.UserDiffCallback
-import com.tellme.app.ui.destinations.search.SearchFragment
 import com.tellme.app.util.UserNotFoundException
-import com.tellme.databinding.LayoutUserItemSearchResultsBinding
+import com.tellme.databinding.ViewHolderItemUserSearchResultsBinding
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class UserAdapter(
+class ResultUserSearchAdapter(
     private val parent: SearchFragment,
-    private val listener: UserClickListener
-) : ListAdapter<User, UserViewHolder>(UserDiffCallback), CoroutineScope {
+    private val listenerResultSearch: ResultUserSearchClickListener
+) : ListAdapter<User, ResultUserSearchViewHolder>(UserDiffCallback), CoroutineScope {
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -35,28 +34,28 @@ class UserAdapter(
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultUserSearchViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = LayoutUserItemSearchResultsBinding.inflate(layoutInflater, parent, false)
-        return UserViewHolder(binding)
+        val binding = ViewHolderItemUserSearchResultsBinding.inflate(layoutInflater, parent, false)
+        return ResultUserSearchViewHolder(binding)
     }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+    override fun onBindViewHolder(holderResult: ResultUserSearchViewHolder, position: Int) {
         launch {
             try {
                 val user = getItem(position)
-                holder.bind(user, listener)
+                holderResult.bind(user, listenerResultSearch)
             } catch (e: UserNotFoundException) {
                 e.printStackTrace()
             }
         }
     }
 
-    interface UserClickListener {
+    interface ResultUserSearchClickListener {
         suspend fun onResultUserClicked(user: User)
     }
 

@@ -23,12 +23,11 @@ import com.tellme.app.util.EXTRA_TELL_KEY_UPDATED
 import com.tellme.app.util.TELL_KEY_QUESTION
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.databinding.ActivityReplyTellBinding
-import io.reactivex.disposables.CompositeDisposable
+import com.uber.autodispose.android.lifecycle.autoDispose
 import javax.inject.Inject
 
 class ReplyTellActivity : AppCompatActivity() {
 
-    private val disposables = CompositeDisposable()
     private lateinit var binding: ActivityReplyTellBinding
 
     @Inject lateinit var tellViewModel: TellViewModel
@@ -57,9 +56,10 @@ class ReplyTellActivity : AppCompatActivity() {
             .map { it.isNotEmpty() }
 
         validReplyInputObservable
+            .autoDispose(this)
             .subscribe { valid ->
                 binding.buttonReply.isEnabled = valid
-            }.also { disposables.add(it) }
+            }
     }
 
     private fun setupReplyButton() {
@@ -77,10 +77,5 @@ class ReplyTellActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, result)
             finish()
         }
-    }
-
-    override fun onDestroy() {
-        disposables.dispose()
-        super.onDestroy()
     }
 }

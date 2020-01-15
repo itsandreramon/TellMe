@@ -8,10 +8,14 @@
 package com.tellme.app.dagger
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import com.tellme.BuildConfig
 import com.tellme.app.data.api.TellService
 import com.tellme.app.data.api.UserService
+import com.tellme.app.network.AuthInterceptor
+import com.tellme.app.network.ConnectivityInterceptor
+import com.tellme.app.util.API_TOKEN
 import com.tellme.app.util.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -26,6 +30,19 @@ abstract class NetworkModule {
 
     @Module
     companion object {
+
+        @JvmStatic
+        @Provides
+        fun provideAuthInterceptor(sharedPreferences: SharedPreferences): AuthInterceptor {
+            val token = sharedPreferences.getString(API_TOKEN, "null") ?: "null"
+            return AuthInterceptor(token)
+        }
+
+        @JvmStatic
+        @Provides
+        fun provideConnectivityInterceptor(connectivityManager: ConnectivityManager): ConnectivityInterceptor {
+            return ConnectivityInterceptor(connectivityManager)
+        }
 
         @JvmStatic
         @Provides
@@ -52,10 +69,14 @@ abstract class NetworkModule {
         @JvmStatic
         @Provides
         fun provideOkHttpClient(
-            loggingInterceptor: HttpLoggingInterceptor
+            loggingInterceptor: HttpLoggingInterceptor,
+            connectivityInterceptor: ConnectivityInterceptor,
+            authInterceptor: AuthInterceptor
         ): OkHttpClient {
             return OkHttpClient.Builder()
+                .addNetworkInterceptor(connectivityInterceptor)
                 .addNetworkInterceptor(loggingInterceptor)
+                .addNetworkInterceptor(authInterceptor)
                 .build()
         }
 
@@ -65,7 +86,7 @@ abstract class NetworkModule {
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create().asLenient())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(UserService::class.java)
         }
@@ -76,7 +97,7 @@ abstract class NetworkModule {
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create().asLenient())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(TellService::class.java)
         }

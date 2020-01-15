@@ -24,7 +24,6 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
-import com.tellme.app.ui.adapter.FollowingListAdapter
 import com.tellme.app.util.ArgsHelper
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -87,8 +86,12 @@ class FollowingFollowersFragment : Fragment(), ArgsHelper, FollowingListAdapter.
 
     override fun passArguments() = MutableLiveData(args)
 
-    override fun onFollowListUserClicked(user: User) {
-        val action = FollowingFollowersFragmentDirections.actionFollowsFollowersFragmentToUserProfileFragment(user)
+    override fun onFollowListUserClicked(user: User, loggedInUserUid: String) {
+        val action = when (user.uid) {
+            loggedInUserUid -> FollowingFollowersFragmentDirections.actionFollowsFollowersFragmentToProfileFragment()
+            else -> FollowingFollowersFragmentDirections.actionFollowsFollowersFragmentToUserProfileFragment(user)
+        }
+
         findNavController().navigate(action)
     }
 

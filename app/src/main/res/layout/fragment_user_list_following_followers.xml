@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/search_bar"
-            tools:listitem="@layout/layout_user_item_follow_list" />
+            tools:listitem="@layout/view_holder_item_user_follow_list" />
 
     </RelativeLayout>
 </layout>
