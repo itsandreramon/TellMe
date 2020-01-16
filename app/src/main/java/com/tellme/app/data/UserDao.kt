@@ -29,6 +29,8 @@ interface UserDao {
     suspend fun getUsersByQueryRemote(query: String, limit: Int): Result<List<User>>
     suspend fun getFollowsByUid(uid: String): Result<List<User>>
     suspend fun updateUserRemote(updatedUser: User): Result<Boolean>
+    suspend fun followUserByUid(uid: String, uidToFollow: String): Result<Boolean>
+    suspend fun unfollowUserByUid(uid: String, uidToUnfollow: String): Result<Boolean>
     suspend fun deleteUserByUidRemote(uid: String): Result<Boolean>
 
     fun getLatestUserSearchesLocal(): Flow<List<User>>

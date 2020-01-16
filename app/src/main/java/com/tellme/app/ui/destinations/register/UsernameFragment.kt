@@ -22,6 +22,7 @@ import androidx.navigation.fragment.navArgs
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
+import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.util.ViewUtils
@@ -59,7 +60,7 @@ class UsernameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        binding.editTextUsername.requestFocus()
+        showSoftInput(binding.editTextUsername)
 
         val inputUsernameObservable = RxTextView.textChanges(binding.editTextUsername)
             .map { it.toString().trim() }

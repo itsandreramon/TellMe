@@ -102,11 +102,11 @@ class FollowingFollowersFragment : Fragment(), ArgsHelper, FollowingListAdapter.
 
             if (isFollowing) {
                 lifecycleScope.launch {
-                    userViewModel.unfollowUserByUid(loggedInUser, user.uid)
+                    userViewModel.unfollowUserByUid(loggedInUser.uid, user.uid)
                 }
             } else {
                 lifecycleScope.launch {
-                    userViewModel.followUserByUid(loggedInUser, user.uid)
+                    userViewModel.followUserByUid(loggedInUser.uid, user.uid)
                 }
             }
         } catch (e: IOException) {

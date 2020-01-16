@@ -1,38 +1,33 @@
 <resources>
 
     <style name="p" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/grey</item>
         <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
     <style name="p2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
     <style name="headline4" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:lineSpacingMultiplier">0.9</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:lineSpacingMultiplier">0.9</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="headline6" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/rubik</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:lineSpacingMultiplier">0.9</item>
     </style>
 
     <style name="headline7" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/rubik</item>
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -61,19 +56,16 @@
     </style>
 
     <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:fontFamily">@font/rubik</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
     <style name="Toolbar.TitleText.Expanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
-        <item name="android:fontFamily">@font/rubik</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="fontFamily">@font/nunito</item>
         <item name="fontWeight">700</item>
     </style>
 

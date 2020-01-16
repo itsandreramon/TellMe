@@ -21,7 +21,6 @@ import androidx.navigation.fragment.navArgs
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.setUserProfileImageFromPath
-import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
@@ -71,9 +70,9 @@ class UserProfileFragment : Fragment() {
 
             binding.buttonFollow.setOnClickListener {
                 if (isFollowing) {
-                    lifecycleScope.launch { unfollowUserByUid(loggedInUser, args.user.uid) }
+                    lifecycleScope.launch { unfollowUserByUid(loggedInUser.uid, args.user.uid) }
                 } else {
-                    lifecycleScope.launch { followUserByUid(loggedInUser, args.user.uid) }
+                    lifecycleScope.launch { followUserByUid(loggedInUser.uid, args.user.uid) }
                 }
             }
         })
@@ -89,17 +88,17 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private suspend fun unfollowUserByUid(user: User, userToUnfollowUid: String) {
+    private suspend fun unfollowUserByUid(uid: String, userToUnfollowUid: String) {
         try {
-            userViewModel.unfollowUserByUid(user, userToUnfollowUid)
+            userViewModel.unfollowUserByUid(uid, userToUnfollowUid)
         } catch (e: IOException) {
             DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
     }
 
-    private suspend fun followUserByUid(user: User, userToFollowUid: String) {
+    private suspend fun followUserByUid(uid: String, userToFollowUid: String) {
         try {
-            userViewModel.followUserByUid(user, userToFollowUid)
+            userViewModel.followUserByUid(uid, userToFollowUid)
         } catch (e: IOException) {
             DialogUtils.createFollowErrorDialog(requireContext()).show()
         }

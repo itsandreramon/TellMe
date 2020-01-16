@@ -143,8 +143,7 @@ class SearchFragment : Fragment(),
 
     private fun setupSearchResultsAdapter(listenerResultSearch: ResultUserSearchAdapter.ResultUserSearchClickListener) {
         resultViewManager = LinearLayoutManager(activity)
-        resultViewSearchAdapterResult =
-            ResultUserSearchAdapter(this, listenerResultSearch)
+        resultViewSearchAdapterResult = ResultUserSearchAdapter(this, listenerResultSearch)
 
         binding.recyclerViewSearchResults.apply {
             layoutManager = resultViewManager
@@ -160,8 +159,7 @@ class SearchFragment : Fragment(),
 
     private fun setupSearchLatestAdapter(listener: LatestUserSearchAdapter.LatestUserSearchClickListener) {
         latestViewManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        latestViewAdapter =
-            LatestUserSearchAdapter(this, listener)
+        latestViewAdapter = LatestUserSearchAdapter(this, listener)
 
         binding.recyclerViewSearchLatest.apply {
             layoutManager = latestViewManager

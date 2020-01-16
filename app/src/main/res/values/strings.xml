@@ -35,4 +35,5 @@
     <string name="tells">Tells</string>
     <string name="register_biography">Biography</string>
     <string name="about">About</string>
+    <string name="error">Error</string>
 </resources>

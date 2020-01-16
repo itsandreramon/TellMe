@@ -151,6 +151,28 @@ class UserViewModel(
         }
     }
 
+    suspend fun followUserByUid(uid: String, uidToFollow: String): Boolean {
+        val deferred = viewModelScope.async(dispatcherProvider.network) {
+            userRepository.followUserByUid(uid, uidToFollow)
+        }
+
+        return when (val result = deferred.await()) {
+            is Result.Success -> result.data
+            is Result.Error -> throw result.exception
+        }
+    }
+
+    suspend fun unfollowUserByUid(uid: String, uidToUnfollow: String): Boolean {
+        val deferred = viewModelScope.async(dispatcherProvider.network) {
+            userRepository.unfollowUserByUid(uid, uidToUnfollow)
+        }
+
+        return when (val result = deferred.await()) {
+            is Result.Success -> result.data
+            is Result.Error -> throw result.exception
+        }
+    }
+
     suspend fun getFollowsByUid(uid: String): List<User> {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.getFollowsByUid(uid)
@@ -160,25 +182,6 @@ class UserViewModel(
             is Result.Success -> result.data
             is Result.Error -> throw result.exception
         }
-    }
-
-    suspend fun followUserByUid(user: User, uidToFollow: String) {
-        val updatedFollowsList = ArrayList(user.following)
-            .filter { it != uidToFollow }
-            .toMutableList()
-
-        updatedFollowsList.add(uidToFollow)
-
-        val updatedUser = user.copy(following = updatedFollowsList)
-        updateUser(updatedUser)
-    }
-
-    suspend fun unfollowUserByUid(user: User, uidToFollow: String) {
-        val updatedFollowsList = user.following
-            .filter { it != uidToFollow }
-
-        val updatedUser = user.copy(following = updatedFollowsList)
-        updateUser(updatedUser)
     }
 
     fun logout() {
