@@ -122,28 +122,6 @@ class UserRepository private constructor(
         }
     }
 
-    override suspend fun followUserByUid(uid: String, uidToFollow: String): Result<Boolean> {
-        return try {
-            val response = userService.followUserByUid(uid, uidToFollow)
-            getResult(response = response, onError = {
-                throw IOException("Error following user: ${response.code()} ${response.message()}")
-            })
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-
-    override suspend fun unfollowUserByUid(uid: String, uidToUnfollow: String): Result<Boolean> {
-        return try {
-            val response = userService.unfollowUserByUid(uid, uidToUnfollow)
-            getResult(response = response, onError = {
-                throw IOException("Error unfollowing user: ${response.code()} ${response.message()}")
-            })
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-
     override suspend fun deleteUserByUidRemote(uid: String): Result<Boolean> {
         return try {
             val response = userService.deleteUser(uid)

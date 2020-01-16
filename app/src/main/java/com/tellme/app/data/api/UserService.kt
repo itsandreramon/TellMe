@@ -49,18 +49,6 @@ interface UserService {
         @Body updatedUser: User
     ): Response<Boolean>
 
-    @POST("users/{uid}/follow/{uidToFollow}")
-    suspend fun followUserByUid(
-        @Path("uid") uid: String,
-        @Path("uidToFollow") uidToFollow: String
-    ): Response<Boolean>
-
-    @POST("users/{uid}/unfollow/{uidToUnfollow}")
-    suspend fun unfollowUserByUid(
-        @Path("uid") uid: String,
-        @Path("uidToUnfollow") uidToUnfollow: String
-    ): Response<Boolean>
-
     @DELETE("users/uid/{uid}")
     suspend fun deleteUser(
         @Path("uid") uid: String

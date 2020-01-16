@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.extensions.hideSoftInput
+import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.User
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.DialogUtils
@@ -42,7 +43,7 @@ class SearchFragment : Fragment(),
     ResultUserSearchAdapter.ResultUserSearchClickListener,
     LatestUserSearchAdapter.LatestUserSearchClickListener {
 
-    private lateinit var resultViewSearchAdapterResult: ResultUserSearchAdapter
+    private lateinit var resultViewAdapter: ResultUserSearchAdapter
     private lateinit var resultViewManager: LinearLayoutManager
     private lateinit var latestViewAdapter: LatestUserSearchAdapter
     private lateinit var latestViewManager: LinearLayoutManager
@@ -75,6 +76,8 @@ class SearchFragment : Fragment(),
         setupSearchResultsAdapter(this)
         setupSearchLatestAdapter(this)
         setupSearchField()
+
+        showSoftInput(binding.editTextSearch)
 
         binding.textViewClearLatest.setOnClickListener {
             DialogUtils.createClearSearchResultsDialog(requireContext()) {
@@ -143,17 +146,17 @@ class SearchFragment : Fragment(),
 
     private fun setupSearchResultsAdapter(listenerResultSearch: ResultUserSearchAdapter.ResultUserSearchClickListener) {
         resultViewManager = LinearLayoutManager(activity)
-        resultViewSearchAdapterResult = ResultUserSearchAdapter(this, listenerResultSearch)
+        resultViewAdapter = ResultUserSearchAdapter(this, listenerResultSearch)
 
         binding.recyclerViewSearchResults.apply {
             layoutManager = resultViewManager
-            adapter = resultViewSearchAdapterResult
+            adapter = resultViewAdapter
 
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
 
         searchViewModel.searchResults.observe(viewLifecycleOwner, Observer {
-            resultViewSearchAdapterResult.submitList(it.filter { user -> user.uid != userViewModel.loggedInUser.value!!.uid })
+            resultViewAdapter.submitList(it.filter { user -> user.uid != userViewModel.loggedInUser.value!!.uid })
         })
     }
 

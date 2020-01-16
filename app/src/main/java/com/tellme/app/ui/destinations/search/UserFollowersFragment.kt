@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
-import com.tellme.app.util.ArgsHelper
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentUserListFollowingFollowersBinding
 import javax.inject.Inject
@@ -32,10 +30,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserClickListener {
-
-    private val args: LiveData<FollowingFollowersFragmentArgs>? by lazy {
-        (parentFragment as? ArgsHelper)?.passArguments()
-    }
 
     private lateinit var viewAdapter: FollowingListAdapter
     private lateinit var viewManager: LinearLayoutManager
@@ -65,9 +59,9 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
         super.onViewCreated(view, savedInstanceState)
         setupAdapter(this)
 
-        args?.observe(viewLifecycleOwner, Observer { args ->
+        userViewModel.currentlyLoadedUser.observe(viewLifecycleOwner, Observer { user ->
             lifecycleScope.launch {
-                submitList(args.user.followers)
+                submitList(user.followers)
             }
         })
     }
@@ -101,7 +95,10 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
     }
 
     override fun onFollowListUserClicked(user: User, loggedInUserUid: String) {
-        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user, loggedInUserUid)
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(
+            user,
+            loggedInUserUid
+        )
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {

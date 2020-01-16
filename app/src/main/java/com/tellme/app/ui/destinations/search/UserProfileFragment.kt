@@ -21,6 +21,7 @@ import androidx.navigation.fragment.navArgs
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.setUserProfileImageFromPath
+import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
@@ -54,9 +55,12 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupToolbar()
-        renderUserData()
+
+        userViewModel.setCurrentlyLoadedUser(args.user.uid)
+        userViewModel.currentlyLoadedUser.observe(viewLifecycleOwner, Observer { user ->
+            renderUserData(user)
+        })
 
         userViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { loggedInUser ->
             // TODO extract method
@@ -70,9 +74,9 @@ class UserProfileFragment : Fragment() {
 
             binding.buttonFollow.setOnClickListener {
                 if (isFollowing) {
-                    lifecycleScope.launch { unfollowUserByUid(loggedInUser.uid, args.user.uid) }
+                    lifecycleScope.launch { unfollowUserByUid(loggedInUser, args.user) }
                 } else {
-                    lifecycleScope.launch { followUserByUid(loggedInUser.uid, args.user.uid) }
+                    lifecycleScope.launch { followUserByUid(loggedInUser, args.user) }
                 }
             }
         })
@@ -88,31 +92,31 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private suspend fun unfollowUserByUid(uid: String, userToUnfollowUid: String) {
+    private suspend fun unfollowUserByUid(user: User, userToUnfollow: User) {
         try {
-            userViewModel.unfollowUserByUid(uid, userToUnfollowUid)
+            userViewModel.unfollowUser(user, userToUnfollow)
         } catch (e: IOException) {
             DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
     }
 
-    private suspend fun followUserByUid(uid: String, userToFollowUid: String) {
+    private suspend fun followUserByUid(user: User, userToFollow: User) {
         try {
-            userViewModel.followUserByUid(uid, userToFollowUid)
+            userViewModel.followUserByUid(user, userToFollow)
         } catch (e: IOException) {
             DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
     }
 
-    private fun renderUserData() {
-        binding.user = args.user
-        binding.imageViewUserAvatar.setUserProfileImageFromPath(args.user.avatar)
-        binding.textViewUserFollowerCount.text = getString(R.string.follower_count, args.user.followers.size)
-        binding.textViewUserFollowingCount.text = getString(R.string.following_count, args.user.following.size)
+    private fun renderUserData(user: User) {
+        binding.user = user
+        binding.imageViewUserAvatar.setUserProfileImageFromPath(user.avatar)
+        binding.textViewUserFollowerCount.text = getString(R.string.follower_count, user.followers.size)
+        binding.textViewUserFollowingCount.text = getString(R.string.following_count, user.following.size)
         binding.textViewUserTellCount.text = getString(R.string.tells_count, 0)
-        binding.editTextSendUserTell.hint = getString(R.string.send_user_tell, args.user.name)
+        binding.editTextSendUserTell.hint = getString(R.string.send_user_tell, user.name)
 
-        if (args.user.about.isEmpty()) {
+        if (user.about.isEmpty()) {
             binding.textViewAbout.visibility = View.GONE
             binding.textViewAboutMessage.visibility = View.GONE
         }
