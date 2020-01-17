@@ -23,6 +23,7 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.User
+import com.tellme.app.util.ArgsHelper
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentUserFollowsFollowingBinding
@@ -30,7 +31,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class FollowingFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserClickListener {
+class FollowingFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserClickListener, ArgsHelper {
 
     private val args: FollowingFollowersFragmentArgs by navArgs()
 
@@ -122,4 +123,6 @@ class FollowingFollowersFragment : Fragment(), FollowingListAdapter.FollowListUs
             return fragments[position]?.first!!
         }
     }
+
+    override fun passArguments() = args
 }

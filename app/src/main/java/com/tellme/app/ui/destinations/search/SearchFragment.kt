@@ -32,9 +32,9 @@ import com.tellme.databinding.FragmentSearchBinding
 import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -114,12 +114,11 @@ class SearchFragment : Fragment(),
             awaitClose()
         }
 
-        val searchResultFlow = searchInputFlow
+        searchInputFlow
             .filter { it.length >= 3 }
             .debounce(500)
             .mapLatest { searchViewModel.getAllUsersByQuery(it, 30) }
-
-        lifecycleScope.launch { searchResultFlow.collect() }
+            .launchIn(lifecycleScope)
     }
 
     override suspend fun onLatestUserClicked(user: User) {

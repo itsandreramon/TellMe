@@ -31,9 +31,6 @@ class UserViewModel(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _currentlyLoadedUser = MutableLiveData<User>()
-    val currentlyLoadedUser: LiveData<User> = _currentlyLoadedUser
-
     private val _loggedInUser = MutableLiveData<User>()
     val loggedInUser: LiveData<User> = _loggedInUser
 
@@ -119,10 +116,8 @@ class UserViewModel(
         }
     }
 
-    fun setCurrentlyLoadedUser(uid: String) {
-        userRepository.getUserByUidLocal(uid).observeForever { user ->
-            _currentlyLoadedUser.postValue(user)
-        }
+    fun getUserByUidLocal(uid: String): LiveData<User> {
+        return userRepository.getUserByUidLocal(uid)
     }
 
     suspend fun addUser(user: User): Boolean {

@@ -55,15 +55,11 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
 
-        userViewModel.setCurrentlyLoadedUser(args.user.uid)
-        userViewModel.currentlyLoadedUser.observe(viewLifecycleOwner, Observer { user ->
-            renderUserData(user)
-        })
+        setupToolbar()
+        renderUserData(args.user)
 
         userViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { loggedInUser ->
-            // TODO extract method
             val isFollowing = loggedInUser.following.contains(args.user.uid)
 
             if (isFollowing) {
