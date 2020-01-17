@@ -23,6 +23,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.util.ViewUtils
@@ -61,7 +62,7 @@ class EmailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        binding.editTextEmail.requestFocus()
+        showSoftInput(binding.editTextEmail)
 
         val inputEmailObservable = RxTextView.textChanges(binding.editTextEmail)
             .map { it.toString().trim() }

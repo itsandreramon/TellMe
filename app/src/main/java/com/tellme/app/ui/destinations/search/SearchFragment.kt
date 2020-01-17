@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.extensions.hideSoftInput
+import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.User
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.DialogUtils
@@ -31,9 +32,9 @@ import com.tellme.databinding.FragmentSearchBinding
 import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -42,7 +43,7 @@ class SearchFragment : Fragment(),
     ResultUserSearchAdapter.ResultUserSearchClickListener,
     LatestUserSearchAdapter.LatestUserSearchClickListener {
 
-    private lateinit var resultViewSearchAdapterResult: ResultUserSearchAdapter
+    private lateinit var resultViewAdapter: ResultUserSearchAdapter
     private lateinit var resultViewManager: LinearLayoutManager
     private lateinit var latestViewAdapter: LatestUserSearchAdapter
     private lateinit var latestViewManager: LinearLayoutManager
@@ -75,6 +76,8 @@ class SearchFragment : Fragment(),
         setupSearchResultsAdapter(this)
         setupSearchLatestAdapter(this)
         setupSearchField()
+
+        showSoftInput(binding.editTextSearch)
 
         binding.textViewClearLatest.setOnClickListener {
             DialogUtils.createClearSearchResultsDialog(requireContext()) {
@@ -111,12 +114,11 @@ class SearchFragment : Fragment(),
             awaitClose()
         }
 
-        val searchResultFlow = searchInputFlow
+        searchInputFlow
             .filter { it.length >= 3 }
             .debounce(500)
             .mapLatest { searchViewModel.getAllUsersByQuery(it, 30) }
-
-        lifecycleScope.launch { searchResultFlow.collect() }
+            .launchIn(lifecycleScope)
     }
 
     override suspend fun onLatestUserClicked(user: User) {
@@ -143,25 +145,23 @@ class SearchFragment : Fragment(),
 
     private fun setupSearchResultsAdapter(listenerResultSearch: ResultUserSearchAdapter.ResultUserSearchClickListener) {
         resultViewManager = LinearLayoutManager(activity)
-        resultViewSearchAdapterResult =
-            ResultUserSearchAdapter(this, listenerResultSearch)
+        resultViewAdapter = ResultUserSearchAdapter(this, listenerResultSearch)
 
         binding.recyclerViewSearchResults.apply {
             layoutManager = resultViewManager
-            adapter = resultViewSearchAdapterResult
+            adapter = resultViewAdapter
 
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
 
         searchViewModel.searchResults.observe(viewLifecycleOwner, Observer {
-            resultViewSearchAdapterResult.submitList(it.filter { user -> user.uid != userViewModel.loggedInUser.value!!.uid })
+            resultViewAdapter.submitList(it.filter { user -> user.uid != userViewModel.loggedInUser.value!!.uid })
         })
     }
 
     private fun setupSearchLatestAdapter(listener: LatestUserSearchAdapter.LatestUserSearchClickListener) {
         latestViewManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        latestViewAdapter =
-            LatestUserSearchAdapter(this, listener)
+        latestViewAdapter = LatestUserSearchAdapter(this, listener)
 
         binding.recyclerViewSearchLatest.apply {
             layoutManager = latestViewManager

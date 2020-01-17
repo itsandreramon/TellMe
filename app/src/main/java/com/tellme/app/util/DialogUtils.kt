@@ -44,7 +44,8 @@ object DialogUtils {
     fun createEmailAlreadyInUseDialog(context: Context): AlertDialog {
         return createInfoAlertDialog(
             context = context,
-            message = context.getString(R.string.register_error_email_in_use)
+            message = context.getString(R.string.register_error_email_in_use),
+            title = context.getString(R.string.error)
         )
     }
 

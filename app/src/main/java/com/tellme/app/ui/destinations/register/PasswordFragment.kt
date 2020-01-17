@@ -22,6 +22,7 @@ import androidx.navigation.fragment.navArgs
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
+import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ValidationUtils
@@ -63,7 +64,7 @@ class PasswordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        binding.editTextInputPassword.requestFocus()
+        showSoftInput(binding.editTextInputPassword)
 
         val inputPasswordObservable = RxTextView.textChanges(binding.editTextInputPassword)
             .map { it.toString() }
@@ -163,6 +164,7 @@ class PasswordFragment : Fragment() {
 
             authViewModel.addUserToDatabase(user)
             authViewModel.sendEmailVerification(firebaseUser, Locale.getDefault().language)
+            authViewModel.logout()
         } catch (registerException: Exception) {
             Timber.e(registerException)
 
@@ -172,10 +174,9 @@ class PasswordFragment : Fragment() {
                 Timber.e(deleteException)
             }
 
+            authViewModel.logout()
             throw registerException
         }
-
-        authViewModel.logout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

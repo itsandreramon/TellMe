@@ -53,6 +53,12 @@ class FollowingListAdapter(
         return position.toLong()
     }
 
+    fun addItem(element: User) {
+        val currentList = mutableListOf<User>().apply { addAll(currentList) }
+        currentList.add(element)
+        submitList(currentList)
+    }
+
     override fun onBindViewHolder(holder: FollowingListViewHolder, position: Int) {
         launch {
             try {

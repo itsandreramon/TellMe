@@ -60,7 +60,7 @@ class SendTellActivity : AppCompatActivity() {
             val question = binding.editTextQuestion.text.toString().trim()
 
             val tell = Tell(
-                authorUid = userViewModel.loggedInUser.value!!.uid,
+                authorUid = userViewModel.getCurrentUserFirebase()!!.uid,
                 receiverUid = args.userUid,
                 question = question,
                 sendDate = DateUtils.now()

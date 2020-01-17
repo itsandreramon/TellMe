@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,15 +25,14 @@ import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentUserListFollowingFollowersBinding
 import javax.inject.Inject
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.onEach
 
 class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserClickListener {
 
-    private val args: LiveData<FollowingFollowersFragmentArgs>? by lazy {
-        (parentFragment as? ArgsHelper)?.passArguments()
+    private val args: FollowingFollowersFragmentArgs by lazy {
+        (parentFragment as? ArgsHelper)?.passArguments()!!
     }
 
     private lateinit var viewAdapter: FollowingListAdapter
@@ -65,31 +63,29 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
         super.onViewCreated(view, savedInstanceState)
         setupAdapter(this)
 
-        args?.observe(viewLifecycleOwner, Observer { args ->
-            lifecycleScope.launch {
-                submitList(args.user.followers)
-            }
-        })
+        args.user.uid.let { uid ->
+            userViewModel
+                .getUserByUidLocal(uid)
+                .observe(viewLifecycleOwner, Observer { submitList(it.followers) })
+        }
     }
 
-    private suspend fun submitList(listToLoad: List<String>) {
-        val list = listToLoad
+    private fun submitList(listToLoad: List<String>) {
+        listToLoad
             .filter { it.isNotEmpty() }
             .asFlow()
             .map { userViewModel.getUserByUid(it) }
-            .flowOn(dispatcherProvider.network)
-            .toList()
-
-        viewAdapter.submitList(list)
+            .onEach { viewAdapter.addItem(it) }
+            .launchIn(lifecycleScope)
     }
 
     private fun setupAdapter(listener: FollowingListAdapter.FollowListUserClickListener) {
         viewManager = LinearLayoutManager(activity)
         viewAdapter = FollowingListAdapter(
-            listener,
-            userViewModel.loggedInUser,
-            requireContext(),
-            viewLifecycleOwner
+            listener = listener,
+            loggedInUser = userViewModel.loggedInUser,
+            context = requireContext(),
+            viewLifecycleOwner = viewLifecycleOwner
         )
 
         binding.recyclerViewFollows.apply {
@@ -101,7 +97,10 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
     }
 
     override fun onFollowListUserClicked(user: User, loggedInUserUid: String) {
-        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(user, loggedInUserUid)
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(
+            user,
+            loggedInUserUid
+        )
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {

@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -32,7 +31,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class FollowingFollowersFragment : Fragment(), ArgsHelper, FollowingListAdapter.FollowListUserClickListener {
+class FollowingFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserClickListener, ArgsHelper {
 
     private val args: FollowingFollowersFragmentArgs by navArgs()
 
@@ -84,8 +83,6 @@ class FollowingFollowersFragment : Fragment(), ArgsHelper, FollowingListAdapter.
         }
     }
 
-    override fun passArguments() = MutableLiveData(args)
-
     override fun onFollowListUserClicked(user: User, loggedInUserUid: String) {
         val action = when (user.uid) {
             loggedInUserUid -> FollowingFollowersFragmentDirections.actionFollowsFollowersFragmentToProfileFragment()
@@ -102,11 +99,11 @@ class FollowingFollowersFragment : Fragment(), ArgsHelper, FollowingListAdapter.
 
             if (isFollowing) {
                 lifecycleScope.launch {
-                    userViewModel.unfollowUserByUid(loggedInUser, user.uid)
+                    userViewModel.unfollowUser(loggedInUser, user)
                 }
             } else {
                 lifecycleScope.launch {
-                    userViewModel.followUserByUid(loggedInUser, user.uid)
+                    userViewModel.followUserByUid(loggedInUser, user)
                 }
             }
         } catch (e: IOException) {
@@ -126,4 +123,6 @@ class FollowingFollowersFragment : Fragment(), ArgsHelper, FollowingListAdapter.
             return fragments[position]?.first!!
         }
     }
+
+    override fun passArguments() = args
 }
