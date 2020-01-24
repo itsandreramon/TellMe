@@ -1,6 +1,6 @@
 [![Build Status](https://img.shields.io/circleci/build/github/itsandreramon/TellMe-Android?token=f24ebd30e0d413eebc536d6c4a3d0804a9cc75fe)](https://circleci.com/gh/itsandreramon/TellMe-Android)
 
-## TellMe Android App
+## TellMe Android App (work in progress)
 - Entirely written in [Kotlin](https://kotlinlang.org/)
 - Relies heavily on [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
 - Uses [Architecture Components](https://developer.android.com/topic/libraries/architecture/)
@@ -17,3 +17,6 @@ $ openssl aes-256-cbc -d -in release/google-services.json.encrypted -k $KEY >> a
 ```
 
 *Please make sure to place the corresponding ```google-services.json``` inside the ```app``` folder.*
+
+### Disclaimer
+This project was built for educational purposes and does not represent a production ready application.
