@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.data.Result
 import com.tellme.app.model.User
 import com.tellme.app.util.ArgsHelper
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -75,15 +76,17 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
             .filter { it.isNotEmpty() }
             .asFlow()
             .map { userViewModel.getUserByUid(it) }
-            .onEach { viewAdapter.addItem(it) }
+            .onEach { if (it is Result.Success) viewAdapter.addItem(it.data) }
             .launchIn(lifecycleScope)
     }
 
     private fun setupAdapter(listener: FollowingListAdapter.FollowListUserClickListener) {
+        val result = userViewModel.loggedInUser
+
         viewManager = LinearLayoutManager(activity)
         viewAdapter = FollowingListAdapter(
             listener = listener,
-            loggedInUser = userViewModel.loggedInUser,
+            loggedInUser = result,
             context = requireContext(),
             viewLifecycleOwner = viewLifecycleOwner
         )
@@ -97,13 +100,12 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
     }
 
     override fun onFollowListUserClicked(user: User, loggedInUserUid: String) {
-        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserClicked(
-            user,
-            loggedInUserUid
-        )
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)
+            ?.onFollowListUserClicked(user, loggedInUserUid)
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {
-        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)?.onFollowListUserButtonFollowClicked(user)
+        (parentFragment as? FollowingListAdapter.FollowListUserClickListener)
+            ?.onFollowListUserButtonFollowClicked(user)
     }
 }

@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.viewmodels.main.FeedViewModel
 import com.tellme.app.viewmodels.main.InboxViewModel
@@ -78,11 +79,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupUser() {
-        userViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { user ->
-            user?.let {
-                binding.user = user
-                binding.imageViewUserAvatar.setUserProfileImageFromPath(user.avatar)
-                Timber.d(user.toString())
+        userViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
+                is Result.Success -> {
+                    binding.user = result.data
+                    binding.imageViewUserAvatar.setUserProfileImageFromPath(result.data.avatar)
+                    Timber.d(result.data.toString())
+                }
+                is Result.Error -> userViewModel.logout()
             }
         })
     }

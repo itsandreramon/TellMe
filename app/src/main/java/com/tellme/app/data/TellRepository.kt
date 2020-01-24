@@ -19,18 +19,6 @@ class TellRepository private constructor(
     private val roomDao: TellRoomDao
 ) : TellDao, InboxDao, FeedDao {
 
-    companion object {
-
-        @Volatile private var instance: TellRepository? = null
-
-        fun getInstance(service: TellService, dao: TellRoomDao) =
-            instance
-                ?: TellRepository(
-                    service,
-                    dao
-                ).also { instance = it }
-    }
-
     override suspend fun invalidateInboxCache() {
         roomDao.deleteInbox()
     }
@@ -128,5 +116,19 @@ class TellRepository private constructor(
         } catch (e: Exception) {
             Result.Error(e)
         }
+    }
+
+    companion object {
+
+        @Volatile private var instance: TellRepository? = null
+
+        fun getInstance(
+            service: TellService,
+            dao: TellRoomDao
+        ) = instance
+            ?: TellRepository(
+                service,
+                dao
+            ).also { instance = it }
     }
 }

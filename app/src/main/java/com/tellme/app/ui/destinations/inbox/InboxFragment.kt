@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.data.Result
 import com.tellme.app.model.Tell
 import com.tellme.app.util.EXTRA_TELL_KEY
 import com.tellme.app.util.EXTRA_TELL_KEY_UPDATED
@@ -286,9 +287,16 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.TellClickListener {
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
 
-        inboxViewModel.inbox.observe(viewLifecycleOwner, Observer { tells ->
-            viewAdapter.submitList(tells.sorted())
-            binding.progressBar.visibility = View.INVISIBLE
+        inboxViewModel.inbox.observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
+                is Result.Success -> {
+                    viewAdapter.submitList(result.data.sorted())
+                    binding.progressBar.visibility = View.INVISIBLE
+                }
+                is Result.Error -> {
+                    ViewUtils.showToast(requireContext(), "Error loading inbox.")
+                }
+            }
         })
 
         setupItemTouchHelper(viewAdapter)

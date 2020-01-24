@@ -22,36 +22,42 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FeedViewModel(
-    private val loggedInUserUid: String,
+    private val loggedInUserUid: String?,
     private val tellRepository: TellRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _feedItems = MutableLiveData<List<FeedItem>>()
-    val feedItems: LiveData<List<FeedItem>> = _feedItems
+    private val _feedItems = MutableLiveData<Result<List<FeedItem>>>()
+    val feedItems: LiveData<Result<List<FeedItem>>> = _feedItems
 
     init {
         viewModelScope.launch {
             tellRepository.getFeedFromCache()
                 .flowOn(dispatcherProvider.database)
-                .collect { _feedItems.postValue(it) }
+                .collect { _feedItems.postValue(Result.Success(it)) }
         }
 
-        viewModelScope.launch {
-            getFeedItemsFromRemote(loggedInUserUid)
+        loggedInUserUid?.let { uid ->
+            viewModelScope.launch {
+                getFeedItemsFromRemote(uid)
+            }
         }
     }
 
     fun swipeRefreshFeed(callback: () -> Unit) {
-        viewModelScope.launch {
-            getFeedItemsFromRemote(loggedInUserUid)
-            callback()
+        loggedInUserUid?.let { uid ->
+            viewModelScope.launch {
+                getFeedItemsFromRemote(uid)
+                callback()
+            }
         }
     }
 
     fun refreshFeed() {
-        viewModelScope.launch {
-            getFeedItemsFromRemote(loggedInUserUid)
+        loggedInUserUid?.let { uid ->
+            viewModelScope.launch {
+                getFeedItemsFromRemote(uid)
+            }
         }
     }
 
@@ -72,7 +78,7 @@ class FeedViewModel(
 
         return when (val result = deferred.await()) {
             is Result.Success -> cacheFeed(result.data)
-            is Result.Error -> throw result.exception
+            is Result.Error -> _feedItems.postValue(result)
         }
     }
 }

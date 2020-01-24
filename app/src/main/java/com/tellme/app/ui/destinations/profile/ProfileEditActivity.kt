@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.tellme.R
 import com.tellme.app.dagger.inject
+import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.PICK_IMAGE_REQUEST_CODE
@@ -63,9 +64,14 @@ class ProfileEditActivity : AppCompatActivity() {
     }
 
     private fun setupUser() {
-        userViewModel.loggedInUser.observe(this, Observer { user ->
-            binding.user = user
-            binding.imageViewUserAvatar.setUserProfileImageFromPath(user.avatar)
+        userViewModel.loggedInUser.observe(this, Observer { result ->
+            when (result) {
+                is Result.Success -> {
+                    binding.user = result.data
+                    binding.imageViewUserAvatar.setUserProfileImageFromPath(result.data.avatar)
+                }
+                is Result.Error -> userViewModel.logout()
+            }
         })
     }
 
@@ -133,8 +139,13 @@ class ProfileEditActivity : AppCompatActivity() {
     }
 
     private suspend fun usernameIsInUse(username: String): Boolean {
-        return userViewModel.isUsernameAlreadyInUse(username) &&
-                username != userViewModel.loggedInUser.value!!.username
+        return when (val user = userViewModel.loggedInUser.value) {
+            is Result.Success -> userViewModel.isUsernameAlreadyInUse(username) && username != user.data.username
+            else -> {
+                ViewUtils.showToast(this, "Error checking username availability.")
+                true
+            }
+        }
     }
 
     private suspend fun updateUser(
@@ -143,53 +154,32 @@ class ProfileEditActivity : AppCompatActivity() {
         displayName: String,
         about: String
     ) = when (avatar != null) {
-        true -> handleProfileUpdatedWithAvatar(avatar, username, displayName, about)
-        false -> handleProfileUpdatedWithoutAvatar(username, displayName, about)
+        true -> handleProfileUpdated(username, displayName, about, avatar)
+        false -> handleProfileUpdated(username, displayName, about)
     }
 
-    private suspend fun handleProfileUpdatedWithoutAvatar(
+    private suspend fun handleProfileUpdated(
         username: String,
         displayName: String,
-        about: String
+        about: String,
+        avatar: String? = null
     ) {
-        Timber.e("avatar has not been changed")
+        when (val loggedInUser = userViewModel.loggedInUser.value!!) {
+            is Result.Success -> {
+                val updatedUser = loggedInUser.data.copy(
+                    username = username,
+                    name = displayName,
+                    about = about,
+                    avatar = avatar ?: loggedInUser.data.avatar
+                )
 
-        val loggedInUser = userViewModel.loggedInUser.value!!
-
-        val updatedUser = loggedInUser.copy(
-            username = username,
-            name = displayName,
-            about = about
-        )
-
-        Timber.d(updatedUser.toString())
-
-        userViewModel.updateUser(updatedUser)
-    }
-
-    private suspend fun handleProfileUpdatedWithAvatar(
-        avatar: String,
-        username: String,
-        displayName: String,
-        about: String
-    ) {
-        Timber.e("avatar has been changed")
-
-        val loggedInUser = userViewModel.loggedInUser.value!!
-        val uploadedAvatar = updateAvatar(avatar)
-
-        Timber.d(loggedInUser.toString())
-
-        val updatedUser = loggedInUser.copy(
-            username = username,
-            avatar = uploadedAvatar,
-            name = displayName,
-            about = about
-        )
-
-        Timber.e(updatedUser.toString())
-
-        userViewModel.updateUser(updatedUser)
+                Timber.d(updatedUser.toString())
+                userViewModel.updateUser(updatedUser)
+            }
+            else -> {
+                ViewUtils.showToast(this, "Error updating profile.")
+            }
+        }
     }
 
     private suspend fun updateAvatar(photoUrl: String): String? {

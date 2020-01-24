@@ -36,8 +36,8 @@ abstract class MainModule {
         @JvmStatic
         @LoggedInUserUid
         @Provides
-        fun provideCurrentUserUid(userViewModel: UserViewModel): String {
-            return userViewModel.getCurrentUserFirebase()!!.uid
+        fun provideCurrentUserUid(userViewModel: UserViewModel): String? {
+            return userViewModel.getCurrentUserFirebase()?.uid
         }
 
         @JvmStatic

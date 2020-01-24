@@ -15,7 +15,7 @@ import com.tellme.app.data.TellRepository
 import javax.inject.Inject
 
 class InboxViewModelFactory @Inject constructor(
-    @LoggedInUserUid private val loggedInUserUid: String,
+    @LoggedInUserUid private val loggedInUserUid: String?,
     private val repository: TellRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModelProvider.Factory {

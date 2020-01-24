@@ -15,6 +15,12 @@ import com.tellme.app.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserDao {
+
+    // Firebase
+    fun logout()
+    suspend fun register(email: String, password: String): Result<String>
+    suspend fun login(email: String, password: String): Result<Boolean>
+
     fun getCurrentUserFirebase(): FirebaseUser?
     suspend fun sendEmailVerificationFirebase(user: FirebaseUser, language: String): Result<Boolean>
     suspend fun isEmailAlreadyInUseFirebase(email: String): Result<Boolean>
@@ -23,6 +29,7 @@ interface UserDao {
     suspend fun getAvatarFirebase(userUid: String): Result<Uri>
     suspend fun updateUserProfileFirebase(profile: UserProfileChangeRequest): Result<Boolean>
 
+    // Remote
     suspend fun addUserRemote(user: User): Result<Boolean>
     suspend fun getUserByUidRemote(uid: String): Result<User>
     suspend fun getUserByUsernameRemote(username: String): Result<User>
@@ -31,14 +38,11 @@ interface UserDao {
     suspend fun updateUserRemote(updatedUser: User): Result<Boolean>
     suspend fun deleteUserByUidRemote(uid: String): Result<Boolean>
 
+    // Local
     fun getLatestUserSearchesLocal(): Flow<List<User>>
     fun getUserByUidLocal(uid: String): LiveData<User>
     suspend fun clearLatestUserSearchesLocal()
     suspend fun addUserLocal(user: User)
     suspend fun updateUserLocal(user: User)
     suspend fun invalidateUserCache()
-
-    fun logout()
-    suspend fun register(email: String, password: String): Result<String>
-    suspend fun login(email: String, password: String): Result<Boolean>
 }
