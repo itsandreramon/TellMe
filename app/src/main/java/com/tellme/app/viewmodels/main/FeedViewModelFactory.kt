@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.viewmodels.main
@@ -15,7 +15,7 @@ import com.tellme.app.data.TellRepository
 import javax.inject.Inject
 
 class FeedViewModelFactory @Inject constructor(
-    @LoggedInUserUid private val loggedInUserUid: String,
+    @LoggedInUserUid private val loggedInUserUid: String?,
     private val repository: TellRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModelProvider.Factory {

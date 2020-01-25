@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.viewmodels.main
@@ -22,36 +22,42 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class InboxViewModel(
-    private val loggedInUserUid: String,
+    private val loggedInUserUid: String?,
     private val tellRepository: TellRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _inbox = MutableLiveData<List<Tell>>()
-    val inbox: LiveData<List<Tell>> = _inbox
+    private val _inbox = MutableLiveData<Result<List<Tell>>>()
+    val inbox: LiveData<Result<List<Tell>>> = _inbox
 
     init {
         viewModelScope.launch {
             tellRepository.getInboxFromCache()
                 .flowOn(dispatcherProvider.database)
-                .collect { _inbox.postValue(it) }
+                .collect { _inbox.postValue(Result.Success(it)) }
         }
 
-        viewModelScope.launch {
-            getInboxFromRemote(loggedInUserUid)
+        loggedInUserUid?.let { uid ->
+            viewModelScope.launch {
+                getInboxFromRemote(uid)
+            }
         }
     }
 
     fun swipeRefreshInbox(callback: () -> Unit) {
-        viewModelScope.launch {
-            getInboxFromRemote(loggedInUserUid)
-            callback()
+        loggedInUserUid?.let { uid ->
+            viewModelScope.launch {
+                getInboxFromRemote(uid)
+                callback()
+            }
         }
     }
 
     fun refreshInbox() {
-        viewModelScope.launch {
-            getInboxFromRemote(loggedInUserUid)
+        loggedInUserUid?.let { uid ->
+            viewModelScope.launch {
+                getInboxFromRemote(uid)
+            }
         }
     }
 
@@ -66,7 +72,7 @@ class InboxViewModel(
 
         return when (val result = deferred.await()) {
             is Result.Success -> tellRepository.cacheInbox(result.data)
-            is Result.Error -> throw result.exception
+            is Result.Error -> _inbox.postValue(result)
         }
     }
 }

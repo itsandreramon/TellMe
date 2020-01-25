@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.viewmodels.main
@@ -31,8 +31,8 @@ class UserViewModel(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _loggedInUser = MutableLiveData<User>()
-    val loggedInUser: LiveData<User> = _loggedInUser
+    private val _loggedInUser = MutableLiveData<Result<User>>()
+    val loggedInUser: LiveData<Result<User>> = _loggedInUser
 
     init {
         viewModelScope.launch {
@@ -59,8 +59,10 @@ class UserViewModel(
         userRepository
             .getUserByUidLocal(uid)
             .observeForever { user ->
-                user?.let { Timber.e(user.toString()) }
-                _loggedInUser.postValue(user)
+                user?.let {
+                    Timber.e(user.toString())
+                    _loggedInUser.postValue(Result.Success(user))
+                }
             }
     }
 
@@ -101,18 +103,20 @@ class UserViewModel(
         }
     }
 
-    suspend fun getUserByUid(id: String): User {
+    suspend fun getUserByUid(id: String): Result<User> {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.getUserByUidRemote(id)
         }
 
         return when (val result = deferred.await()) {
             is Result.Success -> {
-                val user = result.data
-                cacheUser(user)
-                user
+                cacheUser(result.data)
+                result
             }
-            is Result.Error -> throw result.exception
+            is Result.Error -> {
+                _loggedInUser.postValue(result)
+                result
+            }
         }
     }
 

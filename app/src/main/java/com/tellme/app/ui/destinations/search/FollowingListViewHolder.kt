@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.ui.destinations.search
@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
 import com.tellme.app.util.ViewUtils
@@ -21,7 +22,7 @@ import com.tellme.databinding.ViewHolderItemUserFollowListBinding
 class FollowingListViewHolder(
     val viewLifecycleOwner: LifecycleOwner,
     val binding: ViewHolderItemUserFollowListBinding,
-    val loggedInUser: LiveData<User>
+    val loggedInUser: LiveData<Result<User>>
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
@@ -32,12 +33,18 @@ class FollowingListViewHolder(
         binding.user = user
         binding.imageViewUserAvatar.setUserProfileImageFromPath(user.avatar)
         binding.executePendingBindings()
-
-        itemView.setOnClickListener { listener.onFollowListUserClicked(user, loggedInUser.value!!.uid) }
         binding.buttonFollow.setOnClickListener { listener.onFollowListUserButtonFollowClicked(user) }
 
-        loggedInUser.observe(viewLifecycleOwner, Observer {
-            setupFollowButton(it, user, context, listener)
+        loggedInUser.observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
+                is Result.Success -> {
+                    setupFollowButton(result.data, user, context, listener)
+                    itemView.setOnClickListener { listener.onFollowListUserClicked(user, result.data.uid) }
+                }
+                is Result.Error -> {
+                    // TODO
+                }
+            }
         })
     }
 

@@ -1,21 +1,19 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.viewmodels.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.tellme.app.dagger.qualifier.LoggedInUserUid
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.TellRepository
 import javax.inject.Inject
 
 class TellViewModelFactory @Inject constructor(
-    @LoggedInUserUid private val loggedInUserUid: String,
     private val repository: TellRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModelProvider.Factory {

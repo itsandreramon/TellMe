@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.ui.destinations.feed
@@ -22,7 +22,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.data.Result
 import com.tellme.app.model.FeedItem
+import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.FeedViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentFeedBinding
@@ -86,8 +88,15 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
         }
 
         feedViewModel.feedItems.observe(viewLifecycleOwner, Observer { feedItems ->
-            viewItemViewAdapter.submitList(feedItems)
-            binding.progressBar.visibility = View.INVISIBLE
+            when (feedItems) {
+                is Result.Success -> {
+                    viewItemViewAdapter.submitList(feedItems.data)
+                    binding.progressBar.visibility = View.INVISIBLE
+                }
+                is Result.Error -> {
+                    ViewUtils.showToast(requireContext(), "Error loading feed.")
+                }
+            }
         })
     }
 

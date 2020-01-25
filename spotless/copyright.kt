@@ -1,7 +1,7 @@
 /*
- * Copyright $YEAR - André Thiele
+ * Copyright $YEAR - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 

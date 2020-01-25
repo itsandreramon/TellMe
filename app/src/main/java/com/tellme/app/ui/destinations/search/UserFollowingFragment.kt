@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.ui.destinations.search
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.data.Result
 import com.tellme.app.model.User
 import com.tellme.app.util.ArgsHelper
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -75,7 +76,7 @@ class UserFollowingFragment : Fragment(), FollowingListAdapter.FollowListUserCli
             .filter { it.isNotEmpty() }
             .asFlow()
             .map { userViewModel.getUserByUid(it) }
-            .onEach { viewAdapter.addItem(it) }
+            .onEach { if (it is Result.Success) viewAdapter.addItem(it.data) }
             .launchIn(lifecycleScope)
     }
 

@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.dagger
@@ -36,8 +36,8 @@ abstract class MainModule {
         @JvmStatic
         @LoggedInUserUid
         @Provides
-        fun provideCurrentUserUid(userViewModel: UserViewModel): String {
-            return userViewModel.getCurrentUserFirebase()!!.uid
+        fun provideCurrentUserUid(userViewModel: UserViewModel): String? {
+            return userViewModel.getCurrentUserFirebase()?.uid
         }
 
         @JvmStatic

@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.ui.destinations.search
@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
+import com.tellme.app.data.Result
 import com.tellme.app.extensions.hideSoftInput
 import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.User
@@ -155,7 +156,14 @@ class SearchFragment : Fragment(),
         }
 
         searchViewModel.searchResults.observe(viewLifecycleOwner, Observer {
-            resultViewAdapter.submitList(it.filter { user -> user.uid != userViewModel.loggedInUser.value!!.uid })
+            when (val result = userViewModel.loggedInUser.value!!) {
+                is Result.Success -> {
+                    resultViewAdapter.submitList(it.filter { user -> user.uid != result.data.uid })
+                }
+                is Result.Error -> {
+                    // TODO
+                }
+            }
         })
     }
 

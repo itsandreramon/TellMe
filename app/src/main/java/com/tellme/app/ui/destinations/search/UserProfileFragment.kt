@@ -1,8 +1,8 @@
 /*
- * Copyright 2020 - André Thiele
+ * Copyright 2020 - André Ramon Thiele
  *
- * Fachbereich Informatik und Medien
- * Technische Hochschule Brandenburg
+ * Department of Computer Science and Media
+ * University of Applied Sciences Brandenburg
  */
 
 package com.tellme.app.ui.destinations.search
@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tellme.R
 import com.tellme.app.dagger.inject
+import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
@@ -60,19 +61,10 @@ class UserProfileFragment : Fragment() {
         renderUserData(args.user)
 
         userViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { loggedInUser ->
-            val isFollowing = loggedInUser.following.contains(args.user.uid)
-
-            if (isFollowing) {
-                ViewUtils.setFollowButtonToFollowing(binding.buttonFollow, requireContext())
-            } else {
-                ViewUtils.setFollowButtonToFollow(binding.buttonFollow, requireContext())
-            }
-
-            binding.buttonFollow.setOnClickListener {
-                if (isFollowing) {
-                    lifecycleScope.launch { unfollowUserByUid(loggedInUser, args.user) }
-                } else {
-                    lifecycleScope.launch { followUserByUid(loggedInUser, args.user) }
+            when (loggedInUser) {
+                is Result.Success -> setupFollowButton(loggedInUser.data)
+                is Result.Error -> {
+                    // TODO
                 }
             }
         })
@@ -85,6 +77,24 @@ class UserProfileFragment : Fragment() {
         binding.layoutUserStats.setOnClickListener {
             val action = UserProfileFragmentDirections.actionUserProfileFragmentToFollowsFragment(args.user)
             findNavController().navigate(action)
+        }
+    }
+
+    private fun setupFollowButton(loggedInUser: User) {
+        val isFollowing = loggedInUser.following.contains(args.user.uid)
+
+        if (isFollowing) {
+            ViewUtils.setFollowButtonToFollowing(binding.buttonFollow, requireContext())
+        } else {
+            ViewUtils.setFollowButtonToFollow(binding.buttonFollow, requireContext())
+        }
+
+        binding.buttonFollow.setOnClickListener {
+            if (isFollowing) {
+                lifecycleScope.launch { unfollowUserByUid(loggedInUser, args.user) }
+            } else {
+                lifecycleScope.launch { followUserByUid(loggedInUser, args.user) }
+            }
         }
     }
 
