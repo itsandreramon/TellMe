@@ -10,7 +10,6 @@ package com.tellme.app.viewmodels.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.Result
 import com.tellme.app.data.UserRepository
@@ -43,16 +42,6 @@ class AuthViewModel(
 
     fun getCurrentUser(): FirebaseUser? {
         return userRepository.getCurrentUserFirebase()
-    }
-
-    suspend fun updateFirebaseUserProfile(profile: UserProfileChangeRequest): Boolean {
-        val deferred =
-            viewModelScope.async(dispatcherProvider.network) { userRepository.updateUserProfileFirebase(profile) }
-
-        return when (val result = deferred.await()) {
-            is Result.Success -> result.data
-            is Result.Error -> throw result.exception
-        }
     }
 
     suspend fun sendEmailVerification(user: FirebaseUser, language: String): Boolean {
