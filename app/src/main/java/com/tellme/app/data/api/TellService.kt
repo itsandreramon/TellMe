@@ -39,12 +39,14 @@ interface TellService {
         @Path("id") id: String
     ): Response<Boolean>
 
-    @GET("tells/user/{uid}/inbox")
+    // TODO Move to UserService
+    @GET("users/uid/{uid}/inbox")
     suspend fun getInboxByUser(
         @Path("uid") uid: String
     ): Response<List<Tell>>
 
-    @GET("tells/user/{uid}/feed")
+    // TODO Move to UserService
+    @GET("users/uid/{uid}/feed")
     suspend fun getFeedByUser(
         @Path("uid") uid: String
     ): Response<List<FeedItem>>

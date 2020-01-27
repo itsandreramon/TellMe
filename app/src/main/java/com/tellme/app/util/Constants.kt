@@ -7,9 +7,10 @@
 
 package com.tellme.app.util
 
-const val BASE_URL = "https://tellme-backend.herokuapp.com/api/v1/tellme/"
+const val BASE_URL = "https://tellme-backend.herokuapp.com/api/v2/"
+// const val BASE_URL = "http://10.0.2.2:8080/api/v2/"
 
-const val DATABASE_NAME = "tellMe-db"
+const val LOCAL_DATABASE_NAME = "tellMe-db"
 
 const val REPLY_TELL_REQUEST_CODE = 1
 const val EDIT_PROFILE_REQUEST_CODE = 2

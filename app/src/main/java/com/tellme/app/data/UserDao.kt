@@ -10,7 +10,6 @@ package com.tellme.app.data
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.tellme.app.model.User
 import kotlinx.coroutines.flow.Flow
 
@@ -27,14 +26,12 @@ interface UserDao {
     suspend fun retrieveIdToken(firebaseUser: FirebaseUser): Result<String>
     suspend fun uploadAvatarFirebase(path: Uri, userUid: String): Result<Boolean>
     suspend fun getAvatarFirebase(userUid: String): Result<Uri>
-    suspend fun updateUserProfileFirebase(profile: UserProfileChangeRequest): Result<Boolean>
 
     // Remote
     suspend fun addUserRemote(user: User): Result<Boolean>
     suspend fun getUserByUidRemote(uid: String): Result<User>
     suspend fun getUserByUsernameRemote(username: String): Result<User>
     suspend fun getUsersByQueryRemote(query: String, limit: Int): Result<List<User>>
-    suspend fun getFollowsByUid(uid: String): Result<List<User>>
     suspend fun updateUserRemote(updatedUser: User): Result<Boolean>
     suspend fun deleteUserByUidRemote(uid: String): Result<Boolean>
 

@@ -14,7 +14,7 @@ import androidx.room.RoomDatabase
 import com.tellme.app.model.FeedItem
 import com.tellme.app.model.Tell
 import com.tellme.app.model.User
-import com.tellme.app.util.DATABASE_NAME
+import com.tellme.app.util.LOCAL_DATABASE_NAME
 
 @Database(entities = [FeedItem::class, Tell::class, User::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
@@ -35,7 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DATABASE_NAME)
+            return Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, LOCAL_DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
         }

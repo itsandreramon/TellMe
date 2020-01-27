@@ -154,7 +154,7 @@ class ProfileEditActivity : AppCompatActivity() {
         displayName: String,
         about: String
     ) = when (avatar != null) {
-        true -> handleProfileUpdated(username, displayName, about, avatar)
+        true -> handleProfileUpdated(username, displayName, about, updateAvatar(avatar))
         false -> handleProfileUpdated(username, displayName, about)
     }
 
@@ -164,7 +164,9 @@ class ProfileEditActivity : AppCompatActivity() {
         about: String,
         avatar: String? = null
     ) {
-        when (val loggedInUser = userViewModel.loggedInUser.value!!) {
+        val loggedInUser = userViewModel.loggedInUser.value!!
+
+        when (loggedInUser) {
             is Result.Success -> {
                 val updatedUser = loggedInUser.data.copy(
                     username = username,
@@ -173,10 +175,10 @@ class ProfileEditActivity : AppCompatActivity() {
                     avatar = avatar ?: loggedInUser.data.avatar
                 )
 
-                Timber.d(updatedUser.toString())
                 userViewModel.updateUser(updatedUser)
             }
-            else -> {
+
+            is Result.Error -> {
                 ViewUtils.showToast(this, "Error updating profile.")
             }
         }

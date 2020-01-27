@@ -33,7 +33,7 @@ interface UserService {
         @Path("username") username: String
     ): Response<User>
 
-    @GET("users/username/{query}/{limit}")
+    @GET("users/search/{query}/{limit}")
     suspend fun getUsersByQueryRemote(
         @Path("query") query: String,
         @Path("limit") limit: Int

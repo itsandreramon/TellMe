@@ -10,7 +10,6 @@ package com.tellme.app.data
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.tellme.app.data.api.UserService
 import com.tellme.app.data.database.UserRoomDao
 import com.tellme.app.model.User
@@ -100,17 +99,6 @@ class UserRepository private constructor(
         }
     }
 
-    override suspend fun getFollowsByUid(uid: String): Result<List<User>> {
-        return try {
-            val response = userService.getFollowsByUid(uid)
-            getResult(response = response, onError = {
-                throw IOException("Error getting follows by uid: ${response.code()} ${response.message()}")
-            })
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-
     override suspend fun updateUserRemote(updatedUser: User): Result<Boolean> {
         return try {
             val response = userService.updateUser(updatedUser)
@@ -180,15 +168,6 @@ class UserRepository private constructor(
         return suspendCancellableCoroutine { cont ->
             firebaseSource.getAvatar(userUid).apply {
                 addOnSuccessListener { result -> cont.resume(Result.Success(result)) }
-                addOnFailureListener { e -> cont.resume(Result.Error(e)) }
-            }
-        }
-    }
-
-    override suspend fun updateUserProfileFirebase(profile: UserProfileChangeRequest): Result<Boolean> {
-        return suspendCancellableCoroutine { cont ->
-            firebaseSource.updateUserProfile(profile)?.apply {
-                addOnSuccessListener { cont.resume(Result.Success(true)) }
                 addOnFailureListener { e -> cont.resume(Result.Error(e)) }
             }
         }

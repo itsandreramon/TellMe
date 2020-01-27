@@ -13,7 +13,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.Result
 import com.tellme.app.data.UserRepository
@@ -68,17 +67,6 @@ class UserViewModel(
 
     fun getCurrentUserFirebase(): FirebaseUser? {
         return userRepository.getCurrentUserFirebase()
-    }
-
-    suspend fun updateUserProfileFirebase(profile: UserProfileChangeRequest): Boolean {
-        val deferred = viewModelScope.async(dispatcherProvider.network) {
-            userRepository.updateUserProfileFirebase(profile)
-        }
-
-        return when (val result = deferred.await()) {
-            is Result.Success -> result.data
-            is Result.Error -> throw result.exception
-        }
     }
 
     suspend fun uploadAvatarFirebase(path: String, userUid: String): Boolean {
@@ -257,17 +245,6 @@ class UserViewModel(
         return mutableList
             .filter { it.isNotEmpty() }
             .distinct()
-    }
-
-    suspend fun getFollowsByUid(uid: String): List<User> {
-        val deferred = viewModelScope.async(dispatcherProvider.network) {
-            userRepository.getFollowsByUid(uid)
-        }
-
-        return when (val result = deferred.await()) {
-            is Result.Success -> result.data
-            is Result.Error -> throw result.exception
-        }
     }
 
     fun logout() {
