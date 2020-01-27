@@ -122,6 +122,10 @@ dependencies {
     implementation Libs.Uber.AutoDispose.android
     implementation Libs.Uber.AutoDispose.lifecycle
 
+    implementation Libs.Amazon.Aws.core
+    implementation Libs.Amazon.Aws.storage
+    implementation Libs.Amazon.Aws.mobile
+
     testImplementation Libs.Test.junit
     androidTestImplementation Libs.AndroidX.Test.junitExt
     androidTestImplementation Libs.AndroidX.Test.espressoCore
