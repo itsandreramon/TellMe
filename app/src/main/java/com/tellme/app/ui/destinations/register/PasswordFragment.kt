@@ -32,11 +32,11 @@ import com.tellme.databinding.FragmentRegisterPasswordBinding
 import com.uber.autodispose.android.lifecycle.autoDispose
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class PasswordFragment : Fragment() {
 

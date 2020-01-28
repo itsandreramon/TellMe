@@ -18,11 +18,11 @@ import com.tellme.app.data.Result
 import com.tellme.app.data.UserRepository
 import com.tellme.app.model.User
 import com.tellme.app.util.UserNotFoundException
+import java.io.IOException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.io.IOException
 
 class UserViewModel(
     private val userRepository: UserRepository,

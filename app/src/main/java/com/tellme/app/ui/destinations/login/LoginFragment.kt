@@ -22,8 +22,8 @@ import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.auth.AuthViewModel
 import com.tellme.databinding.FragmentLoginBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
