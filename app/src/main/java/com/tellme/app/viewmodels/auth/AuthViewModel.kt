@@ -21,7 +21,6 @@ import com.tellme.app.util.UserNotFoundException
 import kotlinx.coroutines.async
 
 class AuthViewModel(
-    private val sharedPreferences: EncryptedSharedPreferences,
     private val userRepository: UserRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
@@ -107,17 +106,6 @@ class AuthViewModel(
         return when (val result = deferred.await()) {
             is Result.Success -> result.data
             is Result.Error -> throw result.exception
-        }
-    }
-
-    suspend fun retrieveIdToken() {
-        getCurrentUserFirebase()?.let { firebaseUser ->
-            when (val result = userRepository.retrieveIdToken(firebaseUser)) {
-                is Result.Success -> sharedPreferences.edit { putString(API_TOKEN, result.data) }
-                is Result.Error -> {
-                    // TODO Handle error
-                }
-            }
         }
     }
 

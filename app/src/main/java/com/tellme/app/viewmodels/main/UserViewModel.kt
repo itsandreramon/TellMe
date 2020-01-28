@@ -8,15 +8,18 @@
 package com.tellme.app.viewmodels.main
 
 import android.net.Uri
+import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.security.crypto.EncryptedSharedPreferences
 import com.google.firebase.auth.FirebaseUser
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.Result
 import com.tellme.app.data.UserRepository
 import com.tellme.app.model.User
+import com.tellme.app.util.API_TOKEN
 import com.tellme.app.util.UserNotFoundException
 import java.io.IOException
 import kotlinx.coroutines.async
@@ -25,6 +28,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class UserViewModel(
+    private val sharedPreferences: EncryptedSharedPreferences,
     private val userRepository: UserRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
@@ -67,6 +71,18 @@ class UserViewModel(
     fun getCurrentUserFirebase(): FirebaseUser? {
         return userRepository.getCurrentUserFirebase()
     }
+
+    suspend fun retrieveIdToken() {
+        getCurrentUserFirebase()?.let { firebaseUser ->
+            when (val result = userRepository.retrieveIdToken(firebaseUser)) {
+                is Result.Success -> sharedPreferences.edit { putString(API_TOKEN, result.data) }
+                is Result.Error -> {
+                    // TODO Handle error
+                }
+            }
+        }
+    }
+
 
     suspend fun uploadAvatarFirebase(path: String, userUid: String): Boolean {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
