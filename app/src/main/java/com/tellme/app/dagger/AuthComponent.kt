@@ -18,7 +18,7 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 
 @AuthScope
-@Subcomponent(modules = [AuthModule::class])
+@Subcomponent(modules = [AuthModule::class, SecurityModule::class])
 interface AuthComponent {
 
     @Subcomponent.Factory
