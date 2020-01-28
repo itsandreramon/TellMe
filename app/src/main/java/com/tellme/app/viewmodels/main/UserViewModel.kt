@@ -263,6 +263,13 @@ class UserViewModel(
             .distinct()
     }
 
+    // TODO Remove duplicate
+    fun logout() {
+        // TODO Wipe shared prefs
+        // TODO Clear database here
+        return userRepository.logout()
+    }
+
     suspend fun invalidateUserCache() {
         withContext(dispatcherProvider.database) {
             userRepository.invalidateUserCache()
