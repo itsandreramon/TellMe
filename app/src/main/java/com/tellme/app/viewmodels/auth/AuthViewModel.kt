@@ -7,16 +7,13 @@
 
 package com.tellme.app.viewmodels.auth
 
-import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.security.crypto.EncryptedSharedPreferences
 import com.google.firebase.auth.FirebaseUser
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.Result
 import com.tellme.app.data.UserRepository
 import com.tellme.app.model.User
-import com.tellme.app.util.API_TOKEN
 import com.tellme.app.util.UserNotFoundException
 import kotlinx.coroutines.async
 
