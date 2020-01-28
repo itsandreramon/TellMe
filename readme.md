@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/circleci/build/github/itsandreramon/TellMe-Android?token=f24ebd30e0d413eebc536d6c4a3d0804a9cc75fe)](https://circleci.com/gh/itsandreramon/TellMe-Android)
+[![Build Status](https://img.shields.io/circleci/build/github/itsandreramon/TellMe?token=f24ebd30e0d413eebc536d6c4a3d0804a9cc75fe)](https://circleci.com/gh/itsandreramon/TellMe)
 
 The Android app for TellMe. Written entirely in [Kotlin](https://kotlinlang.org/) using [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) and [RxJava](https://github.com/ReactiveX/RxJava).
 
