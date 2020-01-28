@@ -22,8 +22,8 @@ import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.viewmodels.auth.AuthViewModel
 import com.tellme.databinding.FragmentLoginBinding
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class LoginFragment : Fragment() {
 
@@ -70,7 +70,7 @@ class LoginFragment : Fragment() {
     private suspend fun login(email: String, password: String) {
         try {
             authViewModel.login(email, password)
-            val currentUser = authViewModel.getCurrentUser()!!
+            val currentUser = authViewModel.getCurrentUserFirebase()!!
 
             if (currentUser.isEmailVerified) {
                 startMainActivity()

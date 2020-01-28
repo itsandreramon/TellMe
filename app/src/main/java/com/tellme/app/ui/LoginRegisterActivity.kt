@@ -38,7 +38,7 @@ class LoginRegisterActivity : AppCompatActivity() {
         setupNavigation()
 
         try {
-            authViewModel.getCurrentUser()?.let {
+            authViewModel.getCurrentUserFirebase()?.let {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_startFragment_to_mainActivity)
             }
         } catch (e: NoConnectivityException) {
