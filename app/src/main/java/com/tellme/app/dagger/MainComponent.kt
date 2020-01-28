@@ -25,7 +25,7 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 
 @MainScope
-@Subcomponent(modules = [MainModule::class, NetworkModule::class, TranslationModule::class])
+@Subcomponent(modules = [MainModule::class, TranslationModule::class, SecurityModule::class])
 interface MainComponent {
 
     @Subcomponent.Factory

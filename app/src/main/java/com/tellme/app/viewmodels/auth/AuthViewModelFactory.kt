@@ -15,13 +15,12 @@ import com.tellme.app.data.UserRepository
 import javax.inject.Inject
 
 class AuthViewModelFactory @Inject constructor(
-    private val sharedPreferences: EncryptedSharedPreferences,
     private val repository: UserRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return AuthViewModel(sharedPreferences, repository, dispatcherProvider) as T
+        return AuthViewModel(repository, dispatcherProvider) as T
     }
 }

@@ -7,6 +7,7 @@
 
 package com.tellme.app.viewmodels.main
 
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
@@ -28,7 +29,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class UserViewModel(
-    private val sharedPreferences: EncryptedSharedPreferences,
+    private val sharedPreferences: SharedPreferences,
     private val userRepository: UserRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
