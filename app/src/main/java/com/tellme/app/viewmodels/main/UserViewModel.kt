@@ -14,7 +14,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.security.crypto.EncryptedSharedPreferences
 import com.google.firebase.auth.FirebaseUser
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.Result
@@ -83,7 +82,6 @@ class UserViewModel(
             }
         }
     }
-
 
     suspend fun uploadAvatarFirebase(path: String, userUid: String): Boolean {
         val deferred = viewModelScope.async(dispatcherProvider.network) {

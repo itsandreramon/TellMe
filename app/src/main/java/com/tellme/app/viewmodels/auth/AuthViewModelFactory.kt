@@ -9,7 +9,6 @@ package com.tellme.app.viewmodels.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.security.crypto.EncryptedSharedPreferences
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.UserRepository
 import javax.inject.Inject
