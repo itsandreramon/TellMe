@@ -33,15 +33,10 @@ interface UserService {
         @Path("username") username: String
     ): Response<User>
 
-    @GET("users/search/{query}/{limit}")
+    @GET("users/query/{query}/{limit}")
     suspend fun getUsersByQueryRemote(
         @Path("query") query: String,
         @Path("limit") limit: Int
-    ): Response<List<User>>
-
-    @GET("users/uid/{uid}/follows")
-    suspend fun getFollowsByUid(
-        @Path("uid") uid: String
     ): Response<List<User>>
 
     @PUT("users")

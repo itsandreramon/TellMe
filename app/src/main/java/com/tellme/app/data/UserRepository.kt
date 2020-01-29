@@ -146,15 +146,6 @@ class UserRepository private constructor(
         }
     }
 
-    override suspend fun retrieveIdToken(firebaseUser: FirebaseUser): Result<String> {
-        return suspendCancellableCoroutine { cont ->
-            firebaseSource.retrieveIdToken(firebaseUser).apply {
-                addOnSuccessListener { cont.resume(Result.Success(it.token!!)) }
-                addOnFailureListener { e -> cont.resume(Result.Error(e)) }
-            }
-        }
-    }
-
     override suspend fun uploadAvatarFirebase(path: Uri, userUid: String): Result<Boolean> {
         return suspendCancellableCoroutine { cont ->
             firebaseSource.uploadAvatar(path, userUid).apply {

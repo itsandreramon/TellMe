@@ -127,14 +127,6 @@ object Libs {
         }
     }
 
-    object Amazon {
-        object Aws {
-            const val core = "com.amplifyframework:core:0.9.0"
-            const val storage = "com.amplifyframework:aws-storage-s3:0.9.0"
-            const val mobile = "com.amazonaws:aws-android-sdk-mobile-client:2.16.+"
-        }
-    }
-
     object Coil {
         private const val version = "0.8.0"
         const val coil = "io.coil-kt:coil:$version"
