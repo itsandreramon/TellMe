@@ -7,9 +7,11 @@
 
 package com.tellme.app.util
 
+import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.DateTimeParseException
 import org.threeten.bp.temporal.ChronoUnit
 
 object DateUtils {
@@ -17,28 +19,32 @@ object DateUtils {
     /** Uses the JSR-310 Android backport ThreeTenABP
      * https://github.com/JakeWharton/ThreeTenABP
      *
-     * @return String */
-    fun now(formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): String {
-        return ZonedDateTime
-            .now(ZoneId.systemDefault())
-            .truncatedTo(ChronoUnit.MILLIS)
-            .format(formatter)
+     * @return
+     * */
+    fun now(): String {
+        return Instant.now()
+            .truncatedTo(ChronoUnit.SECONDS)
+            .toString()
     }
 
-    fun fromString(timestamp: String?, formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): ZonedDateTime {
-        return ZonedDateTime.parse(timestamp, formatter)
-            .truncatedTo(ChronoUnit.MILLIS) ?: ZonedDateTime.now()
+    @Throws(DateTimeParseException::class)
+    fun fromString(
+        timestamp: String?
+    ): ZonedDateTime {
+        val utc = Instant.parse(timestamp)
+        return ZonedDateTime.ofInstant(utc, ZoneId.systemDefault())
     }
 
-    fun toString(date: ZonedDateTime, formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): String {
-        return date
-            .truncatedTo(ChronoUnit.MILLIS)
+    @Throws(DateTimeParseException::class)
+    fun toString(date: ZonedDateTime, formatter: DateTimeFormatter = DateTimeFormatter.ISO_INSTANT): String {
+        return date.truncatedTo(ChronoUnit.MILLIS)
             .format(formatter)
             .toString()
     }
 
-    fun convertDate(timestamp: String): String {
-        val date = fromString(timestamp)
-        return toString(date, DateTimeFormatter.ofPattern("EEE, d MMM yyyy"))
+    @Throws(DateTimeParseException::class)
+    fun convertDate(timestamp: String): String? {
+        val zonedDateTime = fromString(timestamp)
+        return toString(zonedDateTime, DateTimeFormatter.ofPattern("EEE, d MMM yyyy"))
     }
 }

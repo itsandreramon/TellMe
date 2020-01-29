@@ -18,17 +18,23 @@ import com.tellme.app.model.Tell
 import com.tellme.app.util.DateUtils
 import com.tellme.databinding.ViewHolderItemInboxBinding
 import java.util.Locale
+import org.threeten.bp.format.DateTimeParseException
 
 class InboxItemViewHolder(val binding: ViewHolderItemInboxBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(tell: Tell, listener: InboxItemViewAdapter.TellClickListener) {
+    fun bind(tell: Tell, listener: InboxItemViewAdapter.InboxItemClickListener) {
 
         binding.tell = tell
-        binding.root.setOnClickListener { listener.onTellClicked(tell) }
+        binding.root.setOnClickListener { listener.onInboxItemClicked(tell) }
         binding.textViewTranslate.setOnClickListener { tryTranslate(tell.question, Locale.getDefault().language) }
-        binding.textViewDate.text = DateUtils.convertDate(tell.sendDate)
-        binding.executePendingBindings()
 
+        binding.textViewDate.text = try {
+            DateUtils.convertDate(tell.sendDate)
+        } catch (e: DateTimeParseException) {
+            DateUtils.convertDate(DateUtils.now())
+        }
+
+        binding.executePendingBindings()
         toggleTranslate(tell.question)
     }
 

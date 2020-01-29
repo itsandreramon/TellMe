@@ -15,7 +15,7 @@ import com.tellme.app.model.TellDiffCallback
 import com.tellme.databinding.ViewHolderItemInboxBinding
 
 class InboxItemViewAdapter(
-    private val listener: TellClickListener
+    private val listener: InboxItemClickListener
 ) : ListAdapter<Tell, InboxItemViewHolder>(TellDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InboxItemViewHolder {
@@ -30,7 +30,7 @@ class InboxItemViewAdapter(
         holderItem.bind(getItem(position), listener)
     }
 
-    interface TellClickListener {
-        fun onTellClicked(tell: Tell)
+    interface InboxItemClickListener {
+        fun onInboxItemClicked(tell: Tell)
     }
 }

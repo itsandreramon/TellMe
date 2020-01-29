@@ -90,7 +90,7 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
         feedViewModel.feedItems.observe(viewLifecycleOwner, Observer { feedItems ->
             when (feedItems) {
                 is Result.Success -> {
-                    viewItemViewAdapter.submitList(feedItems.data)
+                    viewItemViewAdapter.submitList(feedItems.data.sorted())
                     binding.progressBar.visibility = View.INVISIBLE
                 }
                 is Result.Error -> {

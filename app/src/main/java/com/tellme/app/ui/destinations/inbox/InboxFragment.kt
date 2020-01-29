@@ -42,7 +42,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class InboxFragment : Fragment(), InboxItemViewAdapter.TellClickListener {
+class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
 
     private lateinit var binding: FragmentInboxBinding
     private lateinit var mContext: Context
@@ -73,7 +73,7 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.TellClickListener {
         }
     }
 
-    override fun onTellClicked(tell: Tell) {
+    override fun onInboxItemClicked(tell: Tell) {
         val intent = Intent(context, ReplyTellActivity::class.java)
         intent.putExtra(TELL_KEY_ID, tell.id)
         intent.putExtra(EXTRA_TELL_KEY, tell)
@@ -268,7 +268,7 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.TellClickListener {
         }
     }
 
-    private fun setupTellAdapter(listener: InboxItemViewAdapter.TellClickListener) {
+    private fun setupTellAdapter(listener: InboxItemViewAdapter.InboxItemClickListener) {
         val viewManager = LinearLayoutManager(activity)
         val viewAdapter = InboxItemViewAdapter(listener)
 
