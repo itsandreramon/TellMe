@@ -7,6 +7,7 @@
 
 package com.tellme.app.util
 
+import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -18,24 +19,24 @@ object DateUtils {
     /** Uses the JSR-310 Android backport ThreeTenABP
      * https://github.com/JakeWharton/ThreeTenABP
      *
-     * @return String */
-    fun now(formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): String {
-        return ZonedDateTime
-            .now(ZoneId.systemDefault())
-            .truncatedTo(ChronoUnit.MILLIS)
-            .format(formatter)
+     * @return
+     * */
+    fun now(): String {
+        return Instant.now()
+            .truncatedTo(ChronoUnit.SECONDS)
+            .toString()
     }
 
     @Throws(DateTimeParseException::class)
     fun fromString(
-        timestamp: String?,
-        formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
+        timestamp: String?
     ): ZonedDateTime {
-        return ZonedDateTime.parse(timestamp, formatter).truncatedTo(ChronoUnit.MILLIS)
+        val utc = Instant.parse(timestamp)
+        return ZonedDateTime.ofInstant(utc, ZoneId.systemDefault())
     }
 
     @Throws(DateTimeParseException::class)
-    fun toString(date: ZonedDateTime, formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME): String {
+    fun toString(date: ZonedDateTime, formatter: DateTimeFormatter = DateTimeFormatter.ISO_INSTANT): String {
         return date.truncatedTo(ChronoUnit.MILLIS)
             .format(formatter)
             .toString()
@@ -43,7 +44,7 @@ object DateUtils {
 
     @Throws(DateTimeParseException::class)
     fun convertDate(timestamp: String): String? {
-        val date = fromString(timestamp)
-        return toString(date, DateTimeFormatter.ofPattern("EEE, d MMM yyyy"))
+        val zonedDateTime = fromString(timestamp)
+        return toString(zonedDateTime, DateTimeFormatter.ofPattern("EEE, d MMM yyyy"))
     }
 }
