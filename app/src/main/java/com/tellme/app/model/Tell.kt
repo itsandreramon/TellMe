@@ -30,6 +30,8 @@ import com.tellme.app.util.TELL_KEY_REPLY
 import com.tellme.app.util.TELL_KEY_REPLY_DATE
 import com.tellme.app.util.TELL_KEY_SEND_DATE
 import kotlinx.android.parcel.Parcelize
+import timber.log.Timber
+import kotlin.Exception
 
 @Parcelize
 @Entity(tableName = "inbox_items")
@@ -72,9 +74,15 @@ data class Tell(
     }
 
     override fun compareTo(other: Tell): Int {
-        val thisSendDate = DateUtils.fromString(this.sendDate)
-        val otherSendDate = DateUtils.fromString(other.sendDate)
-        return -thisSendDate.compareTo(otherSendDate) // descending order
+        try {
+            val thisSendDate = DateUtils.fromString(this.sendDate)
+            val otherSendDate = DateUtils.fromString(other.sendDate)
+            return -thisSendDate.compareTo(otherSendDate) // descending order
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
+
+        return 0
     }
 }
 

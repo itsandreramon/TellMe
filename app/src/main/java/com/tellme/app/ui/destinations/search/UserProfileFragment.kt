@@ -78,6 +78,12 @@ class UserProfileFragment : Fragment() {
             val action = UserProfileFragmentDirections.actionUserProfileFragmentToFollowsFragment(args.user)
             findNavController().navigate(action)
         }
+
+        setupTellAdapter()
+    }
+
+    private fun setupTellAdapter() {
+        // TODO
     }
 
     private fun setupFollowButton(loggedInUser: User) {

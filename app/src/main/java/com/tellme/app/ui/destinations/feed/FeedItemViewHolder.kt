@@ -12,7 +12,7 @@ import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.FeedItem
 import com.tellme.app.util.DateUtils
 import com.tellme.databinding.ViewHolderItemFeedBinding
-import java.time.format.DateTimeParseException
+import org.threeten.bp.format.DateTimeParseException
 
 class FeedItemViewHolder(val binding: ViewHolderItemFeedBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -22,7 +22,7 @@ class FeedItemViewHolder(val binding: ViewHolderItemFeedBinding) : RecyclerView.
 
         binding.textViewDate.text = try {
             DateUtils.convertDate(feedItem.replyDate)
-        } catch (e: org.threeten.bp.format.DateTimeParseException) {
+        } catch (e: DateTimeParseException) {
             DateUtils.convertDate(DateUtils.now())
         }
 

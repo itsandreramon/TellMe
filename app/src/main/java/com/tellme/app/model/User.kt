@@ -34,6 +34,7 @@ import com.tellme.app.util.USER_KEY_NAME
 import com.tellme.app.util.USER_KEY_UID
 import com.tellme.app.util.USER_KEY_USERNAME
 import kotlinx.android.parcel.Parcelize
+import timber.log.Timber
 
 @Parcelize
 @Entity(tableName = "users")
@@ -80,9 +81,13 @@ data class User(
 
     override fun compareTo(other: User): Int {
         if (this.latestSearchAt != null && other.latestSearchAt != null) {
-            val thisLatestSearch = DateUtils.fromString(this.latestSearchAt)
-            val otherLatestSearch = DateUtils.fromString(other.latestSearchAt)
-            return -thisLatestSearch.compareTo(otherLatestSearch) // descending order
+            try {
+                val thisLatestSearch = DateUtils.fromString(this.latestSearchAt)
+                val otherLatestSearch = DateUtils.fromString(other.latestSearchAt)
+                return -thisLatestSearch.compareTo(otherLatestSearch) // descending order
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
         }
 
         return 0
