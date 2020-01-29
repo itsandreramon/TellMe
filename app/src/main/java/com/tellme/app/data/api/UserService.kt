@@ -39,11 +39,6 @@ interface UserService {
         @Path("limit") limit: Int
     ): Response<List<User>>
 
-    @GET("users/uid/{uid}/follows")
-    suspend fun getFollowsByUid(
-        @Path("uid") uid: String
-    ): Response<List<User>>
-
     @PUT("users")
     suspend fun updateUser(
         @Body updatedUser: User

@@ -12,7 +12,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.auth.SignInMethodQueryResult
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
@@ -33,10 +32,6 @@ class FirebaseSource {
 
     fun logout() {
         return firebaseAuth.signOut()
-    }
-
-    fun retrieveIdToken(firebaseUser: FirebaseUser): Task<GetTokenResult> {
-        return firebaseUser.getIdToken(true)
     }
 
     fun sendEmailVerification(firebaseUser: FirebaseUser, language: String): Task<Void> {
