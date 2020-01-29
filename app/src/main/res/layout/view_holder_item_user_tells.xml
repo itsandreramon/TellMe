@@ -10,11 +10,7 @@
             type="com.tellme.app.model.Tell" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        android:elevation="@dimen/margin_medium"
-        app:cardUseCompatPadding="true"
-        app:cardCornerRadius="@dimen/margin_medium"
-        android:layout_margin="@dimen/margin_medium"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,7 +19,7 @@
             android:id="@+id/view_foreground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/light"
             android:foreground="?android:attr/selectableItemBackground"
             android:orientation="vertical"
             android:padding="@dimen/margin_medium">
@@ -59,5 +55,5 @@
             </RelativeLayout>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 </layout>

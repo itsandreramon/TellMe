@@ -19,10 +19,6 @@ class FeedItemViewAdapter(
     private val listener: FeedClickListener
 ) : ListAdapter<FeedItem, FeedItemViewHolder>(FeedDiffCallback) {
 
-    init {
-        setHasStableIds(true)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderItemFeedBinding.inflate(layoutInflater, parent, false)
@@ -30,10 +26,6 @@ class FeedItemViewAdapter(
     }
 
     fun getFeedItemAt(position: Int): FeedItem = getItem(position)
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
 
     override fun onBindViewHolder(holderItem: FeedItemViewHolder, position: Int) {
         val feedItem = getItem(position)

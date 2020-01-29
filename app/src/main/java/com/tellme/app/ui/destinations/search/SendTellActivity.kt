@@ -11,7 +11,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navArgs
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tellme.R
 import com.tellme.app.dagger.inject
@@ -19,6 +18,7 @@ import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.Tell
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.DialogUtils
+import com.tellme.app.util.EXTRA_UID
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 
 class SendTellActivity : AppCompatActivity() {
 
-    private val args: SendTellActivityArgs by navArgs()
     private lateinit var binding: ActivitySendTellBinding
 
     @Inject lateinit var tellViewModel: TellViewModel
@@ -61,7 +60,7 @@ class SendTellActivity : AppCompatActivity() {
 
             val tell = Tell(
                 authorUid = userViewModel.getCurrentUserFirebase()!!.uid,
-                receiverUid = args.userUid,
+                receiverUid = intent.getStringExtra(EXTRA_UID) ?: "-1",
                 question = question,
                 sendDate = DateUtils.now()
             )
@@ -70,6 +69,7 @@ class SendTellActivity : AppCompatActivity() {
                 val added = addTell(tell)
 
                 if (added) {
+                    setResult(RESULT_OK)
                     finish()
                 } else {
                     DialogUtils.createErrorSendingTellDialog(this@SendTellActivity).show()

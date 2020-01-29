@@ -24,6 +24,9 @@ const val API_TOKEN = "API_TOKEN"
 const val EXTRA_CACHE_KEY = "cacheKey"
 const val EXTRA_TELL_KEY = "tellKey"
 const val EXTRA_TELL_KEY_UPDATED = "tellKeyUpdated"
+const val EXTRA_UID = "uid"
+
+const val SEND_TELL_REQUEST = 1001
 
 const val ISO_8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX"
 

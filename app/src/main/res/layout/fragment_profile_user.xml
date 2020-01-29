@@ -11,184 +11,193 @@
 
     </data>
 
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/layout_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light">
+        android:background="@color/light"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/light"
-            app:contentInsetEnd="@dimen/margin_medium">
+            android:layout_height="match_parent"
+            android:background="@color/light">
 
-        </androidx.appcompat.widget.Toolbar>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:background="@android:color/transparent"
-            android:fillViewport="true">
-
-            <RelativeLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/light"
+                app:contentInsetEnd="@dimen/margin_medium">
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:background="@android:color/transparent"
+                android:fillViewport="true">
 
                 <RelativeLayout
-                    android:id="@+id/stats"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium">
+                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/image_view_user_avatar"
-                        android:layout_width="108dp"
-                        android:layout_height="108dp"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        tools:srcCompat="@tools:sample/avatars" />
-
-                    <TextView
-                        android:id="@+id/text_view_user_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/image_view_user_avatar"
-                        android:text="@{user.name}"
-                        android:textAppearance="@style/headline5" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/text_view_user_name"
-                        android:layout_toEndOf="@id/image_view_user_avatar"
-                        android:text="@{user.username}"
-                        android:textAppearance="@style/p" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_follow"
-                        style="@style/FlatButtonOutlined.Round"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@id/layout_user_stats"
-                        android:layout_toEndOf="@id/image_view_user_avatar"
-                        android:backgroundTint="@color/white"
-                        android:text="@string/follow"
-                        android:textColor="@color/dark_grey"
-                        app:icon="@drawable/ic_person_add"
-                        app:iconSize="18dp"
-                        app:iconTint="@color/dark_grey" />
-
-                    <LinearLayout
-                        android:id="@+id/layout_user_stats"
+                    <RelativeLayout
+                        android:id="@+id/stats"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/image_view_user_avatar"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:divider="?android:listDivider"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/margin_medium"
-                        android:paddingBottom="@dimen/margin_medium"
-                        android:showDividers="middle">
+                        android:padding="@dimen/margin_medium">
+
+                        <ImageView
+                            android:id="@+id/image_view_user_avatar"
+                            android:layout_width="108dp"
+                            android:layout_height="108dp"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            tools:srcCompat="@tools:sample/avatars" />
 
                         <TextView
-                            android:id="@+id/text_view_user_tell_count"
+                            android:id="@+id/text_view_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
-                            android:text="0 Tells"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/p" />
+                            android:layout_toEndOf="@id/image_view_user_avatar"
+                            android:text="@{user.name}"
+                            android:textAppearance="@style/headline5" />
 
                         <TextView
-                            android:id="@+id/text_view_user_following_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
-                            android:text="0 Following"
-                            android:textAlignment="center"
+                            android:layout_below="@id/text_view_user_name"
+                            android:layout_toEndOf="@id/image_view_user_avatar"
+                            android:text="@{user.username}"
                             android:textAppearance="@style/p" />
 
-                        <TextView
-                            android:id="@+id/text_view_user_follower_count"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_follow"
+                            style="@style/FlatButtonOutlined.Round"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="0.3"
-                            android:paddingStart="@dimen/margin_medium"
-                            android:paddingEnd="@dimen/margin_medium"
-                            android:text="0 Followers"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/p" />
+                            android:layout_above="@id/layout_user_stats"
+                            android:layout_toEndOf="@id/image_view_user_avatar"
+                            android:backgroundTint="@color/white"
+                            android:text="@string/follow"
+                            android:textColor="@color/dark_grey"
+                            app:icon="@drawable/ic_person_add"
+                            app:iconSize="18dp"
+                            app:iconTint="@color/dark_grey" />
 
-                    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/layout_user_stats"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/image_view_user_avatar"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:layout_marginBottom="@dimen/margin_medium"
+                            android:divider="?android:listDivider"
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/margin_medium"
+                            android:paddingBottom="@dimen/margin_medium"
+                            android:showDividers="middle">
+
+                            <TextView
+                                android:id="@+id/text_view_user_tell_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:text="0 Tells"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/p" />
+
+                            <TextView
+                                android:id="@+id/text_view_user_following_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:text="0 Following"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/p" />
+
+                            <TextView
+                                android:id="@+id/text_view_user_follower_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="0.3"
+                                android:paddingStart="@dimen/margin_medium"
+                                android:paddingEnd="@dimen/margin_medium"
+                                android:text="0 Followers"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/p" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/layout_user_stats"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/edit_text_send_user_tell"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:focusable="false"
+                                android:hint="@string/send_user_tell"
+                                android:imeOptions="actionSend"
+                                android:importantForAutofill="no"
+                                android:inputType="textImeMultiLine" />
+
+                            <TextView
+                                android:id="@+id/text_view_about"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/margin_tiny"
+                                android:text="About"
+                                android:textAppearance="@style/headline6" />
+
+                            <TextView
+                                android:id="@+id/text_view_about_message"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:text="@{user.about}"
+                                android:textAppearance="@style/p" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/layout_user_stats"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/stats"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/text_view_about"
+                            android:id="@+id/text_view_tells"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_medium"
                             android:layout_marginBottom="@dimen/margin_tiny"
-                            android:text="About"
+                            android:text="Tells"
                             android:textAppearance="@style/headline6" />
 
-                        <TextView
-                            android:id="@+id/text_view_about_message"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin_medium"
-                            android:text="@{user.about}"
-                            android:textAppearance="@style/p" />
-
-                        <EditText
-                            android:id="@+id/edit_text_send_user_tell"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/user_tells_recycler_view"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin_medium"
-                            android:focusable="false"
-                            android:hint="@string/send_user_tell"
-                            android:imeOptions="actionSend"
-                            android:importantForAutofill="no"
-                            android:inputType="textImeMultiLine" />
+                            android:layout_height="match_parent"
+                            android:scrollbars="vertical"
+                            tools:listitem="@layout/view_holder_item_user_tells" />
 
                     </LinearLayout>
 
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_below="@id/stats"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            </ScrollView>
 
-                    <TextView
-                        android:layout_marginStart="@dimen/margin_medium"
-                        android:id="@+id/text_view_tells"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_tiny"
-                        android:text="Tells"
-                        android:textAppearance="@style/headline6" />
+        </RelativeLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/user_tells_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="vertical"
-                        tools:listitem="@layout/view_holder_item_feed" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </ScrollView>
-
-    </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -7,7 +7,9 @@
 
 package com.tellme.app.ui.destinations.search
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,15 +20,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
-import com.tellme.app.model.Tell
 import com.tellme.app.model.User
-import com.tellme.app.ui.destinations.inbox.InboxItemViewAdapter
 import com.tellme.app.util.DialogUtils
+import com.tellme.app.util.EXTRA_UID
+import com.tellme.app.util.SEND_TELL_REQUEST
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -35,7 +38,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class UserProfileFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
+class UserProfileFragment : Fragment() {
 
     private lateinit var viewItemViewAdapter: UserTellsItemViewAdapter
     private lateinit var viewManager: LinearLayoutManager
@@ -79,8 +82,9 @@ class UserProfileFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListe
         })
 
         binding.editTextSendUserTell.setOnClickListener {
-            val action = UserProfileFragmentDirections.actionUserProfileFragmentToSendTellActivity(args.user.uid)
-            findNavController().navigate(action)
+            val intent = Intent(activity, SendTellActivity::class.java)
+            intent.putExtra(EXTRA_UID, args.user.uid)
+            startActivityForResult(intent, SEND_TELL_REQUEST)
         }
 
         binding.layoutUserStats.setOnClickListener {
@@ -91,11 +95,20 @@ class UserProfileFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListe
         setupTellAdapter()
     }
 
-    override fun onInboxItemClicked(tell: Tell) {
-        ViewUtils.showToast(requireContext(), "Clicked ${tell.id}")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == SEND_TELL_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                ViewUtils.createSnackbar(
+                    ctx = requireContext(),
+                    layout = binding.layoutCoordinator,
+                    msg = getString(R.string.tell_sent)
+                ).show()
+            }
+        }
     }
 
-    // reuse FeedItemViewAdapter
     private fun setupTellAdapter() {
         viewManager = LinearLayoutManager(activity)
         viewItemViewAdapter = UserTellsItemViewAdapter()
@@ -103,6 +116,8 @@ class UserProfileFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListe
         binding.userTellsRecyclerView.apply {
             layoutManager = viewManager
             adapter = viewItemViewAdapter
+
+            addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
 
         lifecycleScope.launch {
@@ -115,6 +130,8 @@ class UserProfileFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListe
                     binding.textViewAbout.visibility = View.GONE
                     binding.textViewAboutMessage.visibility = View.GONE
                 }
+
+                binding.textViewUserTellCount.text = getString(R.string.tells_count, tells.size)
 
                 viewItemViewAdapter.submitList(tells)
             } catch (e: Exception) {

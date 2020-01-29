@@ -26,6 +26,7 @@ import com.tellme.app.util.FEED_ITEM_KEY_RECEIVER_PHOTO_URL
 import com.tellme.app.util.FEED_ITEM_KEY_RECEIVER_USERNAME
 import com.tellme.app.util.FEED_ITEM_KEY_REPLY
 import com.tellme.app.util.FEED_ITEM_KEY_REPLY_DATE
+import timber.log.Timber
 
 @Entity(tableName = "feed_items")
 @JsonClass(generateAdapter = true)
@@ -59,9 +60,15 @@ data class FeedItem(
 ) : Comparable<FeedItem> {
 
     override fun compareTo(other: FeedItem): Int {
-        val thisSendDate = DateUtils.fromString(this.replyDate)
-        val otherSendDate = DateUtils.fromString(other.replyDate)
-        return -thisSendDate.compareTo(otherSendDate) // descending order
+        try {
+            val thisSendDate = DateUtils.fromString(this.replyDate)
+            val otherSendDate = DateUtils.fromString(other.replyDate)
+            return -thisSendDate.compareTo(otherSendDate) // descending order
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
+
+        return 0
     }
 }
 
