@@ -50,4 +50,9 @@ interface TellService {
     suspend fun getFeedByUser(
         @Path("uid") uid: String
     ): Response<List<FeedItem>>
+
+    @GET("tells/receiver/{uid}")
+    suspend fun findTellsByReceiverUid(
+        @Path("uid") uid: String
+    ): Response<List<Tell>>
 }

@@ -18,11 +18,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
+import com.tellme.app.model.Tell
 import com.tellme.app.model.User
+import com.tellme.app.ui.destinations.inbox.InboxItemViewAdapter
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
@@ -32,7 +35,10 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class UserProfileFragment : Fragment() {
+class UserProfileFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
+
+    private lateinit var viewItemViewAdapter: UserTellsItemViewAdapter
+    private lateinit var viewManager: LinearLayoutManager
 
     private val args: UserProfileFragmentArgs by navArgs()
     private lateinit var binding: FragmentProfileUserBinding
@@ -40,9 +46,12 @@ class UserProfileFragment : Fragment() {
     @Inject lateinit var userViewModel: UserViewModel
     @Inject lateinit var tellViewModel: TellViewModel
 
+    private lateinit var mContext: Context
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         inject(this)
+        mContext = context
     }
 
     override fun onCreateView(
@@ -82,8 +91,36 @@ class UserProfileFragment : Fragment() {
         setupTellAdapter()
     }
 
+    override fun onInboxItemClicked(tell: Tell) {
+        ViewUtils.showToast(requireContext(), "Clicked ${tell.id}")
+    }
+
+    // reuse FeedItemViewAdapter
     private fun setupTellAdapter() {
-        // TODO
+        viewManager = LinearLayoutManager(activity)
+        viewItemViewAdapter = UserTellsItemViewAdapter()
+
+        binding.userTellsRecyclerView.apply {
+            layoutManager = viewManager
+            adapter = viewItemViewAdapter
+        }
+
+        lifecycleScope.launch {
+            try {
+                val tells = tellViewModel.findTellsByReceiverUid(args.user.uid)
+                    .filter { it.reply.isNotBlank() }
+                    .sorted()
+
+                if (tells.isEmpty()) {
+                    binding.textViewAbout.visibility = View.GONE
+                    binding.textViewAboutMessage.visibility = View.GONE
+                }
+
+                viewItemViewAdapter.submitList(tells)
+            } catch (e: Exception) {
+                ViewUtils.showToast(requireContext(), "Error loading tells.")
+            }
+        }
     }
 
     private fun setupFollowButton(loggedInUser: User) {

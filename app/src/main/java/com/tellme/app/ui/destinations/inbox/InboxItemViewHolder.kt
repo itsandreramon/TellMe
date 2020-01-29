@@ -17,15 +17,15 @@ import com.tellme.R
 import com.tellme.app.model.Tell
 import com.tellme.app.util.DateUtils
 import com.tellme.databinding.ViewHolderItemInboxBinding
-import org.threeten.bp.format.DateTimeParseException
 import java.util.Locale
+import org.threeten.bp.format.DateTimeParseException
 
 class InboxItemViewHolder(val binding: ViewHolderItemInboxBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(tell: Tell, listener: InboxItemViewAdapter.TellClickListener) {
+    fun bind(tell: Tell, listener: InboxItemViewAdapter.InboxItemClickListener) {
 
         binding.tell = tell
-        binding.root.setOnClickListener { listener.onTellClicked(tell) }
+        binding.root.setOnClickListener { listener.onInboxItemClicked(tell) }
         binding.textViewTranslate.setOnClickListener { tryTranslate(tell.question, Locale.getDefault().language) }
 
         binding.textViewDate.text = try {

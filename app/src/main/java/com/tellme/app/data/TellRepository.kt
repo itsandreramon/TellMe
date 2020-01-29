@@ -118,6 +118,17 @@ class TellRepository private constructor(
         }
     }
 
+    override suspend fun findTellsByReceiverUid(uid: String): Result<List<Tell>> {
+        return try {
+            val response = service.findTellsByReceiverUid(uid)
+            getResult(response = response, onError = {
+                throw IOException("Error getting to tells by receiver: ${response.code()} ${response.message()}")
+            })
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
     companion object {
 
         @Volatile private var instance: TellRepository? = null

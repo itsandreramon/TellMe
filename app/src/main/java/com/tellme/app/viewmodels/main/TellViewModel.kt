@@ -46,4 +46,13 @@ class TellViewModel(
             is Result.Error -> throw result.exception
         }
     }
+
+    suspend fun findTellsByReceiverUid(uid: String): List<Tell> {
+        val deferred = viewModelScope.async(dispatcherProvider.network) { tellRepository.findTellsByReceiverUid(uid) }
+
+        return when (val result = deferred.await()) {
+            is Result.Success -> result.data
+            is Result.Error -> throw result.exception
+        }
+    }
 }
