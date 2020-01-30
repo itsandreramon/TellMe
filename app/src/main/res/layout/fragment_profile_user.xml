@@ -32,7 +32,7 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/toolbar"
@@ -182,6 +182,7 @@
                             android:layout_marginStart="@dimen/margin_medium"
                             android:layout_marginBottom="@dimen/margin_tiny"
                             android:text="Tells"
+                            android:visibility="invisible"
                             android:textAppearance="@style/headline6" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -195,7 +196,7 @@
 
                 </RelativeLayout>
 
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
         </RelativeLayout>
 

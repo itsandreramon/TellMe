@@ -105,7 +105,7 @@ class FollowingFollowersFragment : Fragment(), FollowingListAdapter.FollowListUs
                     }
                 } else {
                     lifecycleScope.launch {
-                        userViewModel.followUserByUid(result.data, user)
+                        userViewModel.followUser(result.data, user)
                     }
                 }
             } catch (e: IOException) {
