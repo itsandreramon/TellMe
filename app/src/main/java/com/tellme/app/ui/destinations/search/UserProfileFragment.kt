@@ -127,8 +127,7 @@ class UserProfileFragment : Fragment() {
                     .sorted()
 
                 if (tells.isEmpty()) {
-                    binding.textViewAbout.visibility = View.GONE
-                    binding.textViewAboutMessage.visibility = View.GONE
+                    binding.textViewTells.visibility = View.GONE
                 }
 
                 binding.textViewUserTellCount.text = getString(R.string.tells_count, tells.size)
