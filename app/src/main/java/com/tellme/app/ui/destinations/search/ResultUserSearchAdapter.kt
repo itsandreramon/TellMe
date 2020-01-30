@@ -45,13 +45,11 @@ class ResultUserSearchAdapter(
     }
 
     override fun onBindViewHolder(holderResult: ResultUserSearchViewHolder, position: Int) {
-        launch {
-            try {
-                val user = getItem(position)
-                holderResult.bind(user, listenerResultSearch)
-            } catch (e: UserNotFoundException) {
-                e.printStackTrace()
-            }
+        try {
+            val user = getItem(position)
+            holderResult.bind(user, listenerResultSearch)
+        } catch (e: UserNotFoundException) {
+            e.printStackTrace()
         }
     }
 

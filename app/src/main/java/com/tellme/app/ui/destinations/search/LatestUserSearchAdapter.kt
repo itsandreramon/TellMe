@@ -45,13 +45,11 @@ class LatestUserSearchAdapter(
     }
 
     override fun onBindViewHolder(holder: LatestUserSearchViewHolder, position: Int) {
-        launch {
-            try {
-                val user = getItem(position)
-                holder.bind(user, listener)
-            } catch (e: UserNotFoundException) {
-                e.printStackTrace()
-            }
+        try {
+            val user = getItem(position)
+            holder.bind(user, listener)
+        } catch (e: UserNotFoundException) {
+            e.printStackTrace()
         }
     }
 
