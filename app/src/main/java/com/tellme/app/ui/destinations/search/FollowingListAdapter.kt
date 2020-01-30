@@ -23,7 +23,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 class FollowingListAdapter(
     private val listener: FollowListUserClickListener,
@@ -45,9 +44,9 @@ class FollowingListAdapter(
         val binding = ViewHolderItemUserFollowListBinding.inflate(layoutInflater, parent, false)
 
         return FollowingListViewHolder(
-            viewLifecycleOwner,
-            binding,
-            loggedInUser
+            viewLifecycleOwner = viewLifecycleOwner,
+            binding = binding,
+            loggedInUser = loggedInUser
         )
     }
 
@@ -58,17 +57,15 @@ class FollowingListAdapter(
     fun addItem(element: User) {
         val currentList = mutableListOf<User>().apply { addAll(currentList) }
         currentList.add(element)
-        submitList(currentList)
+        submitList(currentList.distinct())
     }
 
     override fun onBindViewHolder(holder: FollowingListViewHolder, position: Int) {
-        launch {
-            try {
-                val user = getItem(position)
-                holder.bind(user, listener, context)
-            } catch (e: UserNotFoundException) {
-                e.printStackTrace()
-            }
+        try {
+            val user = getItem(position)
+            holder.bind(user, listener, context)
+        } catch (e: UserNotFoundException) {
+            e.printStackTrace()
         }
     }
 

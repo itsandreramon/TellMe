@@ -19,7 +19,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 class LatestUserSearchAdapter(
     private val parent: SearchFragment,
@@ -45,13 +44,11 @@ class LatestUserSearchAdapter(
     }
 
     override fun onBindViewHolder(holder: LatestUserSearchViewHolder, position: Int) {
-        launch {
-            try {
-                val user = getItem(position)
-                holder.bind(user, listener)
-            } catch (e: UserNotFoundException) {
-                e.printStackTrace()
-            }
+        try {
+            val user = getItem(position)
+            holder.bind(user, listener)
+        } catch (e: UserNotFoundException) {
+            e.printStackTrace()
         }
     }
 
