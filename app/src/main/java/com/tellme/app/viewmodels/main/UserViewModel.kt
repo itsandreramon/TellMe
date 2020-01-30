@@ -92,6 +92,7 @@ class UserViewModel(
         }
     }
 
+    // TODO ???
     suspend fun getUserByUid(id: String): Result<User> {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.getUserByUidRemote(id)
@@ -107,6 +108,14 @@ class UserViewModel(
                 result
             }
         }
+    }
+
+    suspend fun getUserByUsername(username: String): Result<User> {
+        val deferred = viewModelScope.async(dispatcherProvider.network) {
+            userRepository.getUserByUsernameRemote(username)
+        }
+
+        return deferred.await()
     }
 
     fun getUserByUidLocal(uid: String): LiveData<User> {
@@ -154,7 +163,7 @@ class UserViewModel(
         }
     }
 
-    suspend fun followUserByUid(user: User, userToFollow: User): Boolean {
+    suspend fun followUser(user: User, userToFollow: User): Boolean {
         Timber.d("Unfollowing ${userToFollow.username}")
 
         val deferred = viewModelScope.async(dispatcherProvider.network) {

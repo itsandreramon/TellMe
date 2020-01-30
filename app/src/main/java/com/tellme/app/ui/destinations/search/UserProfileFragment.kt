@@ -126,8 +126,8 @@ class UserProfileFragment : Fragment() {
                     .filter { it.reply.isNotBlank() }
                     .sorted()
 
-                if (tells.isEmpty()) {
-                    binding.textViewTells.visibility = View.GONE
+                if (tells.isNotEmpty()) {
+                    binding.textViewTells.visibility = View.VISIBLE
                 }
 
                 binding.textViewUserTellCount.text = getString(R.string.tells_count, tells.size)
@@ -167,7 +167,7 @@ class UserProfileFragment : Fragment() {
 
     private suspend fun followUserByUid(user: User, userToFollow: User) {
         try {
-            userViewModel.followUserByUid(user, userToFollow)
+            userViewModel.followUser(user, userToFollow)
         } catch (e: IOException) {
             DialogUtils.createFollowErrorDialog(requireContext()).show()
         }

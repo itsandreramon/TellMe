@@ -7,7 +7,8 @@
 
 package com.tellme.app.ui.destinations.inbox
 
-import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
@@ -52,6 +53,12 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
     @Inject lateinit var inboxViewModel: InboxViewModel
     @Inject lateinit var userViewModel: UserViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        inject(this)
+        mContext = context
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,14 +91,20 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REPLY_TELL_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val backupTell = data.getParcelableExtra<Tell>(EXTRA_TELL_KEY)!!
-            val updatedTell = data.getParcelableExtra<Tell>(EXTRA_TELL_KEY_UPDATED)!!
+        if (requestCode == REPLY_TELL_REQUEST_CODE) {
+            if (resultCode == RESULT_OK && data != null) {
+                val backupTell = data.getParcelableExtra<Tell>(EXTRA_TELL_KEY)!!
+                val updatedTell = data.getParcelableExtra<Tell>(EXTRA_TELL_KEY_UPDATED)!!
 
-            sendReply(updatedTell, backupTell,
-                onSuccess = { inboxViewModel.refreshInbox() },
-                showOnSuccess = { showReplySentSnackbar(backupTell) },
-                showOnError = { showReplyNotSentSnackbar() })
+                sendReply(updatedTell, backupTell,
+                    onSuccess = { inboxViewModel.refreshInbox() },
+                    showOnSuccess = { showReplySentSnackbar(backupTell) },
+                    showOnError = { showReplyNotSentSnackbar() })
+            }
+
+            if (resultCode == RESULT_CANCELED) {
+                // TODO
+            }
         }
     }
 
@@ -300,11 +313,5 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
         })
 
         setupItemTouchHelper(viewAdapter)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        inject(this)
-        mContext = context
     }
 }

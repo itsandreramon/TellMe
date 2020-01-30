@@ -9,7 +9,18 @@
         tools:layout="@layout/fragment_feed"
         android:id="@+id/feedFragment"
         android:name="com.tellme.app.ui.destinations.feed.FeedFragment"
-        android:label="@string/fragment_feed_title" />
+        android:label="@string/fragment_feed_title" >
+        <action
+            android:id="@+id/action_feedFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_feedFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         tools:layout="@layout/fragment_inbox"
         android:id="@+id/inboxFragment"

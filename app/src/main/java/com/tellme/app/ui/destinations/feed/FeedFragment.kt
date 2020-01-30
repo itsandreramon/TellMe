@@ -12,10 +12,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,11 +25,14 @@ import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.Result
 import com.tellme.app.model.FeedItem
+import com.tellme.app.model.User
+import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.FeedViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentFeedBinding
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
 
@@ -101,6 +105,41 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
     }
 
     override fun onFeedClicked(feedItem: FeedItem) {
-        Toast.makeText(mContext, "Clicked ${feedItem.id}", Toast.LENGTH_LONG).show()
+        val dialog = DialogUtils.createLoadingDialog(requireContext())
+            .also { it.show() }
+
+        lifecycleScope.launch {
+            val result = userViewModel.getUserByUsername(feedItem.receiverUsername)
+
+            dialog.hide()
+
+            when (result) {
+                is Result.Success -> {
+                    navigateToUserProfile(result.data)
+                }
+                is Result.Error -> {
+                    DialogUtils.createErrorDialog(requireContext(), "Error loading user profile.")
+                }
+            }
+        }
+    }
+
+    private fun navigateToUserProfile(user: User) {
+        when (val result = userViewModel.loggedInUser.value) {
+            is Result.Success -> {
+                val loggedInUser = result.data
+
+                if (loggedInUser.uid == user.uid) {
+                    val action = FeedFragmentDirections.actionFeedFragmentToProfileFragment()
+                    findNavController().navigate(action)
+                } else {
+                    val action = FeedFragmentDirections.actionFeedFragmentToUserProfileFragment(user)
+                    findNavController().navigate(action)
+                }
+            }
+            is Result.Error -> {
+                // TODO
+            }
+        }
     }
 }
