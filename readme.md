@@ -2,6 +2,7 @@
 
 The Android app for TellMe. Written entirely in [Kotlin](https://kotlinlang.org/) using [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) and [RxJava](https://github.com/ReactiveX/RxJava).
 
+- Built with MVVM architecture pattern
 - Uses [Architecture Components](https://developer.android.com/topic/libraries/architecture/)
 - Uses [Dagger](https://github.com/google/dagger) for dependency injection
 
