@@ -7,6 +7,7 @@
 
 package com.tellme.app.data
 
+import com.tellme.app.model.ReplyItem
 import com.tellme.app.model.Tell
 
 interface TellDao {
@@ -15,4 +16,5 @@ interface TellDao {
     suspend fun insertTellRemote(tell: Tell): Result<Boolean>
     suspend fun updateTellRemote(tell: Tell): Result<Boolean>
     suspend fun findTellsByReceiverUid(uid: String): Result<List<Tell>>
+    suspend fun getRepliesByUidRemote(uid: String): Result<List<ReplyItem>>
 }

@@ -19,6 +19,7 @@ import com.tellme.app.ui.destinations.profile.ProfileFragment
 import com.tellme.app.ui.destinations.register.EmailFragment
 import com.tellme.app.ui.destinations.register.PasswordFragment
 import com.tellme.app.ui.destinations.register.UsernameFragment
+import com.tellme.app.ui.destinations.replies.RepliesFragment
 import com.tellme.app.ui.destinations.search.FollowingFollowersFragment
 import com.tellme.app.ui.destinations.search.SearchFragment
 import com.tellme.app.ui.destinations.search.SendTellActivity
@@ -50,6 +51,16 @@ fun inject(activity: SendTellActivity) {
  * Injector for InboxFragment
  * */
 fun inject(fragment: InboxFragment) {
+    App.appComponent(fragment.requireContext())
+        .getMainComponentFactory()
+        .create(fragment.requireActivity())
+        .inject(fragment)
+}
+
+/**
+ * Injector for RepliesFragment
+ * */
+fun inject(fragment: RepliesFragment) {
     App.appComponent(fragment.requireContext())
         .getMainComponentFactory()
         .create(fragment.requireActivity())

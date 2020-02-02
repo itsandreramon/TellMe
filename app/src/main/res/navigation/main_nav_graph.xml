@@ -12,11 +12,7 @@
         android:label="@string/fragment_feed_title" >
         <action
             android:id="@+id/action_feedFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/userProfileFragment" />
         <action
             android:id="@+id/action_feedFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
@@ -114,5 +110,14 @@
         <action
             android:id="@+id/action_followsFollowersFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_replies"
+        android:id="@+id/repliesFragment"
+        android:name="com.tellme.app.ui.destinations.replies.RepliesFragment"
+        android:label="RepliesFragment" >
+        <action
+            android:id="@+id/action_repliesFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
 </navigation>

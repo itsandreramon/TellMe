@@ -109,16 +109,6 @@
                         android:visibility="invisible" />
 
                     <ImageButton
-                        android:id="@+id/image_button_favorite"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="@dimen/margin_medium"
-                        android:layout_toStartOf="@id/image_button_reply"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_star_outline"
-                        android:tint="@color/colorAccent" />
-
-                    <ImageButton
                         android:id="@+id/image_button_reply"
                         android:layout_width="24dp"
                         android:layout_height="24dp"

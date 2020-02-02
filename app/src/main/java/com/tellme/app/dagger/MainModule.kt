@@ -18,6 +18,8 @@ import com.tellme.app.viewmodels.main.FeedViewModel
 import com.tellme.app.viewmodels.main.FeedViewModelFactory
 import com.tellme.app.viewmodels.main.InboxViewModel
 import com.tellme.app.viewmodels.main.InboxViewModelFactory
+import com.tellme.app.viewmodels.main.RepliesViewModel
+import com.tellme.app.viewmodels.main.RepliesViewModelFactory
 import com.tellme.app.viewmodels.main.SearchViewModel
 import com.tellme.app.viewmodels.main.SearchViewModelFactory
 import com.tellme.app.viewmodels.main.TellViewModel
@@ -67,6 +69,13 @@ abstract class MainModule {
             factory: InboxViewModelFactory,
             activity: FragmentActivity
         ): InboxViewModel = ViewModelProvider(activity, factory).get(InboxViewModel::class.java)
+
+        @JvmStatic
+        @Provides
+        fun provideRepliesViewModel(
+            factory: RepliesViewModelFactory,
+            activity: FragmentActivity
+        ): RepliesViewModel = ViewModelProvider(activity, factory).get(RepliesViewModel::class.java)
 
         @JvmStatic
         @Provides

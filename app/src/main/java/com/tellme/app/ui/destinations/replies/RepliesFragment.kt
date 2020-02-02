@@ -5,7 +5,7 @@
  * University of Applied Sciences Brandenburg
  */
 
-package com.tellme.app.ui.destinations.feed
+package com.tellme.app.ui.destinations.replies
 
 import android.content.Context
 import android.os.Bundle
@@ -19,31 +19,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tellme.R
 import com.tellme.app.dagger.inject
-import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.data.Result
-import com.tellme.app.model.FeedItem
+import com.tellme.app.model.ReplyItem
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
-import com.tellme.app.util.ViewUtils
-import com.tellme.app.viewmodels.main.FeedViewModel
+import com.tellme.app.viewmodels.main.RepliesViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
-import com.tellme.databinding.FragmentFeedBinding
+import com.tellme.databinding.FragmentRepliesBinding
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
+class RepliesFragment : Fragment(), RepliesItemViewAdapter.ReplyItemClickListener {
 
-    private lateinit var viewItemViewAdapter: FeedItemViewAdapter
-    private lateinit var viewManager: LinearLayoutManager
-
+    private lateinit var binding: FragmentRepliesBinding
     private lateinit var mContext: Context
-    private lateinit var binding: FragmentFeedBinding
 
-    @Inject lateinit var dispatcherProvider: CoroutinesDispatcherProvider
-    @Inject lateinit var feedViewModel: FeedViewModel
+    @Inject lateinit var repliesViewModel: RepliesViewModel
     @Inject lateinit var userViewModel: UserViewModel
 
     override fun onAttach(context: Context) {
@@ -57,24 +50,24 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFeedBinding.inflate(inflater, container, false)
+        binding = FragmentRepliesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUserAdapter(this)
+        setupTellAdapter(this)
 
-        binding.collapsingToolbar.title = getString(R.string.fragment_feed_title)
+        binding.collapsingToolbar.title = getString(R.string.fragment_replies_title)
         binding.swipeRefreshLayout.apply {
             setColorSchemeColors(ContextCompat.getColor(context, R.color.colorAccent))
-            setOnRefreshListener { feedViewModel.swipeRefreshFeed { isRefreshing = false } }
+            setOnRefreshListener { repliesViewModel.swipeRefreshReplies { isRefreshing = false } }
         }
     }
 
-    override fun onFeedClicked(feedItem: FeedItem) {
+    override fun onReplyItemClicked(replyItem: ReplyItem) {
         lifecycleScope.launch {
-            when (val result = userViewModel.getUserByUsername(feedItem.receiverUsername)) {
+            when (val result = userViewModel.getUserByUsername(replyItem.receiverUsername)) {
                 is Result.Success -> {
                     navigateToUserProfile(result.data)
                 }
@@ -91,10 +84,10 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
                 val loggedInUser = result.data
 
                 if (loggedInUser.uid == user.uid) {
-                    val action = FeedFragmentDirections.actionFeedFragmentToProfileFragment()
+                    val action = RepliesFragmentDirections.actionRepliesFragmentToUserProfileFragment(user)
                     findNavController().navigate(action)
                 } else {
-                    val action = FeedFragmentDirections.actionFeedFragmentToUserProfileFragment(user)
+                    val action = RepliesFragmentDirections.actionRepliesFragmentToUserProfileFragment(user)
                     findNavController().navigate(action)
                 }
             }
@@ -104,35 +97,20 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
         }
     }
 
-    private fun setupUserAdapter(listener: FeedItemViewAdapter.FeedClickListener) {
-        viewManager = LinearLayoutManager(activity)
-        viewItemViewAdapter = FeedItemViewAdapter(this, listener)
+    private fun setupTellAdapter(listener: RepliesItemViewAdapter.ReplyItemClickListener) {
+        val viewManager = LinearLayoutManager(activity)
+        val viewAdapter = RepliesItemViewAdapter(listener)
 
-        // scrolls to top when new data arrives
-        viewItemViewAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                viewManager.smoothScrollToPosition(binding.feedRecyclerView, null, 0)
-            }
-        })
-
-        binding.feedRecyclerView.apply {
+        binding.inboxRecyclerView.apply {
             layoutManager = viewManager
-            adapter = viewItemViewAdapter
+            adapter = viewAdapter
 
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
 
-        feedViewModel.feedItems.observe(viewLifecycleOwner, Observer { feedItems ->
-            when (feedItems) {
-                is Result.Success -> {
-                    viewItemViewAdapter.submitList(feedItems.data.sorted())
-                    binding.progressBar.visibility = View.INVISIBLE
-                }
-                is Result.Error -> {
-                    ViewUtils.showToast(requireContext(), "Error loading feed.")
-                }
-            }
+        repliesViewModel.replies.observe(viewLifecycleOwner, Observer { replies ->
+            viewAdapter.submitList(replies.sorted())
+            binding.progressBar.visibility = View.GONE
         })
     }
 }

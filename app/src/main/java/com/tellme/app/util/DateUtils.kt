@@ -43,7 +43,7 @@ object DateUtils {
     }
 
     @Throws(DateTimeParseException::class)
-    fun convertDate(timestamp: String): String? {
+    fun convertDate(timestamp: String?): String? {
         val zonedDateTime = fromString(timestamp)
         return toString(zonedDateTime, DateTimeFormatter.ofPattern("EEE, d MMM yyyy"))
     }

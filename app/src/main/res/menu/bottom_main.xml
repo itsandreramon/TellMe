@@ -13,6 +13,10 @@
         android:icon="@drawable/ic_search"
         android:id="@+id/searchFragment" />
     <item
+        android:title="@string/fragment_replies_title"
+        android:id="@+id/repliesFragment"
+        android:icon="@drawable/ic_reply_all"/>
+    <item
         android:title="@string/fragment_profile_title"
         android:icon="@drawable/ic_person_outline"
         android:id="@+id/profileFragment" />
