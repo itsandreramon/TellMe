@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="feedItem"
-            type="com.tellme.app.model.FeedItem" />
+            name="replyItem"
+            type="com.tellme.app.model.ReplyItem" />
     </data>
 
     <FrameLayout
@@ -63,9 +63,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_medium"
-                android:text="@{feedItem.question}"
-                android:textColor="@color/dark_grey"
+                android:text="@{replyItem.question}"
                 android:textStyle="bold"
+                android:textColor="@color/dark_grey"
                 android:textAppearance="@style/p" />
 
             <RelativeLayout
@@ -85,7 +85,7 @@
                     android:id="@+id/text_view_user_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{feedItem.receiverUsername}"
+                    android:text="@{replyItem.receiverUsername}"
                     android:textAppearance="@style/p"
                     android:layout_toEndOf="@id/image_view_user_avatar" />
 
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/image_view_user_avatar"
                     android:layout_below="@id/text_view_user_username"
-                    android:text="@{feedItem.reply}" />
+                    android:text="@{replyItem.reply}" />
 
             </RelativeLayout>
 

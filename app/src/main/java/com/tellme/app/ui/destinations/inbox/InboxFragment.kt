@@ -303,8 +303,16 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
         inboxViewModel.inbox.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Result.Success -> {
-                    viewAdapter.submitList(result.data.sorted())
                     binding.progressBar.visibility = View.INVISIBLE
+
+                    val list = result.data.sorted()
+
+                    if (list.isNotEmpty()) {
+                        binding.layoutNothingToSee.visibility = View.INVISIBLE
+                        viewAdapter.submitList(result.data.sorted())
+                    } else {
+                        binding.layoutNothingToSee.visibility = View.VISIBLE
+                    }
                 }
                 is Result.Error -> {
                     ViewUtils.showToast(requireContext(), "Error loading inbox.")

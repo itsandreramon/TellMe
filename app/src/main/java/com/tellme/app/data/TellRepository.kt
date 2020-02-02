@@ -10,6 +10,7 @@ package com.tellme.app.data
 import com.tellme.app.data.api.TellService
 import com.tellme.app.data.database.TellRoomDao
 import com.tellme.app.model.FeedItem
+import com.tellme.app.model.ReplyItem
 import com.tellme.app.model.Tell
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
@@ -123,6 +124,17 @@ class TellRepository private constructor(
             val response = service.findTellsByReceiverUid(uid)
             getResult(response = response, onError = {
                 throw IOException("Error getting to tells by receiver: ${response.code()} ${response.message()}")
+            })
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getRepliesByUidRemote(uid: String): Result<List<ReplyItem>> {
+        return try {
+            val response = service.getRepliesByUidRemote(uid)
+            getResult(response = response, onError = {
+                throw IOException("Error getting to replies by uid: ${response.code()} ${response.message()}")
             })
         } catch (e: Exception) {
             Result.Error(e)

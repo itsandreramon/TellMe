@@ -25,7 +25,7 @@ interface TellRoomDao {
     fun getInbox(): Flow<List<Tell>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertInbox(inbox_items: List<Tell>)
+    suspend fun insertInbox(inboxItems: List<Tell>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFeed(feedItems: List<FeedItem>)

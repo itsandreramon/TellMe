@@ -8,6 +8,7 @@
 package com.tellme.app.data.api
 
 import com.tellme.app.model.FeedItem
+import com.tellme.app.model.ReplyItem
 import com.tellme.app.model.Tell
 import retrofit2.Response
 import retrofit2.http.Body
@@ -55,4 +56,9 @@ interface TellService {
     suspend fun findTellsByReceiverUid(
         @Path("uid") uid: String
     ): Response<List<Tell>>
+
+    @GET("users/uid/{uid}/replies")
+    suspend fun getRepliesByUidRemote(
+        @Path("uid") uid: String
+    ): Response<List<ReplyItem>>
 }

@@ -37,4 +37,5 @@
     <string name="about">About</string>
     <string name="error">Error</string>
     <string name="tell_sent">Your tell has been sent.</string>
+    <string name="fragment_replies_title">Replies</string>
 </resources>

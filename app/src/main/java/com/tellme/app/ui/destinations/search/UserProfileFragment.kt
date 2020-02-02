@@ -160,6 +160,12 @@ class UserProfileFragment : Fragment() {
     private suspend fun unfollowUserByUid(user: User, userToUnfollow: User) {
         try {
             userViewModel.unfollowUser(user, userToUnfollow)
+
+            ViewUtils.createSnackbar(
+                ctx = requireContext(),
+                layout = binding.layoutCoordinator,
+                msg = "You are no longer following ${userToUnfollow.username}."
+            ).show()
         } catch (e: IOException) {
             DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
@@ -168,6 +174,12 @@ class UserProfileFragment : Fragment() {
     private suspend fun followUserByUid(user: User, userToFollow: User) {
         try {
             userViewModel.followUser(user, userToFollow)
+
+            ViewUtils.createSnackbar(
+                ctx = requireContext(),
+                layout = binding.layoutCoordinator,
+                msg = "You are now following ${userToFollow.username}."
+            ).show()
         } catch (e: IOException) {
             DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
