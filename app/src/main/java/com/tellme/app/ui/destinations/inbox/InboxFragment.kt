@@ -246,30 +246,36 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
 
                 // TODO own method
                 lifecycleScope.launch {
-                    val result = tellViewModel.deleteTell(deletedTell.id)
+                    try {
+                        val result = tellViewModel.deleteTell(deletedTell.id)
 
-                    if (result) {
-                        ViewUtils
-                            .createSnackbar(mContext, binding.layoutCoordinator, getString(R.string.tell_removed))
-                            .setAction(getString(R.string.undo)) {
-                                insertTell(deletedTell) {
-                                    binding.inboxRecyclerView.adapter?.notifyItemInserted(deletedPosition)
+                        if (result) {
+                            ViewUtils
+                                .createSnackbar(mContext, binding.layoutCoordinator, getString(R.string.tell_removed))
+                                .setAction(getString(R.string.undo)) {
+                                    insertTell(deletedTell) {
+                                        binding.inboxRecyclerView.adapter?.notifyItemInserted(deletedPosition)
+                                    }
                                 }
-                            }
-                            .setActionTextColor(ContextCompat.getColor(mContext, R.color.white))
-                            .show()
+                                .setActionTextColor(ContextCompat.getColor(mContext, R.color.white))
+                                .show()
 
-                        binding.inboxRecyclerView.adapter?.notifyItemRemoved(deletedPosition)
-                    } else {
-                        ViewUtils
-                            .createSnackbar(
-                                mContext,
-                                binding.layoutCoordinator,
-                                getString(R.string.tell_removed_error)
-                            )
-                            .show()
+                            binding.inboxRecyclerView.adapter?.notifyItemRemoved(deletedPosition)
+                        } else {
+                            ViewUtils
+                                .createSnackbar(
+                                    mContext,
+                                    binding.layoutCoordinator,
+                                    getString(R.string.tell_removed_error)
+                                )
+                                .show()
 
-                        binding.inboxRecyclerView.adapter?.notifyItemInserted(deletedPosition)
+                            binding.inboxRecyclerView.adapter?.notifyItemInserted(deletedPosition)
+                        }
+                    } catch (e: Exception) {
+                        // TODO
+                    } finally {
+                        inboxViewModel.refreshInbox()
                     }
                 }
             }
