@@ -10,10 +10,10 @@ package com.tellme.app.dagger
 import androidx.fragment.app.FragmentActivity
 import com.tellme.app.dagger.scope.AuthScope
 import com.tellme.app.ui.LoginRegisterActivity
-import com.tellme.app.ui.destinations.login.LoginFragment
 import com.tellme.app.ui.destinations.register.EmailFragment
 import com.tellme.app.ui.destinations.register.PasswordFragment
 import com.tellme.app.ui.destinations.register.UsernameFragment
+import com.tellme.app.ui.destinations.start.StartFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 
@@ -28,7 +28,7 @@ interface AuthComponent {
 
     fun inject(target: LoginRegisterActivity)
 
-    fun inject(target: LoginFragment)
+    fun inject(target: StartFragment)
 
     fun inject(target: EmailFragment)
 

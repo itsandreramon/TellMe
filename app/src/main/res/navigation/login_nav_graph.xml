@@ -5,14 +5,6 @@
     android:id="@+id/navigation_loginregister"
     app:startDestination="@id/startFragment">
 
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.tellme.app.ui.destinations.login.LoginFragment"
-        tools:layout="@layout/fragment_login">
-        <action
-            android:id="@+id/action_loginFragment_to_mainActivity"
-            app:destination="@id/mainActivity" />
-    </fragment>
     <activity
         android:id="@+id/mainActivity"
         android:name="com.tellme.app.ui.MainActivity"
@@ -88,13 +80,6 @@
         android:id="@+id/startFragment"
         android:name="com.tellme.app.ui.destinations.start.StartFragment"
         tools:layout="@layout/fragment_start">
-        <action
-            android:id="@+id/action_startFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_startFragment_to_nameFragment"
             app:destination="@id/nameFragment"
