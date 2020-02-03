@@ -23,6 +23,7 @@ import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.viewmodels.main.FeedViewModel
 import com.tellme.app.viewmodels.main.InboxViewModel
+import com.tellme.app.viewmodels.main.RepliesViewModel
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentProfileBinding
@@ -38,6 +39,7 @@ class ProfileFragment : Fragment() {
     @Inject lateinit var tellViewModel: TellViewModel
     @Inject lateinit var inboxViewModel: InboxViewModel
     @Inject lateinit var feedViewModel: FeedViewModel
+    @Inject lateinit var repliesViewModel: RepliesViewModel
 
     @Inject lateinit var dispatcherProvider: CoroutinesDispatcherProvider
 
@@ -71,6 +73,7 @@ class ProfileFragment : Fragment() {
         userViewModel.invalidateUserCache()
         inboxViewModel.invalidateInboxCache()
         feedViewModel.invalidateFeedCache()
+        repliesViewModel.invalidateRepliesCache()
 
         findNavController().navigate(R.id.loginRegisterActivity)
         requireActivity().finish()

@@ -27,8 +27,8 @@ import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
-import com.tellme.app.util.EXTRA_UID
-import com.tellme.app.util.SEND_TELL_REQUEST
+import com.tellme.app.util.EXTRA_USER_UID
+import com.tellme.app.util.REQUEST_SEND_TELL
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -77,8 +77,8 @@ class UserProfileFragment : Fragment() {
 
         binding.editTextSendUserTell.setOnClickListener {
             val intent = Intent(activity, SendTellActivity::class.java)
-            intent.putExtra(EXTRA_UID, args.user.uid)
-            startActivityForResult(intent, SEND_TELL_REQUEST)
+            intent.putExtra(EXTRA_USER_UID, args.user.uid)
+            startActivityForResult(intent, REQUEST_SEND_TELL)
         }
 
         binding.layoutUserStats.setOnClickListener {
@@ -92,7 +92,7 @@ class UserProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == SEND_TELL_REQUEST) {
+        if (requestCode == REQUEST_SEND_TELL) {
             if (resultCode == RESULT_OK) {
                 ViewUtils.createSnackbar(
                     ctx = requireContext(),
@@ -128,6 +128,7 @@ class UserProfileFragment : Fragment() {
 
                 viewItemViewAdapter.submitList(tells)
             } catch (e: Exception) {
+                e.printStackTrace()
                 ViewUtils.showToast(requireContext(), "Error loading tells.")
             }
         }

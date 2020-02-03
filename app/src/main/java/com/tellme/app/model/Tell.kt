@@ -15,20 +15,6 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.tellme.app.util.DateUtils
-import com.tellme.app.util.TELL_COLUMN_AUTHOR_UID
-import com.tellme.app.util.TELL_COLUMN_ID
-import com.tellme.app.util.TELL_COLUMN_QUESTION
-import com.tellme.app.util.TELL_COLUMN_RECEIVER_UID
-import com.tellme.app.util.TELL_COLUMN_REPLY
-import com.tellme.app.util.TELL_COLUMN_REPLY_DATE
-import com.tellme.app.util.TELL_COLUMN_SEND_DATE
-import com.tellme.app.util.TELL_KEY_AUTHOR_UID
-import com.tellme.app.util.TELL_KEY_ID
-import com.tellme.app.util.TELL_KEY_QUESTION
-import com.tellme.app.util.TELL_KEY_RECEIVER_UID
-import com.tellme.app.util.TELL_KEY_REPLY
-import com.tellme.app.util.TELL_KEY_REPLY_DATE
-import com.tellme.app.util.TELL_KEY_SEND_DATE
 import kotlin.Exception
 import kotlinx.android.parcel.Parcelize
 import timber.log.Timber
@@ -39,39 +25,35 @@ import timber.log.Timber
 data class Tell(
 
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = TELL_COLUMN_ID)
-    @Json(name = TELL_KEY_ID)
+    @ColumnInfo(name = "id")
+    @Json(name = "id")
     val id: String = "-1",
 
-    @ColumnInfo(name = TELL_COLUMN_AUTHOR_UID)
-    @Json(name = TELL_KEY_AUTHOR_UID)
+    @ColumnInfo(name = "sender_uid")
+    @Json(name = "senderUid")
     val authorUid: String,
 
-    @ColumnInfo(name = TELL_COLUMN_RECEIVER_UID)
-    @Json(name = TELL_KEY_RECEIVER_UID)
+    @ColumnInfo(name = "receiver_uid")
+    @Json(name = "receiverUid")
     val receiverUid: String,
 
-    @ColumnInfo(name = TELL_COLUMN_QUESTION)
-    @Json(name = TELL_KEY_QUESTION)
+    @ColumnInfo(name = "question")
+    @Json(name = "question")
     val question: String,
 
-    @ColumnInfo(name = TELL_COLUMN_REPLY)
-    @Json(name = TELL_KEY_REPLY)
+    @ColumnInfo(name = "reply")
+    @Json(name = "reply")
     val reply: String = "",
 
-    @ColumnInfo(name = TELL_COLUMN_SEND_DATE)
-    @Json(name = TELL_KEY_SEND_DATE)
+    @ColumnInfo(name = "send_date")
+    @Json(name = "sendDate")
     val sendDate: String,
 
-    @ColumnInfo(name = TELL_COLUMN_REPLY_DATE)
-    @Json(name = TELL_KEY_REPLY_DATE)
+    @ColumnInfo(name = "reply_date")
+    @Json(name = "replyDate")
     val replyDate: String? = ""
 
 ) : Comparable<Tell>, Parcelable {
-
-    override fun toString(): String {
-        return "Tell(id=$id, authorUid='$authorUid', receiverUid='$receiverUid', question='$question', reply=$reply, sendDate='$sendDate')"
-    }
 
     override fun compareTo(other: Tell): Int {
         try {
@@ -83,6 +65,10 @@ data class Tell(
         }
 
         return 0
+    }
+
+    override fun toString(): String {
+        return "Tell(id='$id', authorUid='$authorUid', receiverUid='$receiverUid', question='$question', reply='$reply', sendDate='$sendDate', replyDate=$replyDate)"
     }
 }
 

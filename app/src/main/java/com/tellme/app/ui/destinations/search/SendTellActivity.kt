@@ -18,7 +18,7 @@ import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.Tell
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.DialogUtils
-import com.tellme.app.util.EXTRA_UID
+import com.tellme.app.util.EXTRA_USER_UID
 import com.tellme.app.util.ValidationUtils
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -60,7 +60,7 @@ class SendTellActivity : AppCompatActivity() {
 
             val tell = Tell(
                 authorUid = userViewModel.getCurrentUserFirebase()!!.uid,
-                receiverUid = intent.getStringExtra(EXTRA_UID) ?: "-1",
+                receiverUid = intent.getStringExtra(EXTRA_USER_UID) ?: "-1",
                 question = question,
                 sendDate = DateUtils.now()
             )
@@ -91,6 +91,7 @@ class SendTellActivity : AppCompatActivity() {
         return try {
             tellViewModel.addTell(tell)
         } catch (e: Exception) {
+            e.printStackTrace()
             DialogUtils.createErrorSendingTellDialog(this)
             false
         }

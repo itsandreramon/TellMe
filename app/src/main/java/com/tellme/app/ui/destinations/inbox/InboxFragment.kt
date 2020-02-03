@@ -28,11 +28,11 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
 import com.tellme.app.model.Tell
-import com.tellme.app.util.EXTRA_TELL_KEY
-import com.tellme.app.util.EXTRA_TELL_KEY_UPDATED
-import com.tellme.app.util.REPLY_TELL_REQUEST_CODE
-import com.tellme.app.util.TELL_KEY_ID
-import com.tellme.app.util.TELL_KEY_QUESTION
+import com.tellme.app.util.EXTRA_TELL
+import com.tellme.app.util.EXTRA_TELL_ID
+import com.tellme.app.util.EXTRA_TELL_QUESTION
+import com.tellme.app.util.EXTRA_TELL_UPDATED
+import com.tellme.app.util.REQUEST_REPLY_TELL
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.InboxViewModel
 import com.tellme.app.viewmodels.main.TellViewModel
@@ -81,19 +81,21 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
 
     override fun onInboxItemClicked(tell: Tell) {
         val intent = Intent(context, ReplyTellActivity::class.java)
-        intent.putExtra(TELL_KEY_ID, tell.id)
-        intent.putExtra(EXTRA_TELL_KEY, tell)
-        intent.putExtra(TELL_KEY_QUESTION, tell.question)
-        startActivityForResult(intent, REPLY_TELL_REQUEST_CODE)
+
+        intent.putExtra(EXTRA_TELL_ID, tell.id)
+        intent.putExtra(EXTRA_TELL, tell)
+        intent.putExtra(EXTRA_TELL_QUESTION, tell.question)
+
+        startActivityForResult(intent, REQUEST_REPLY_TELL)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REPLY_TELL_REQUEST_CODE) {
+        if (requestCode == REQUEST_REPLY_TELL) {
             if (resultCode == RESULT_OK && data != null) {
-                val backupTell = data.getParcelableExtra<Tell>(EXTRA_TELL_KEY)!!
-                val updatedTell = data.getParcelableExtra<Tell>(EXTRA_TELL_KEY_UPDATED)!!
+                val backupTell = data.getParcelableExtra<Tell>(EXTRA_TELL)!!
+                val updatedTell = data.getParcelableExtra<Tell>(EXTRA_TELL_UPDATED)!!
 
                 sendReply(updatedTell, backupTell,
                     onSuccess = { inboxViewModel.refreshInbox() },

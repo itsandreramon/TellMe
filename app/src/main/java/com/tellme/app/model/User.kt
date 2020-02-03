@@ -16,23 +16,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.tellme.app.util.Converters
 import com.tellme.app.util.DateUtils
-import com.tellme.app.util.USER_COLUMN_ABOUT
-import com.tellme.app.util.USER_COLUMN_AVATAR
-import com.tellme.app.util.USER_COLUMN_EMAIL
-import com.tellme.app.util.USER_COLUMN_FOLLOWERS
-import com.tellme.app.util.USER_COLUMN_FOLLOWING
-import com.tellme.app.util.USER_COLUMN_LATEST_SEARCH_AT
-import com.tellme.app.util.USER_COLUMN_NAME
-import com.tellme.app.util.USER_COLUMN_UID
-import com.tellme.app.util.USER_COLUMN_USERNAME
-import com.tellme.app.util.USER_KEY_ABOUT
-import com.tellme.app.util.USER_KEY_AVATAR
-import com.tellme.app.util.USER_KEY_EMAIL
-import com.tellme.app.util.USER_KEY_FOLLOWERS
-import com.tellme.app.util.USER_KEY_FOLLOWING
-import com.tellme.app.util.USER_KEY_NAME
-import com.tellme.app.util.USER_KEY_UID
-import com.tellme.app.util.USER_KEY_USERNAME
 import kotlinx.android.parcel.Parcelize
 import timber.log.Timber
 
@@ -43,40 +26,41 @@ import timber.log.Timber
 data class User(
 
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = USER_COLUMN_UID)
-    @Json(name = USER_KEY_UID)
+    @ColumnInfo(name = "uid")
+    @Json(name = "uid")
     val uid: String,
 
-    @ColumnInfo(name = USER_COLUMN_NAME)
-    @Json(name = USER_KEY_NAME)
+    @ColumnInfo(name = "name")
+    @Json(name = "name")
     val name: String,
 
-    @ColumnInfo(name = USER_COLUMN_AVATAR)
-    @Json(name = USER_KEY_AVATAR)
+    @ColumnInfo(name = "avatar")
+    @Json(name = "avatar")
     val avatar: String? = null,
 
-    @ColumnInfo(name = USER_COLUMN_EMAIL)
-    @Json(name = USER_KEY_EMAIL)
+    @ColumnInfo(name = "email")
+    @Json(name = "email")
     val email: String = "",
 
-    @ColumnInfo(name = USER_COLUMN_USERNAME)
-    @Json(name = USER_KEY_USERNAME)
+    @ColumnInfo(name = "username")
+    @Json(name = "username")
     val username: String,
 
-    @ColumnInfo(name = USER_COLUMN_FOLLOWING)
-    @Json(name = USER_KEY_FOLLOWING)
-    val following: List<String> = arrayListOf(),
+    @ColumnInfo(name = "following")
+    @Json(name = "following")
+    val following: List<String> = emptyList(),
 
-    @ColumnInfo(name = USER_COLUMN_FOLLOWERS)
-    @Json(name = USER_KEY_FOLLOWERS)
+    @ColumnInfo(name = "followers")
+    @Json(name = "followers")
     val followers: List<String> = emptyList(),
 
-    @ColumnInfo(name = USER_COLUMN_ABOUT)
-    @Json(name = USER_KEY_ABOUT)
+    @ColumnInfo(name = "about")
+    @Json(name = "about")
     val about: String = "",
 
-    @ColumnInfo(name = USER_COLUMN_LATEST_SEARCH_AT)
+    @ColumnInfo(name = "latest_search_at")
     val latestSearchAt: String? = null
+
 ) : Parcelable, Comparable<User> {
 
     override fun compareTo(other: User): Int {

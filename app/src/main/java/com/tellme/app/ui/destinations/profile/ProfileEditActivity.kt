@@ -21,7 +21,7 @@ import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.util.DialogUtils
-import com.tellme.app.util.PICK_IMAGE_REQUEST_CODE
+import com.tellme.app.util.REQUEST_PICK_IMAGE
 import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.ActivityProfileEditBinding
@@ -77,14 +77,14 @@ class ProfileEditActivity : AppCompatActivity() {
 
         startActivityForResult(
             Intent.createChooser(intent, "select image"),
-            PICK_IMAGE_REQUEST_CODE
+            REQUEST_PICK_IMAGE
         )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             val filePath = data?.data
             try {
                 filePath?.let { path ->
