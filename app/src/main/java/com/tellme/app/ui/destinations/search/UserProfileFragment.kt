@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.R
 import com.tellme.app.dagger.inject
-import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
@@ -73,12 +72,7 @@ class UserProfileFragment : Fragment() {
         renderUserData(args.user)
 
         userViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { loggedInUser ->
-            when (loggedInUser) {
-                is Result.Success -> setupFollowButton(loggedInUser.data)
-                is Result.Error -> {
-                    // TODO
-                }
-            }
+            setupFollowButton(loggedInUser)
         })
 
         binding.editTextSendUserTell.setOnClickListener {

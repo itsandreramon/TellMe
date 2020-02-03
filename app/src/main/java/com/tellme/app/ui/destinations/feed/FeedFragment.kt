@@ -27,7 +27,6 @@ import com.tellme.app.data.Result
 import com.tellme.app.model.FeedItem
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
-import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.FeedViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentFeedBinding
@@ -86,21 +85,18 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
     }
 
     private fun navigateToUserProfile(user: User) {
-        when (val result = userViewModel.loggedInUser.value) {
-            is Result.Success -> {
-                val loggedInUser = result.data
+        try {
+            val loggedInUser = userViewModel.loggedInUser.value!!
 
-                if (loggedInUser.uid == user.uid) {
-                    val action = FeedFragmentDirections.actionFeedFragmentToProfileFragment()
-                    findNavController().navigate(action)
-                } else {
-                    val action = FeedFragmentDirections.actionFeedFragmentToUserProfileFragment(user)
-                    findNavController().navigate(action)
-                }
+            if (loggedInUser.uid == user.uid) {
+                val action = FeedFragmentDirections.actionFeedFragmentToProfileFragment()
+                findNavController().navigate(action)
+            } else {
+                val action = FeedFragmentDirections.actionFeedFragmentToUserProfileFragment(user)
+                findNavController().navigate(action)
             }
-            is Result.Error -> {
-                // TODO
-            }
+        } catch (e: Exception) {
+            DialogUtils.createErrorDialog(requireContext(), "Error loading user profile.")
         }
     }
 
@@ -124,15 +120,8 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
         }
 
         feedViewModel.feedItems.observe(viewLifecycleOwner, Observer { feedItems ->
-            when (feedItems) {
-                is Result.Success -> {
-                    viewItemViewAdapter.submitList(feedItems.data.sorted())
-                    binding.progressBar.visibility = View.INVISIBLE
-                }
-                is Result.Error -> {
-                    ViewUtils.showToast(requireContext(), "Error loading feed.")
-                }
-            }
+            viewItemViewAdapter.submitList(feedItems.sorted())
+            binding.progressBar.visibility = View.INVISIBLE
         })
     }
 }

@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 class TellRepository private constructor(
     private val service: TellService,
     private val roomDao: TellRoomDao
-) : TellDao, InboxDao, FeedDao {
+) : TellDao, InboxDao, FeedDao, RepliesDao {
 
     override suspend fun invalidateInboxCache() {
         roomDao.deleteInbox()
@@ -28,13 +28,23 @@ class TellRepository private constructor(
         roomDao.deleteFeed()
     }
 
+    override suspend fun invalidateRepliesCache() {
+        roomDao.deleteReplies()
+    }
+
     override suspend fun cacheInbox(tells: List<Tell>) {
-        roomDao.filterInbox(tells.map { it.id })
+        filterInboxCache(tells)
         roomDao.insertInbox(tells)
     }
 
     override suspend fun cacheFeed(feedItems: List<FeedItem>) {
+        filterFeedCache(feedItems)
         roomDao.insertFeed(feedItems)
+    }
+
+    override suspend fun cacheReplies(replyItems: List<ReplyItem>) {
+        filterRepliesCache(replyItems)
+        roomDao.insertReplies(replyItems)
     }
 
     override fun getInboxFromCache(): Flow<List<Tell>> {
@@ -45,12 +55,31 @@ class TellRepository private constructor(
         return roomDao.getFeed()
     }
 
+    override fun getRepliesFromCache(): Flow<List<ReplyItem>> {
+        return roomDao.getReplies()
+    }
+
     override suspend fun filterInboxCache(tells: List<Tell>) {
         roomDao.filterInbox(tells.map { it.id })
     }
 
     override suspend fun filterFeedCache(feedItems: List<FeedItem>) {
         roomDao.filterFeed(feedItems.map { it.id })
+    }
+
+    override suspend fun filterRepliesCache(replyItems: List<ReplyItem>) {
+        roomDao.filterReplies(replyItems.map { it.id })
+    }
+
+    override suspend fun getRepliesByUidRemote(uid: String): Result<List<ReplyItem>> {
+        return try {
+            val response = service.getRepliesByUidRemote(uid)
+            getResult(response = response, onError = {
+                throw IOException("Error getting to replies by uid: ${response.code()} ${response.message()}")
+            })
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 
     override suspend fun getFeedByUidRemote(uid: String): Result<List<FeedItem>> {
@@ -124,17 +153,6 @@ class TellRepository private constructor(
             val response = service.findTellsByReceiverUid(uid)
             getResult(response = response, onError = {
                 throw IOException("Error getting to tells by receiver: ${response.code()} ${response.message()}")
-            })
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-
-    override suspend fun getRepliesByUidRemote(uid: String): Result<List<ReplyItem>> {
-        return try {
-            val response = service.getRepliesByUidRemote(uid)
-            getResult(response = response, onError = {
-                throw IOException("Error getting to replies by uid: ${response.code()} ${response.message()}")
             })
         } catch (e: Exception) {
             Result.Error(e)

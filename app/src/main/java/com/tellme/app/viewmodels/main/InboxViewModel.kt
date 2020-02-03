@@ -27,14 +27,12 @@ class InboxViewModel(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _inbox = MutableLiveData<Result<List<Tell>>>()
-    val inbox: LiveData<Result<List<Tell>>> = _inbox
+    private val _inbox = MutableLiveData<List<Tell>>()
+    val inbox: LiveData<List<Tell>> = _inbox
 
     init {
         viewModelScope.launch {
-            tellRepository.getInboxFromCache()
-                .flowOn(dispatcherProvider.database)
-                .collect { _inbox.postValue(Result.Success(it)) }
+            postInboxFromCache()
         }
 
         loggedInUserUid?.let { uid ->
@@ -42,6 +40,12 @@ class InboxViewModel(
                 getInboxFromRemote(uid)
             }
         }
+    }
+
+    private suspend fun postInboxFromCache() {
+        tellRepository.getInboxFromCache()
+            .flowOn(dispatcherProvider.database)
+            .collect { _inbox.postValue(it) }
     }
 
     fun swipeRefreshInbox(callback: () -> Unit) {
@@ -72,7 +76,7 @@ class InboxViewModel(
 
         return when (val result = deferred.await()) {
             is Result.Success -> tellRepository.cacheInbox(result.data)
-            is Result.Error -> _inbox.postValue(result)
+            is Result.Error -> postInboxFromCache()
         }
     }
 }

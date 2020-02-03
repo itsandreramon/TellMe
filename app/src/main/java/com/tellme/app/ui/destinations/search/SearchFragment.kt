@@ -21,12 +21,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
-import com.tellme.app.data.Result
 import com.tellme.app.extensions.hideSoftInput
 import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.User
 import com.tellme.app.util.DateUtils
 import com.tellme.app.util.DialogUtils
+import com.tellme.app.util.ViewUtils
 import com.tellme.app.viewmodels.main.SearchViewModel
 import com.tellme.app.viewmodels.main.UserViewModel
 import com.tellme.databinding.FragmentSearchBinding
@@ -156,13 +156,11 @@ class SearchFragment : Fragment(),
         }
 
         searchViewModel.searchResults.observe(viewLifecycleOwner, Observer {
-            when (val result = userViewModel.loggedInUser.value!!) {
-                is Result.Success -> {
-                    resultViewAdapter.submitList(it.filter { user -> user.uid != result.data.uid })
-                }
-                is Result.Error -> {
-                    // TODO
-                }
+            try {
+                val uid = userViewModel.loggedInUser.value!!.uid
+                resultViewAdapter.submitList(it.filter { user -> user.uid != uid })
+            } catch (e: Exception) {
+                ViewUtils.showToast(requireContext(), "Error loading search results.")
             }
         })
     }

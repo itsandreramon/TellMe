@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
-import com.tellme.app.data.Result
 import com.tellme.app.model.User
 import com.tellme.app.util.ArgsHelper
 import com.tellme.app.viewmodels.main.UserViewModel
@@ -75,8 +74,8 @@ class UserFollowersFragment : Fragment(), FollowingListAdapter.FollowListUserCli
         listToLoad
             .filter { it.isNotEmpty() }
             .asFlow()
-            .map { userViewModel.getUserByUid(it) }
-            .onEach { if (it is Result.Success) viewAdapter.addItem(it.data) }
+            .map { userViewModel.getUserByUidRemote(it) }
+            .onEach { viewAdapter.addItem(it) }
             .launchIn(lifecycleScope)
     }
 

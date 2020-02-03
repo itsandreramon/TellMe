@@ -79,21 +79,18 @@ class RepliesFragment : Fragment(), RepliesItemViewAdapter.ReplyItemClickListene
     }
 
     private fun navigateToUserProfile(user: User) {
-        when (val result = userViewModel.loggedInUser.value) {
-            is Result.Success -> {
-                val loggedInUser = result.data
+        try {
+            val loggedInUser = userViewModel.loggedInUser.value!!
 
-                if (loggedInUser.uid == user.uid) {
-                    val action = RepliesFragmentDirections.actionRepliesFragmentToUserProfileFragment(user)
-                    findNavController().navigate(action)
-                } else {
-                    val action = RepliesFragmentDirections.actionRepliesFragmentToUserProfileFragment(user)
-                    findNavController().navigate(action)
-                }
+            if (loggedInUser.uid == user.uid) {
+                val action = RepliesFragmentDirections.actionRepliesFragmentToUserProfileFragment(user)
+                findNavController().navigate(action)
+            } else {
+                val action = RepliesFragmentDirections.actionRepliesFragmentToUserProfileFragment(user)
+                findNavController().navigate(action)
             }
-            is Result.Error -> {
-                // TODO
-            }
+        } catch (e: Exception) {
+            DialogUtils.createErrorDialog(requireContext(), "Error loading user profile.")
         }
     }
 

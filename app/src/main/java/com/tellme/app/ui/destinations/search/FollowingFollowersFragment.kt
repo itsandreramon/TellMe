@@ -22,7 +22,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
-import com.tellme.app.data.Result
 import com.tellme.app.model.User
 import com.tellme.app.util.ArgsHelper
 import com.tellme.app.util.DialogUtils
@@ -94,23 +93,21 @@ class FollowingFollowersFragment : Fragment(), FollowingListAdapter.FollowListUs
     }
 
     override fun onFollowListUserButtonFollowClicked(user: User) {
-        val result = userViewModel.loggedInUser.value!!
-        if (result is Result.Success) {
-            try {
-                val isFollowing = result.data.following.contains(user.uid)
+        try {
+            val loggedInUser = userViewModel.loggedInUser.value!!
+            val isFollowing = loggedInUser.following.contains(user.uid)
 
-                if (isFollowing) {
-                    lifecycleScope.launch {
-                        userViewModel.unfollowUser(result.data, user)
-                    }
-                } else {
-                    lifecycleScope.launch {
-                        userViewModel.followUser(result.data, user)
-                    }
+            if (isFollowing) {
+                lifecycleScope.launch {
+                    userViewModel.unfollowUser(loggedInUser, user)
                 }
-            } catch (e: IOException) {
-                DialogUtils.createFollowErrorDialog(requireContext()).show()
+            } else {
+                lifecycleScope.launch {
+                    userViewModel.followUser(loggedInUser, user)
+                }
             }
+        } catch (e: IOException) {
+            DialogUtils.createFollowErrorDialog(requireContext()).show()
         }
     }
 

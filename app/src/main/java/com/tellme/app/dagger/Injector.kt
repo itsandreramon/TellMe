@@ -13,7 +13,6 @@ import com.tellme.app.ui.MainActivity
 import com.tellme.app.ui.destinations.feed.FeedFragment
 import com.tellme.app.ui.destinations.inbox.InboxFragment
 import com.tellme.app.ui.destinations.inbox.ReplyTellActivity
-import com.tellme.app.ui.destinations.login.LoginFragment
 import com.tellme.app.ui.destinations.profile.ProfileEditActivity
 import com.tellme.app.ui.destinations.profile.ProfileFragment
 import com.tellme.app.ui.destinations.register.EmailFragment
@@ -26,6 +25,7 @@ import com.tellme.app.ui.destinations.search.SendTellActivity
 import com.tellme.app.ui.destinations.search.UserFollowersFragment
 import com.tellme.app.ui.destinations.search.UserFollowingFragment
 import com.tellme.app.ui.destinations.search.UserProfileFragment
+import com.tellme.app.ui.destinations.start.StartFragment
 
 /**
  * Injector for MainActivity
@@ -138,9 +138,9 @@ fun inject(activity: LoginRegisterActivity) {
 }
 
 /**
- * Injector for LoginFragment
+ * Injector for StartFragment
  * */
-fun inject(fragment: LoginFragment) {
+fun inject(fragment: StartFragment) {
     App.appComponent(fragment.requireContext())
         .getAuthComponentFactory()
         .create(fragment.requireActivity())

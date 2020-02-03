@@ -14,7 +14,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.tellme.app.data.Result
 import com.tellme.app.model.User
 import com.tellme.app.model.UserDiffCallback
 import com.tellme.app.util.UserNotFoundException
@@ -26,7 +25,7 @@ import kotlinx.coroutines.SupervisorJob
 
 class FollowingListAdapter(
     private val listener: FollowListUserClickListener,
-    private val loggedInUser: LiveData<Result<User>>,
+    private val loggedInUser: LiveData<User>,
     private val context: Context,
     private val viewLifecycleOwner: LifecycleOwner
 ) : ListAdapter<User, FollowingListViewHolder>(UserDiffCallback), CoroutineScope {

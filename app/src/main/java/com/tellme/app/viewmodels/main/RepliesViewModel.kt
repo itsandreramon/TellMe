@@ -16,7 +16,10 @@ import com.tellme.app.data.Result
 import com.tellme.app.data.TellRepository
 import com.tellme.app.model.ReplyItem
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RepliesViewModel(
     private val loggedInUserUid: String?,
@@ -28,11 +31,21 @@ class RepliesViewModel(
     val replies: LiveData<List<ReplyItem>> = _replies
 
     init {
+        viewModelScope.launch {
+            postRepliesFromCache()
+        }
+
         loggedInUserUid?.let { uid ->
             viewModelScope.launch {
                 getRepliesFromRemote(uid)
             }
         }
+    }
+
+    private suspend fun postRepliesFromCache() {
+        tellRepository.getRepliesFromCache()
+            .flowOn(dispatcherProvider.database)
+            .collect { _replies.postValue(it) }
     }
 
     fun swipeRefreshReplies(callback: () -> Unit) {
@@ -52,12 +65,24 @@ class RepliesViewModel(
         }
     }
 
+    suspend fun invalidateRepliesCache() {
+        withContext(dispatcherProvider.database) {
+            tellRepository.invalidateRepliesCache()
+        }
+    }
+
+    private suspend fun cacheReplies(replyItems: List<ReplyItem>) {
+        withContext(dispatcherProvider.database) {
+            tellRepository.cacheReplies(replyItems)
+        }
+    }
+
     private suspend fun getRepliesFromRemote(uid: String) {
         val deferred = viewModelScope.async(dispatcherProvider.network) { tellRepository.getRepliesByUidRemote(uid) }
 
         return when (val result = deferred.await()) {
-            is Result.Success -> _replies.postValue(result.data)
-            is Result.Error -> _replies.postValue(emptyList())
+            is Result.Success -> cacheReplies(result.data)
+            is Result.Error -> postRepliesFromCache()
         }
     }
 }

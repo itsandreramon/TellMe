@@ -32,6 +32,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/AppThemeLogin"
             android:name=".app.ui.LoginRegisterActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity

@@ -19,7 +19,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.tellme.R
 import com.tellme.app.dagger.inject
-import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.util.DialogUtils
 import com.tellme.app.util.PICK_IMAGE_REQUEST_CODE
@@ -65,13 +64,8 @@ class ProfileEditActivity : AppCompatActivity() {
 
     private fun setupUser() {
         userViewModel.loggedInUser.observe(this, Observer { result ->
-            when (result) {
-                is Result.Success -> {
-                    binding.user = result.data
-                    binding.imageViewUserAvatar.setUserProfileImageFromPath(result.data.avatar)
-                }
-                is Result.Error -> userViewModel.logout()
-            }
+            binding.user = result
+            binding.imageViewUserAvatar.setUserProfileImageFromPath(result.avatar)
         })
     }
 
@@ -139,12 +133,12 @@ class ProfileEditActivity : AppCompatActivity() {
     }
 
     private suspend fun usernameIsInUse(username: String): Boolean {
-        return when (val user = userViewModel.loggedInUser.value) {
-            is Result.Success -> userViewModel.isUsernameAlreadyInUse(username) && username != user.data.username
-            else -> {
-                ViewUtils.showToast(this, "Error checking username availability.")
-                true
-            }
+        return try {
+            val loggedInUser = userViewModel.loggedInUser.value!!
+            userViewModel.isUsernameAlreadyInUse(username) && username != loggedInUser.username
+        } catch (e: Exception) {
+            DialogUtils.showUsernameExistsDialog(this)
+            true
         }
     }
 
@@ -164,23 +158,18 @@ class ProfileEditActivity : AppCompatActivity() {
         about: String,
         avatar: String? = null
     ) {
-        val loggedInUser = userViewModel.loggedInUser.value!!
+        try {
+            val loggedInUser = userViewModel.loggedInUser.value!!
+            val updatedUser = loggedInUser.copy(
+                username = username,
+                name = displayName,
+                about = about,
+                avatar = avatar ?: loggedInUser.avatar
+            )
 
-        when (loggedInUser) {
-            is Result.Success -> {
-                val updatedUser = loggedInUser.data.copy(
-                    username = username,
-                    name = displayName,
-                    about = about,
-                    avatar = avatar ?: loggedInUser.data.avatar
-                )
-
-                userViewModel.updateUser(updatedUser)
-            }
-
-            is Result.Error -> {
-                ViewUtils.showToast(this, "Error updating profile.")
-            }
+            userViewModel.updateUser(updatedUser)
+        } catch (e: Exception) {
+            DialogUtils.createErrorDialog(this, "Could not update profile.")
         }
     }
 

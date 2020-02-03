@@ -19,7 +19,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class SearchViewModel(
     private val userRepository: UserRepository,
@@ -47,7 +46,7 @@ class SearchViewModel(
 
         return when (val result = deferred.await()) {
             is Result.Success -> _searchResults.postValue(result.data)
-            is Result.Error -> throw result.exception
+            is Result.Error -> _searchResults.postValue(emptyList())
         }
     }
 
@@ -58,10 +57,8 @@ class SearchViewModel(
     }
 
     suspend fun cacheLatestUserSearched(user: User) {
-        Timber.d("Inserting $user")
         viewModelScope.launch(dispatcherProvider.database) {
             userRepository.addUserLocal(user)
-            Timber.d("Inserting $user")
         }
     }
 }
