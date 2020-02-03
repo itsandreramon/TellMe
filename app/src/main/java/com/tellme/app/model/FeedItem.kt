@@ -14,18 +14,6 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.tellme.app.util.DateUtils
-import com.tellme.app.util.FEED_ITEM_COLUMN_ID
-import com.tellme.app.util.FEED_ITEM_COLUMN_QUESTION
-import com.tellme.app.util.FEED_ITEM_COLUMN_RECEIVER_PHOTO_URL
-import com.tellme.app.util.FEED_ITEM_COLUMN_RECEIVER_USERNAME
-import com.tellme.app.util.FEED_ITEM_COLUMN_REPLY
-import com.tellme.app.util.FEED_ITEM_COLUMN_REPLY_DATE
-import com.tellme.app.util.FEED_ITEM_KEY_ID
-import com.tellme.app.util.FEED_ITEM_KEY_QUESTION
-import com.tellme.app.util.FEED_ITEM_KEY_RECEIVER_PHOTO_URL
-import com.tellme.app.util.FEED_ITEM_KEY_RECEIVER_USERNAME
-import com.tellme.app.util.FEED_ITEM_KEY_REPLY
-import com.tellme.app.util.FEED_ITEM_KEY_REPLY_DATE
 import timber.log.Timber
 
 @Entity(tableName = "feed_items")
@@ -33,28 +21,28 @@ import timber.log.Timber
 data class FeedItem(
 
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = FEED_ITEM_COLUMN_ID)
-    @Json(name = FEED_ITEM_KEY_ID)
+    @ColumnInfo(name = "id")
+    @Json(name = "id")
     val id: String,
 
-    @ColumnInfo(name = FEED_ITEM_COLUMN_RECEIVER_PHOTO_URL)
-    @Json(name = FEED_ITEM_KEY_RECEIVER_PHOTO_URL)
+    @ColumnInfo(name = "receiver_avatar")
+    @Json(name = "receiverAvatar")
     val receiverPhotoUrl: String?,
 
-    @ColumnInfo(name = FEED_ITEM_COLUMN_RECEIVER_USERNAME)
-    @Json(name = FEED_ITEM_KEY_RECEIVER_USERNAME)
+    @ColumnInfo(name = "receiver_username")
+    @Json(name = "receiverUsername")
     val receiverUsername: String,
 
-    @ColumnInfo(name = FEED_ITEM_COLUMN_QUESTION)
-    @Json(name = FEED_ITEM_KEY_QUESTION)
+    @ColumnInfo(name = "question")
+    @Json(name = "question")
     val question: String,
 
-    @ColumnInfo(name = FEED_ITEM_COLUMN_REPLY)
-    @Json(name = FEED_ITEM_KEY_REPLY)
+    @ColumnInfo(name = "reply")
+    @Json(name = "reply")
     val reply: String,
 
-    @ColumnInfo(name = FEED_ITEM_COLUMN_REPLY_DATE)
-    @Json(name = FEED_ITEM_KEY_REPLY_DATE)
+    @ColumnInfo(name = "reply_date")
+    @Json(name = "replyDate")
     val replyDate: String
 
 ) : Comparable<FeedItem> {

@@ -18,9 +18,9 @@ import com.tellme.app.dagger.inject
 import com.tellme.app.extensions.showSoftInput
 import com.tellme.app.model.Tell
 import com.tellme.app.util.DateUtils
-import com.tellme.app.util.EXTRA_TELL_KEY
-import com.tellme.app.util.EXTRA_TELL_KEY_UPDATED
-import com.tellme.app.util.TELL_KEY_QUESTION
+import com.tellme.app.util.EXTRA_TELL
+import com.tellme.app.util.EXTRA_TELL_QUESTION
+import com.tellme.app.util.EXTRA_TELL_UPDATED
 import com.tellme.app.viewmodels.main.TellViewModel
 import com.tellme.databinding.ActivityReplyTellBinding
 import com.uber.autodispose.android.lifecycle.autoDispose
@@ -37,7 +37,7 @@ class ReplyTellActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reply_tell)
-        binding.question = intent.getStringExtra(TELL_KEY_QUESTION)
+        binding.question = intent.getStringExtra(EXTRA_TELL_QUESTION)
         showSoftInput(binding.editTextReply)
 
         setupReplyButton()
@@ -64,7 +64,7 @@ class ReplyTellActivity : AppCompatActivity() {
 
     private fun setupReplyButton() {
         binding.buttonReply.setOnClickListener {
-            val tell = intent.getParcelableExtra<Tell>(EXTRA_TELL_KEY)!!
+            val tell = intent.getParcelableExtra<Tell>(EXTRA_TELL)!!
 
             val updatedTell = tell.copy(
                 replyDate = DateUtils.now(),
@@ -72,8 +72,8 @@ class ReplyTellActivity : AppCompatActivity() {
             )
 
             val result = Intent()
-            result.putExtra(EXTRA_TELL_KEY_UPDATED, updatedTell)
-            result.putExtra(EXTRA_TELL_KEY, tell)
+            result.putExtra(EXTRA_TELL_UPDATED, updatedTell)
+            result.putExtra(EXTRA_TELL, tell)
             setResult(Activity.RESULT_OK, result)
             finish()
         }
