@@ -34,7 +34,7 @@ class TellViewModel(
 
         return when (val result = deferred.await()) {
             is Result.Success -> result.data
-            is Result.Error -> throw result.exception
+            is Result.Error -> false
         }
     }
 
@@ -43,7 +43,7 @@ class TellViewModel(
 
         return when (val result = deferred.await()) {
             is Result.Success -> result.data
-            is Result.Error -> throw result.exception
+            is Result.Error -> false
         }
     }
 

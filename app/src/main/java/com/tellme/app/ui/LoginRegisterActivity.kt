@@ -40,6 +40,7 @@ class LoginRegisterActivity : AppCompatActivity() {
         try {
             authViewModel.getCurrentUserFirebase()?.let {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_startFragment_to_mainActivity)
+                finish()
             }
         } catch (e: NoConnectivityException) {
             Toast.makeText(this, "No connection.", Toast.LENGTH_LONG).show()

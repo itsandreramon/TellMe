@@ -99,7 +99,7 @@ class UsernameFragment : Fragment() {
                 loadingDialog?.dismiss()
 
                 if (usernameAlreadyInUse) {
-                    DialogUtils.createEmailAlreadyInUseDialog(requireContext()).show()
+                    DialogUtils.createUsernameAlreadyInUseDialog(requireContext()).show()
                 } else {
                     val action = UsernameFragmentDirections.actionUsernameFragmentToEmailFragment(
                         username = username,
