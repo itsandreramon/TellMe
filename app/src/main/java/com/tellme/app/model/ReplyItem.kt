@@ -28,7 +28,6 @@ import com.tellme.app.util.FEED_ITEM_KEY_REPLY
 import com.tellme.app.util.FEED_ITEM_KEY_REPLY_DATE
 import timber.log.Timber
 
-// TODO enable Room caching
 @Entity(tableName = "reply_items")
 @JsonClass(generateAdapter = true)
 data class ReplyItem(
@@ -62,9 +61,9 @@ data class ReplyItem(
 
     override fun compareTo(other: ReplyItem): Int {
         try {
-            val thisSendDate = DateUtils.fromString(this.replyDate)
-            val otherSendDate = DateUtils.fromString(other.replyDate)
-            return -thisSendDate.compareTo(otherSendDate) // descending order
+            val thisReplyDate = DateUtils.fromString(this.replyDate)
+            val otherReplyDate = DateUtils.fromString(other.replyDate)
+            return -thisReplyDate.compareTo(otherReplyDate) // descending order
         } catch (e: Exception) {
             Timber.e(e)
         }

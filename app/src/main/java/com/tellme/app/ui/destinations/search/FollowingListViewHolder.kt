@@ -13,7 +13,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.tellme.app.data.Result
 import com.tellme.app.extensions.setUserProfileImageFromPath
 import com.tellme.app.model.User
 import com.tellme.app.util.ViewUtils
@@ -22,7 +21,7 @@ import com.tellme.databinding.ViewHolderItemUserFollowListBinding
 class FollowingListViewHolder(
     val viewLifecycleOwner: LifecycleOwner,
     val binding: ViewHolderItemUserFollowListBinding,
-    val loggedInUser: LiveData<Result<User>>
+    val loggedInUser: LiveData<User>
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
@@ -35,16 +34,9 @@ class FollowingListViewHolder(
         binding.executePendingBindings()
         binding.buttonFollow.setOnClickListener { listener.onFollowListUserButtonFollowClicked(user) }
 
-        loggedInUser.observe(viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is Result.Success -> {
-                    setupFollowButton(result.data, user, context, listener)
-                    itemView.setOnClickListener { listener.onFollowListUserClicked(user, result.data.uid) }
-                }
-                is Result.Error -> {
-                    // TODO
-                }
-            }
+        loggedInUser.observe(viewLifecycleOwner, Observer { loggedInUser ->
+            setupFollowButton(loggedInUser, user, context, listener)
+            itemView.setOnClickListener { listener.onFollowListUserClicked(user, loggedInUser.uid) }
         })
     }
 

@@ -27,14 +27,12 @@ class FeedViewModel(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _feedItems = MutableLiveData<Result<List<FeedItem>>>()
-    val feedItems: LiveData<Result<List<FeedItem>>> = _feedItems
+    private val _feedItems = MutableLiveData<List<FeedItem>>()
+    val feedItems: LiveData<List<FeedItem>> = _feedItems
 
     init {
         viewModelScope.launch {
-            tellRepository.getFeedFromCache()
-                .flowOn(dispatcherProvider.database)
-                .collect { _feedItems.postValue(Result.Success(it)) }
+            postFeedFromCache()
         }
 
         loggedInUserUid?.let { uid ->
@@ -42,6 +40,12 @@ class FeedViewModel(
                 getFeedItemsFromRemote(uid)
             }
         }
+    }
+
+    private suspend fun postFeedFromCache() {
+        tellRepository.getFeedFromCache()
+            .flowOn(dispatcherProvider.database)
+            .collect { _feedItems.postValue(it) }
     }
 
     fun swipeRefreshFeed(callback: () -> Unit) {
@@ -78,7 +82,7 @@ class FeedViewModel(
 
         return when (val result = deferred.await()) {
             is Result.Success -> cacheFeed(result.data)
-            is Result.Error -> _feedItems.postValue(result)
+            is Result.Error -> postFeedFromCache()
         }
     }
 }

@@ -12,11 +12,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tellme.app.model.FeedItem
+import com.tellme.app.model.ReplyItem
 import com.tellme.app.model.Tell
 import com.tellme.app.model.User
 import com.tellme.app.util.LOCAL_DATABASE_NAME
 
-@Database(entities = [FeedItem::class, Tell::class, User::class], version = 3, exportSchema = false)
+@Database(entities = [ReplyItem::class, FeedItem::class, Tell::class, User::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun tellDao(): TellRoomDao

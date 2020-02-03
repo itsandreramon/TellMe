@@ -31,14 +31,18 @@ class UserViewModel(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _loggedInUser = MutableLiveData<Result<User>>()
-    val loggedInUser: LiveData<Result<User>> = _loggedInUser
+    private val _loggedInUser = MutableLiveData<User>()
+    val loggedInUser: LiveData<User> = _loggedInUser
 
     init {
         viewModelScope.launch {
+            postLoggedInUserFromDatabase()
+        }
+
+        viewModelScope.launch {
             getCurrentUserFirebase()?.let {
-                postUserByUidFromDatabase(it.uid)
-                getUserByUid(it.uid)
+                val user = getUserByUidRemote(it.uid)
+                cacheUser(user)
             }
         }
     }
@@ -55,15 +59,16 @@ class UserViewModel(
         withContext(dispatcherProvider.database) { userRepository.updateUserLocal(user) }
     }
 
-    private fun postUserByUidFromDatabase(uid: String) {
-        userRepository
-            .getUserByUidLocal(uid)
-            .observeForever { user ->
-                user?.let {
-                    Timber.e(user.toString())
-                    _loggedInUser.postValue(Result.Success(user))
+    private fun postLoggedInUserFromDatabase() {
+        getCurrentUserFirebase()?.let { user ->
+            userRepository
+                .getUserByUidLocal(user.uid)
+                .observeForever {
+
+                    // safe-calling because it can be null when logging out
+                    it?.let { _loggedInUser.postValue(it) }
                 }
-            }
+        }
     }
 
     fun getCurrentUserFirebase(): FirebaseUser? {
@@ -92,21 +97,14 @@ class UserViewModel(
         }
     }
 
-    // TODO ???
-    suspend fun getUserByUid(id: String): Result<User> {
+    suspend fun getUserByUidRemote(id: String): User {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.getUserByUidRemote(id)
         }
 
         return when (val result = deferred.await()) {
-            is Result.Success -> {
-                cacheUser(result.data)
-                result
-            }
-            is Result.Error -> {
-                _loggedInUser.postValue(result)
-                result
-            }
+            is Result.Success -> result.data
+            is Result.Error -> throw result.exception
         }
     }
 
