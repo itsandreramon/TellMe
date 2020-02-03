@@ -244,6 +244,7 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
                 val deletedPosition = viewHolder.adapterPosition
                 val deletedTell = itemViewAdapter.getInboxItemAt(deletedPosition)
 
+                // TODO own method
                 lifecycleScope.launch {
                     val result = tellViewModel.deleteTell(deletedTell.id)
 
@@ -261,7 +262,11 @@ class InboxFragment : Fragment(), InboxItemViewAdapter.InboxItemClickListener {
                         binding.inboxRecyclerView.adapter?.notifyItemRemoved(deletedPosition)
                     } else {
                         ViewUtils
-                            .createSnackbar(mContext, binding.layoutCoordinator, getString(R.string.tell_removed_error))
+                            .createSnackbar(
+                                mContext,
+                                binding.layoutCoordinator,
+                                getString(R.string.tell_removed_error)
+                            )
                             .show()
 
                         binding.inboxRecyclerView.adapter?.notifyItemInserted(deletedPosition)
