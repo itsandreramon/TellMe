@@ -51,6 +51,7 @@ class UserViewModel(
     private suspend fun cacheUser(user: User) {
         withContext(dispatcherProvider.database) {
             userRepository.addUserLocal(user)
+            Timber.e("Added user to db")
         }
     }
 
@@ -103,17 +104,29 @@ class UserViewModel(
         }
 
         return when (val result = deferred.await()) {
-            is Result.Success -> result.data
+            is Result.Success -> {
+                val user = result.data
+                Timber.e(user.toString())
+                cacheUser(user)
+                user
+            }
             is Result.Error -> throw result.exception
         }
     }
 
-    suspend fun getUserByUsername(username: String): Result<User> {
+    suspend fun getUserByUsername(username: String): User {
         val deferred = viewModelScope.async(dispatcherProvider.network) {
             userRepository.getUserByUsernameRemote(username)
         }
 
-        return deferred.await()
+        return when (val result = deferred.await()) {
+            is Result.Success -> {
+                val user = result.data
+                cacheUser(user)
+                user
+            }
+            is Result.Error -> throw result.exception
+        }
     }
 
     fun getUserByUidLocal(uid: String): LiveData<User> {

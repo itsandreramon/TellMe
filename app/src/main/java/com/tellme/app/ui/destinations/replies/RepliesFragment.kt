@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tellme.R
 import com.tellme.app.dagger.inject
-import com.tellme.app.data.Result
 import com.tellme.app.model.ReplyItem
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
@@ -67,13 +66,11 @@ class RepliesFragment : Fragment(), RepliesItemViewAdapter.ReplyItemClickListene
 
     override fun onReplyItemClicked(replyItem: ReplyItem) {
         lifecycleScope.launch {
-            when (val result = userViewModel.getUserByUsername(replyItem.receiverUsername)) {
-                is Result.Success -> {
-                    navigateToUserProfile(result.data)
-                }
-                is Result.Error -> {
-                    DialogUtils.createErrorDialog(requireContext(), "Error loading user profile.")
-                }
+            try {
+                val user = userViewModel.getUserByUsername(replyItem.receiverUsername)
+                navigateToUserProfile(user)
+            } catch (e: Exception) {
+                DialogUtils.createErrorDialog(requireContext(), "Error loading user profile.")
             }
         }
     }
