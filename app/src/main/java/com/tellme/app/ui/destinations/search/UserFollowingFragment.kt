@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 class UserFollowingFragment : Fragment(), FollowingListAdapter.FollowListUserClickListener {
 
@@ -63,10 +64,16 @@ class UserFollowingFragment : Fragment(), FollowingListAdapter.FollowListUserCli
         super.onViewCreated(view, savedInstanceState)
         setupAdapter(this)
 
+        // TODO Fix crash
         args.user.uid.let { uid ->
             userViewModel
                 .getUserByUidLocal(uid)
-                .observe(viewLifecycleOwner, Observer { submitList(it.following) })
+                .observe(viewLifecycleOwner, Observer {
+                    it?.let { user ->
+                        Timber.d(user.toString())
+                        submitList(user.following) }
+                    }
+                )
         }
     }
 

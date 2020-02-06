@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tellme.R
 import com.tellme.app.dagger.inject
 import com.tellme.app.data.CoroutinesDispatcherProvider
-import com.tellme.app.data.Result
 import com.tellme.app.model.FeedItem
 import com.tellme.app.model.User
 import com.tellme.app.util.DialogUtils
@@ -73,13 +72,11 @@ class FeedFragment : Fragment(), FeedItemViewAdapter.FeedClickListener {
 
     override fun onFeedClicked(feedItem: FeedItem) {
         lifecycleScope.launch {
-            when (val result = userViewModel.getUserByUsername(feedItem.receiverUsername)) {
-                is Result.Success -> {
-                    navigateToUserProfile(result.data)
-                }
-                is Result.Error -> {
-                    DialogUtils.createErrorDialog(requireContext(), "Error loading user profile.")
-                }
+            try {
+                val user = userViewModel.getUserByUsername(feedItem.receiverUsername)
+                navigateToUserProfile(user)
+            } catch (e: Exception) {
+                DialogUtils.createErrorDialog(requireContext(), "Error loading user profile.")
             }
         }
     }
