@@ -165,7 +165,7 @@ object DialogUtils {
         positive: String = "Ok",
         onPositiveCallback: () -> Unit,
         negative: String = "Cancel",
-        title: String = "Dialog"
+        title: String = "Info"
     ): AlertDialog {
         return MaterialAlertDialogBuilder(context).apply {
             setTitle(title)

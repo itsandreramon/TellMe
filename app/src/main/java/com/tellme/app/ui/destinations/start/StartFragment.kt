@@ -93,14 +93,13 @@ class StartFragment : Fragment() {
                 }.show()
             }
         } catch (e: Exception) {
-            authViewModel.logout()
-
             e.message?.let { message ->
                 DialogUtils.createErrorDialog(requireContext(), message).show()
             }
 
             e.printStackTrace()
         } finally {
+            authViewModel.logout()
             loadingDialog?.dismiss()
         }
     }
