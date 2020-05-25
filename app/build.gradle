@@ -66,7 +66,6 @@ dependencies {
     implementation Libs.AndroidX.security
     implementation Libs.AndroidX.savedStateHandle
 
-    implementation Libs.AndroidX.Fragment.fragment
     implementation Libs.AndroidX.Fragment.fragmentKtx
 
     kapt Libs.AndroidX.Lifecycle.compiler
@@ -81,6 +80,8 @@ dependencies {
     implementation Libs.AndroidX.Navigation.ui
     implementation Libs.AndroidX.Navigation.runtime
     implementation Libs.AndroidX.Navigation.fragment
+
+    implementation Libs.AndroidX.WorkManager.runtime
 
     implementation Libs.Kotlin.stdlib
     implementation Libs.Kotlin.reflect
